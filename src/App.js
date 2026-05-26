@@ -1,25 +1,27 @@
 import logo from './logo.svg';
 import './App.css';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Layout from './components/Layout'
+import Login from './components/Login';
+import CompaniesIndex from './pages/companies/Index'
+import React, {useState} from "react";
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+  const [accessToken, setAccessToken] = useState(null);
+
+  if (!accessToken) {
+    return <Login setAccessToken={setAccessToken} />
+  } else {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Layout setAccessToken={setAccessToken}/>}>
+            <Route index element={<CompaniesIndex />} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    );
+  }
 }
 
 export default App;
