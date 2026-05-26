@@ -1,8 +1,4 @@
 function Login({setAccessToken}) {
-    //const token = localStorage.getItem('accessToken');
-    //if (token) {
-    //    setAccessToken(token);
-    //}
     const handleSubmit = (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);
