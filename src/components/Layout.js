@@ -1,6 +1,7 @@
-import { Outlet, Link } from "react-router-dom"
+import { Outlet, Link, useLocation } from "react-router-dom"
 
 function Layout({setAccessToken}) {
+    const location = useLocation();
     const Logout = () => {
         localStorage.removeItem("accessToken");
         setAccessToken(false);
@@ -37,10 +38,13 @@ function Layout({setAccessToken}) {
               Logout
             </button>
           </nav>
-          <div className="App mt-8">
-            <h1 className="text-2xl font-bold mb-5">Layout</h1>
-            <div>
+          <div className="grid grid-cols-[70%_30%]">
+            <div class="bg-blue-500">
                 <Outlet />
+            </div>
+            <div class="bg-blue-200">
+              Sidebar
+              {location.pathname}
             </div>
           </div>
         </>
