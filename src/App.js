@@ -17,6 +17,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout setAccessToken={setAccessToken}/>}>
             <Route index element={<CompaniesIndex />} />
+            <Route path="companies" element={<CompaniesIndex />} />
           </Route>
         </Routes>
       </BrowserRouter>
