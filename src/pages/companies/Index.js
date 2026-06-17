@@ -32,7 +32,7 @@ function CompaniesIndex() {
 
     return (
         <div>
-            <h1>Companies List</h1>
+            <h1 className="text-2xl font-bold m-4">Companies List</h1>
             <RecordList records={companies.map(company => company.name)} />
         </div>
     );

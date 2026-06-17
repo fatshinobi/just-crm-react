@@ -21,10 +21,10 @@ function Layout({setAccessToken}) {
             </button>
           </nav>
           <div className="grid grid-cols-[70%_30%]">
-            <div class="bg-blue-500">
+            <div class="bg-white">
                 <Outlet />
             </div>
-            <div class="bg-blue-200">
+            <div class="bg-gray-200">
               Sidebar
               {location.pathname}
             </div>
