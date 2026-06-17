@@ -37,6 +37,7 @@ function CompaniesIndex() {
               {
                 id: company.id,
                 caption: company.name,
+                description: company.about,
                 show_path: `/company/show/${company.id}`,
                 edit_path: `/company/edit/${company.id}`
               })

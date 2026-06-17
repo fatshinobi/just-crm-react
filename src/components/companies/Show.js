@@ -42,7 +42,7 @@ function CompanyShow() {
                     <p className="mb-1"><strong>Phone:</strong> {company.phone}</p>
                     <p className="mb-1"><strong>Address:</strong> {company.address}</p>
                     <p className="mb-5"><strong>User:</strong> {company.user_name}</p>
-                    <Link to={`/company/edit/${id}`} className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-sm font-medium">Edit</Link>
+                    <Link to={`/company/edit/${id}`} className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-md font-medium">Edit</Link>
                 </div>
             ) : (
                 <p className="m-4">Loading company details...</p>

@@ -9,8 +9,8 @@ function Card({ record }) {
                 <span className="link-underline link-underline-black text-black font-bold text-lg mb-2">
                     {record.caption}
                 </span>
-                <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">Description text</p>
-                <span className="inline-flex items-center px-3 py-0.5 text-xs font-bold leading-5 text-white font-display mr-2 capitalize bg-red-500 w-fit" >
+                <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">{record.description}</p>
+                <span className="inline-flex items-center px-3 py-0.5 text-xs font-bold leading-5 text-white font-display mr-2 capitalize bg-blue-500 w-fit" >
                     <Link to={record.show_path} className="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">View</Link>
                 </span>
             </div>
