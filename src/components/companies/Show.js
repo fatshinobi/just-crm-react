@@ -7,7 +7,7 @@ function CompanyShow() {
     const [company, setCompany] = useState(null);
 
     useEffect(() => {
-        // Fetch company data from API and update state
+        if (!id) return;
         fetch(`http://localhost:3000/customers/${id}`, {
             method: 'GET',
             headers: {
@@ -29,7 +29,7 @@ function CompanyShow() {
         .catch(error => {
           console.error('Error:', error);
         });
-    }, []);
+    }, [id]);
 
     return (
         <div>
