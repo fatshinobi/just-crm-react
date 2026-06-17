@@ -1,7 +1,7 @@
-import React, { useEffect, useState } from 'react';    
+import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
-import { useParams } from 'react-router-dom';
-    
+import { useParams } from 'react-router-dom'
+
 function CompanyShow() {
     const { id } = useParams();
     const [company, setCompany] = useState(null);
