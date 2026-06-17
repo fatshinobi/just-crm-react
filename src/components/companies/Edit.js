@@ -1,9 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
+import { useParams, useNavigate } from 'react-router-dom'
 
 function CompanyEdit() {
     const { id } = useParams();
     const [company, setCompany] = useState({ name: '', about: '', email: '', phone: '', address: '' });
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!id) return;
@@ -53,7 +54,8 @@ function CompanyEdit() {
         })
         .then(response => {
             if (response.ok) {
-                return response.json();
+                //return response.json();
+                navigate("/companies");
             } else {
                 throw new Error('Failed to update company');
             }
