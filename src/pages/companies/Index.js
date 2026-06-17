@@ -32,8 +32,15 @@ function CompaniesIndex() {
 
     return (
         <div>
-            <h1 className="text-2xl font-bold m-4">Companies List</h1>
-            <RecordList records={companies.map(company => company.name)} />
+            <h1 className="text-4xl font-bold m-4">Companies List</h1>
+            <RecordList records={companies.map(company => (
+              {
+                id: company.id,
+                caption: company.name,
+                show_path: `/company/show/${company.id}`,
+                edit_path: `/company/edit/${company.id}`
+              })
+            )} />
         </div>
     );
 }
