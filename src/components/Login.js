@@ -4,18 +4,20 @@ function Login({setAccessToken}) {
         const formData = new FormData(event.target);
         const email = formData.get('email');
         const password = formData.get('password');
+        const userInfo = { "user": { email: email, password: password } };
 
-        fetch('http://localhost:3000/api/v1/auth/sign_in', {
+        fetch('http://localhost:3000/login', {
             method: 'POST',
             headers: {
-              'Content-Type': 'application/json'
+              'content-type': 'application/json',
+              'accept': 'application/json'
             },
-            body: JSON.stringify({email, password})
+            body: JSON.stringify(userInfo)
         })
         //.then(response => response.json())
         .then(response => {
           if (response.ok) {
-            localStorage.setItem('accessToken', response.headers.get('access-token'));
+            localStorage.setItem('accessToken', response.headers.get('Authorization'));
             setAccessToken(true);
             return response.json();
           } else {

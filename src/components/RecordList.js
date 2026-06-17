@@ -1,11 +1,10 @@
 import Card from "./Card";
 
-function RecordList() {
-    const records = ["test1", "test2", "test3"];
+function RecordList({ records }) {
     return (
         <div className="record-list">
             {records.map((record, index) => (
-                <Card record={record} />
+                <Card record={record} key={index} />
             ))}
         </div>
     );
