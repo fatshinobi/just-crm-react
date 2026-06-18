@@ -18,6 +18,8 @@ function App() {
           <Route path="/" element={<Layout setAccessToken={setAccessToken}/>}>
             <Route index element={<CompaniesIndex />} />
             <Route path="companies" element={<CompaniesIndex />} />
+            <Route path="company/edit/:id" element={<CompaniesIndex />} />
+            <Route path="company/show/:id" element={<CompaniesIndex />} />
           </Route>
         </Routes>
       </BrowserRouter>
@@ -26,3 +28,4 @@ function App() {
 }
 
 export default App;
+

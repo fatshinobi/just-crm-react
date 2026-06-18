@@ -1,4 +1,6 @@
 import { Outlet, Link, useLocation } from "react-router-dom"
+import CompanyShow from "./companies/Show"
+import CompanyEdit from "./companies/Edit"
 
 function Layout({setAccessToken}) {
     const location = useLocation();
@@ -7,6 +9,18 @@ function Layout({setAccessToken}) {
         setAccessToken(false);
     };
 
+    const renderSidebar = () => {
+      switch (true) {
+        case location.pathname.includes("/companies"):
+          return <div>Companies Sidebar</div>;
+        case location.pathname.includes("/company/edit"):
+          return <CompanyEdit />;
+        case location.pathname.includes("/company/show"):
+          return <CompanyShow />;
+        default:
+          return <div>Default Sidebar</div>;
+      }
+    };
     return (
         <>
           {/* Navbar */}
@@ -21,12 +35,11 @@ function Layout({setAccessToken}) {
             </button>
           </nav>
           <div className="grid grid-cols-[70%_30%]">
-            <div class="bg-blue-500">
+            <div class="bg-white">
                 <Outlet />
             </div>
-            <div class="bg-blue-200">
-              Sidebar
-              {location.pathname}
+            <div class="bg-gray-200">
+              {renderSidebar()}
             </div>
           </div>
         </>
