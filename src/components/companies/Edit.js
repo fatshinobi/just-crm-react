@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate } from 'react-router-dom'
+import { useParams, useNavigate, Link } from 'react-router-dom'
 
 function CompanyEdit() {
     const { id } = useParams();
@@ -69,15 +69,31 @@ function CompanyEdit() {
     };
 
     return (
-        <div>
-            <h1 className="text-3xl font-bold m-4">Company Edit</h1>
-            <form onSubmit={handleSubmit}>
-                <input type="text" name="name" value={company?.name || ''} onChange={handleChange} placeholder="Company Name" className="border p-2 rounded mb-2 w-full" />
-                <textarea name="about" value={company?.about || ''} onChange={handleChange} placeholder="Company Description" className="border p-2 rounded mb-2 w-full"></textarea>
-                <input type="email" name="email" value={company?.email || ''} onChange={handleChange} placeholder="Company Email" className="border p-2 rounded mb-2 w-full" />
-                <input type="text" name="phone" value={company?.phone || ''} onChange={handleChange} placeholder="Company Phone" className="border p-2 rounded mb-2 w-full" />
-                <input type="text" name="address" value={company?.address || ''} onChange={handleChange} placeholder="Company Address" className="border p-2 rounded mb-2 w-full" />
-                <button type="submit" className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-md font-medium">Save</button>
+        <div className="p-4">
+            <h1 className="text-3xl font-bold mb-6">Company Edit</h1>
+            <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                    <label className="block text-gray-700 mb-1">Company Name:</label>
+                    <input type="text" name="name" value={company?.name || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                    <label className="block text-gray-700 mb-1">Company Description:</label>
+                    <textarea name="about" value={company?.about || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" rows="3"></textarea>
+                </div>
+                <div>
+                    <label className="block text-gray-700 mb-1">Company Email:</label>
+                    <input type="email" name="email" value={company?.email || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                    <label className="block text-gray-700 mb-1">Company Phone:</label>
+                    <input type="text" name="phone" value={company?.phone || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                    <label className="block text-gray-700 mb-1">Company Address:</label>
+                    <input type="text" name="address" value={company?.address || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
+                <Link to={`/company/show/${company?.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-6 ml-2 rounded">View</Link>
             </form>
         </div>
     );

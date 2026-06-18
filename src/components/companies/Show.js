@@ -35,7 +35,7 @@ function CompanyShow() {
         <div>
             <h1 className="text-3xl font-bold m-4">Company Details</h1>
             {company ? (
-                <div className="m-4 p-4 border rounded-lg shadow-lg">
+                <div className="m-4 p-4 border rounded-lg shadow-lg pb-7">
                     <h2 className="text-2xl font-semibold mb-2">{company.name}</h2>
                     <p className="mb-5"><strong>Description:</strong> {company.about}</p>
                     <p className="mb-1"><strong>Email:</strong> {company.email}</p>
