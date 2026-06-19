@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 function CompanyEdit() {
     const { id } = useParams();
     const [company, setCompany] = useState({ name: '', about: '', email: '', phone: '', address: '' });
+    const [users, setUsers] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,6 +32,31 @@ function CompanyEdit() {
         });
     }, [id]);
 
+    useEffect(() => {
+        if (!id) return;
+        fetch(`http://localhost:3000/catalogs/users`, {
+            method: 'GET',
+            headers: {
+              'content-type': 'application/json',
+              'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to fetch users');
+          }
+        })
+        .then(data => {
+          console.log('Users data:', data);
+          setUsers(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }, [id]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCompany(prev => ({ ...prev, [name]: value }));
@@ -49,7 +75,8 @@ function CompanyEdit() {
                 about: company.about,
                 email: company.email,
                 phone: company.phone,
-                address: company.address
+                address: company.address,
+                user_id: company.user_id
             })
         })
         .then(response => {
@@ -91,6 +118,16 @@ function CompanyEdit() {
                 <div>
                     <label className="block text-gray-700 mb-1">Company Address:</label>
                     <input type="text" name="address" value={company?.address || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+                <div>
+                    <label className="block text-gray-700 mb-1">Curator:</label>
+                    <select type="text" name="user_id" value={company?.user_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                        {users.map(user => (
+                            <option key={user.key} value={user.key}>
+                                {user.value}
+                            </option>
+                        ))}
+                    </select>
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
                 <Link to={`/company/show/${company?.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-6 ml-2 rounded">View</Link>
