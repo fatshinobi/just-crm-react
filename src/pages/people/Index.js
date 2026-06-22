@@ -8,7 +8,7 @@ function PeopleIndex() {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname !== '/people') return;
+        if (location.pathname !== '/people' && people.length > 0) return;
         // Fetch people data from API and update state
         fetch('http://localhost:3000/clients', {
             method: 'GET',

@@ -8,7 +8,7 @@ function CompaniesIndex() {
     const location = useLocation();
 
     useEffect(() => {
-        if (location.pathname !== '/companies' && location.pathname !== '/') return;
+        if (location.pathname !== '/companies' && location.pathname !== '/' && companies.length > 0) return;
         // Fetch companies data from API and update state
         fetch('http://localhost:3000/customers', {
             method: 'GET',
