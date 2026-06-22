@@ -1,6 +1,8 @@
 import { Outlet, Link, useLocation } from "react-router-dom"
+import Sidebar from "./Sidebar"
 import CompanyShow from "./companies/Show"
 import CompanyEdit from "./companies/Edit"
+import CompanyCreate from "./companies/Create"
 
 function Layout({setAccessToken}) {
     const location = useLocation();
@@ -12,11 +14,13 @@ function Layout({setAccessToken}) {
     const renderSidebar = () => {
       switch (true) {
         case location.pathname.includes("/companies"):
-          return <div>Companies Sidebar</div>;
+          return <Sidebar />;
         case location.pathname.includes("/company/edit"):
           return <CompanyEdit />;
         case location.pathname.includes("/company/show"):
           return <CompanyShow />;
+        case location.pathname.includes("/company/create"):
+          return <CompanyCreate />;
         default:
           return <div>Default Sidebar</div>;
       }
