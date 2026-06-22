@@ -4,6 +4,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from './components/Layout'
 import Login from './components/Login';
 import CompaniesIndex from './pages/companies/Index'
+import PeopleIndex from './pages/people/Index'
 import React, {useState} from "react";
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
             <Route path="company/edit/:id" element={<CompaniesIndex />} />
             <Route path="company/show/:id" element={<CompaniesIndex />} />
             <Route path="company/create" element={<CompaniesIndex />} />
+            <Route path="people" element={<PeopleIndex />} />
           </Route>
         </Routes>
       </BrowserRouter>

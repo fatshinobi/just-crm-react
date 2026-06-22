@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom"
 
-function Card({ record }) {
-    const avatar_url = record.avatar_url ? record.avatar_url : process.env.PUBLIC_URL + "/def_company_logo.png"
+function Card({ record, defaultImage }) {
+    const avatar_url = record.avatar_url ? record.avatar_url : process.env.PUBLIC_URL + defaultImage;
     return (
         <div className="min-w-md m-6 md:mb-0 col-span-12 sm:col-span-6 lg:col-span-4 border p-4 rounded-lg shadow-lg flex gap-4">
             <img width="120" height="120" src={avatar_url} className="w-25 h-25 rounded-lg object-cover flex-shrink-0" alt="ava image" />
