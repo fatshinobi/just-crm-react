@@ -5,6 +5,7 @@ function CompanyEdit() {
     const { id } = useParams();
     const [company, setCompany] = useState({ name: '', about: '', email: '', phone: '', address: '' });
     const [users, setUsers] = useState([]);
+    const [selectedFile, setSelectedFile] = useState(null);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -64,20 +65,23 @@ function CompanyEdit() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const formData = new FormData();
+        formData.append('name', company.name);
+        formData.append('about', company.about);
+        formData.append('email', company.email);
+        formData.append('phone', company.phone);
+        formData.append('address', company.address);
+        formData.append('user_id', company.user_id);
+        if (selectedFile) {
+            formData.append('avatar', selectedFile);
+        }
+
         fetch(`http://localhost:3000/customers/${id}`, {
             method: 'PATCH',
             headers: {
-                'content-type': 'application/json',
                 'authorization': localStorage.getItem('accessToken')
             },
-            body: JSON.stringify({
-                name: company.name,
-                about: company.about,
-                email: company.email,
-                phone: company.phone,
-                address: company.address,
-                user_id: company.user_id
-            })
+            body: formData
         })
         .then(response => {
             if (response.ok) {
@@ -128,6 +132,10 @@ function CompanyEdit() {
                             </option>
                         ))}
                     </select>
+                </div>
+                <div>
+                    <label className="block text-gray-700 mb-1">Company Logo:</label>
+                    <input type="file" name="avatar" onChange={(e) => setSelectedFile(e.target.files[0])} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
                 <Link to={`/company/show/${company?.id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-6 ml-2 rounded">View</Link>

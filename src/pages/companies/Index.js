@@ -42,7 +42,8 @@ function CompaniesIndex() {
                 caption: company.name,
                 description: company.about,
                 show_path: `/company/show/${company.id}`,
-                edit_path: `/company/edit/${company.id}`
+                edit_path: `/company/edit/${company.id}`,
+                avatar_url: company.avatar_url
               })
             )} />
         </div>
