@@ -45,7 +45,7 @@ function CompaniesIndex() {
                 edit_path: `/company/edit/${company.id}`,
                 avatar_url: company.avatar_url
               })
-            )} />
+            )} defaultImage="/def_company_logo.png" />
         </div>
     );
 }

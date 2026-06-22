@@ -45,7 +45,7 @@ function PeopleIndex() {
                 edit_path: `/person/edit/${person.id}`,
                 avatar_url: person.avatar_url
               })
-            )} />
+            )} defaultImage="/def_person_ava.png" />
         </div>
     );
 }
