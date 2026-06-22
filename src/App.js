@@ -20,6 +20,7 @@ function App() {
             <Route path="companies" element={<CompaniesIndex />} />
             <Route path="company/edit/:id" element={<CompaniesIndex />} />
             <Route path="company/show/:id" element={<CompaniesIndex />} />
+            <Route path="company/create" element={<CompaniesIndex />} />
           </Route>
         </Routes>
       </BrowserRouter>
