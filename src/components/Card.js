@@ -3,7 +3,7 @@ import { Link } from "react-router-dom"
 function Card({ record }) {
     return (
         <div className="min-w-md m-6 md:mb-0 col-span-12 sm:col-span-6 lg:col-span-4 border p-4 rounded-lg shadow-lg flex gap-4">
-            <img srcSet="https://files.idyllic.app/files/static/230399?width=200&optimizer=image" src="https://files.idyllic.app/files/static/230399?width=200&optimizer=image" className="w-25 h-25 rounded-lg object-cover flex-shrink-0" alt="ava image" />
+            <img width="120" height="120" srcSet={record.avatar_url} src={record.avatar_url} className="w-25 h-25 rounded-lg object-cover flex-shrink-0" alt="ava image" />
 
             <div className="flex flex-col">
                 <span className="link-underline link-underline-black text-black font-bold text-lg mb-2">
