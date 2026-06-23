@@ -5,6 +5,7 @@ import CompanyEdit from "./companies/Edit"
 import CompanyCreate from "./companies/Create"
 import PersonCreate from "./people/Create"
 import PersonShow from "./people/Show"
+import PersonEdit from "./people/Edit"
 
 function Layout({setAccessToken}) {
     const location = useLocation();
@@ -29,6 +30,8 @@ function Layout({setAccessToken}) {
           return <PersonCreate />;
         case location.pathname.includes("/person/show"):
           return <PersonShow />;
+        case location.pathname.includes("/person/edit"):
+          return <PersonEdit />
         default:
           return <div>Default Sidebar</div>;
       }
