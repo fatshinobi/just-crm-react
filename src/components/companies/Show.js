@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import { useParams } from 'react-router-dom'
 
-function CompanyShow() {
+function CompanyShow({isDetails}) {
     const { id } = useParams();
     const [company, setCompany] = useState(null);
     const avatar_url = process.env.PUBLIC_URL + "/def_company_logo.png";
@@ -34,7 +34,7 @@ function CompanyShow() {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold m-4">Company Details</h1>
+            <h1 className="text-3xl font-bold m-4">Company</h1>
             {company ? (
                 <div className="m-4 p-4 border rounded-lg shadow-lg pb-7">
                     <img src={company.avatar_url ? company.avatar_url :avatar_url} alt="Company Logo" className="w-40 h-40 object-cover mb-4" />
@@ -45,6 +45,12 @@ function CompanyShow() {
                     <p className="mb-1"><strong>Address:</strong> {company.address}</p>
                     <p className="mb-5"><strong>User:</strong> {company.user_name}</p>
                     <Link to={`/company/edit/${id}`} className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-md font-medium">Edit</Link>
+                    { console.log(isDetails) }
+                    { isDetails == true ? (
+                      <Link to={`/companies`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Companies</Link>
+                    ) : (
+                      <Link to={`/company/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Details</Link>
+                    )}
                 </div>
             ) : (
                 <p className="m-4">Loading company details...</p>

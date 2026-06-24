@@ -21,9 +21,11 @@ function Layout({setAccessToken}) {
         case location.pathname.includes("/company/edit"):
           return <CompanyEdit />;
         case location.pathname.includes("/company/show"):
-          return <CompanyShow />;
+          return <CompanyShow isDetails={false} />;
         case location.pathname.includes("/company/create"):
           return <CompanyCreate />;
+        case location.pathname.includes("/company/details"):
+          return <CompanyShow isDetails={true} />;
         case location.pathname.includes("/people"):
           return <Sidebar />;
         case location.pathname.includes("/person/create"):

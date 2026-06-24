@@ -1,11 +1,13 @@
+import React, { useState } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import logo from './logo.svg';
 import './App.css';
-import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from './components/Layout'
 import Login from './components/Login';
 import CompaniesIndex from './pages/companies/Index'
 import PeopleIndex from './pages/people/Index'
-import React, {useState} from "react";
+import CompanyDetails from './pages/companies/Details'
+
 
 function App() {
   const [accessToken, setAccessToken] = useState(null);
@@ -22,6 +24,7 @@ function App() {
             <Route path="company/edit/:id" element={<CompaniesIndex />} />
             <Route path="company/show/:id" element={<CompaniesIndex />} />
             <Route path="company/create" element={<CompaniesIndex />} />
+            <Route path="company/details/:id" element={<CompanyDetails />} />
             <Route path="people" element={<PeopleIndex />} />
             <Route path="person/create" element={<PeopleIndex />} />
             <Route path="person/show/:id" element={<PeopleIndex />} />
