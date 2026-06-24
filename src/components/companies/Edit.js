@@ -66,12 +66,12 @@ function CompanyEdit() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('name', company.name);
-        formData.append('about', company.about);
-        formData.append('email', company.email);
-        formData.append('phone', company.phone);
-        formData.append('address', company.address);
-        formData.append('user_id', company.user_id);
+        if (company.name !== null) formData.append('name', company.name);
+        if (company.about !== null) formData.append('about', company.about);
+        if (company.email !== null) formData.append('email', company.email);
+        if (company.phone !== null) formData.append('phone', company.phone);
+        if (company.address !== null) formData.append('address', company.address);
+        if (company.user_id !== null) formData.append('user_id', company.user_id);
         if (selectedFile) {
             formData.append('avatar', selectedFile);
         }
