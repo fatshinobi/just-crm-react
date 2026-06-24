@@ -39,12 +39,12 @@ function PersonCreate() {
     const handleSubmit = (e) => {
         e.preventDefault();
         const formData = new FormData();
-        formData.append('name', person.name);
-        formData.append('about', person.about);
-        formData.append('email', person.email);
-        formData.append('phone', person.phone);
-        formData.append('social', person.social);
-        formData.append('user_id', person.user_id);
+        if (person.name !== null) formData.append('name', person.name);
+        if (person.about !== null) formData.append('about', person.about);
+        if (person.email !== null) formData.append('email', person.email);
+        if (person.phone !== null) formData.append('phone', person.phone);
+        if (person.social !== null) formData.append('social', person.social);
+        if (person.user_id !== null) formData.append('user_id', person.user_id);
         if (selectedFile) {
             formData.append('avatar', selectedFile);
         }
