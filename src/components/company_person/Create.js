@@ -4,11 +4,11 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 function CompanyPersonCreate() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
     const [people, setPeople] = useState([]);
-    const { company_id } = useParams();
+    const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/catalogs/clients_by_customer/${company_id}`, {
+        fetch(`http://localhost:3000/catalogs/clients_by_customer/${id}`, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',
@@ -41,7 +41,7 @@ function CompanyPersonCreate() {
         const formData = new FormData();
         if (companyPerson.role !== null) formData.append('role', companyPerson.role);
         if (companyPerson.client_id !== null) formData.append('client_id', companyPerson.client_id);
-        formData.append('customer_id', company_id);
+        formData.append('customer_id', id);
 
         fetch(`http://localhost:3000/client_customers`, {
             method: 'POST',
@@ -52,7 +52,7 @@ function CompanyPersonCreate() {
         })
         .then(response => {
             if (response.ok) {
-                navigate(`/company/details/${company_id}`);
+                navigate(`/company/details/${id}`);
             } else {
                 throw new Error('Failed to create person for the company');
             }
