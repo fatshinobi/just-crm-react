@@ -15,7 +15,7 @@ function PersonCard({ record }) {
       />
       <div className="flex flex-col">
         <span className="link-underline link-underline-black text-black font-bold text-lg mb-2">
-          {record.client_name}
+          {record.name}
         </span>
         <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">
           {record.role}

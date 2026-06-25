@@ -36,7 +36,7 @@ function CompanyDetails() {
       <h1 className="text-4xl font-bold m-4">Company details</h1>
       <h2 className="text-3xl font-bold m-4">People</h2>
 
-      <div className="gap-4 flex">
+      <div className="gap-4 flex m-5">
         {people.map((record, index) => (
           <PersonCard record={record} key={index} />
         ))}
