@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import { useParams } from 'react-router-dom'
 
-function PersonShow() {
+function PersonShow({isDetails}) {
     const { id } = useParams();
     const [person, setPerson] = useState(null);
     const avatar_url = process.env.PUBLIC_URL + "/def_person_ava.png";
@@ -45,6 +45,11 @@ function PersonShow() {
                     <p className="mb-1"><strong>Social:</strong> {person.social}</p>
                     <p className="mb-5"><strong>User:</strong> {person.user_name}</p>
                     <Link to={`/person/edit/${id}`} className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-md font-medium">Edit</Link>
+                    { isDetails == true ? (
+                      <Link to={`/people`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">People</Link>
+                    ) : (
+                      <Link to={`/person/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Details</Link>
+                    )}
                 </div>
             ) : (
                 <p className="m-4">Loading person details...</p>

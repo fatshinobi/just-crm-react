@@ -33,7 +33,9 @@ function Layout({setAccessToken}) {
         case location.pathname.includes("/person/show"):
           return <PersonShow />;
         case location.pathname.includes("/person/edit"):
-          return <PersonEdit />
+          return <PersonEdit />;
+        case location.pathname.includes("/person/details"):
+          return <PersonShow isDetails={true} />;
         default:
           return <div>Default Sidebar</div>;
       }
