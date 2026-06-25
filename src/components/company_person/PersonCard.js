@@ -5,7 +5,7 @@ function PersonCard({ record }) {
     ? record.avatar_url
     : process.env.PUBLIC_URL + "/def_person_ava.png";
   return (
-    <div className="min-w-md m-6 md:mb-0 col-span-12 sm:col-span-6 lg:col-span-4 border p-4 rounded-lg shadow-lg flex flex-col gap-4">
+    <div className="border p-4 rounded-lg shadow-lg flex flex-col gap-4">
       <img
         width="120"
         height="120"
