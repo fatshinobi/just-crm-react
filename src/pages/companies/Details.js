@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link, useParams } from "react-router-dom";
 import PersonCard from "../../components/company_person/PersonCard";
+import NewCard from "../../components/NewCard";
 
 function CompanyDetails() {
   const [people, setPeople] = useState([]);
@@ -29,7 +30,7 @@ function CompanyDetails() {
       .catch((error) => {
         console.error("Error:", error);
       });
-  }, []);
+  }, [location.key, location.pathname]);
 
   return (
     <div>
@@ -40,14 +41,8 @@ function CompanyDetails() {
         {people.map((record, index) => (
           <PersonCard record={record} key={index} />
         ))}
+        <NewCard parentId={id} />
       </div>
-
-      <Link
-        to={`/company_person/create/${id}`}
-        className="inline-flex items-center px-7 py-3 text-md font-bold leading-5 text-white font-display mr-2 capitalize bg-blue-500 w-fit rounded-md hover:bg-gray-700"
-      >
-        Add Person
-      </Link>
     </div>
   );
 }
