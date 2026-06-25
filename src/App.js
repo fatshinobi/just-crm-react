@@ -7,6 +7,7 @@ import Login from './components/Login';
 import CompaniesIndex from './pages/companies/Index'
 import PeopleIndex from './pages/people/Index'
 import CompanyDetails from './pages/companies/Details'
+import PersonDetails from './pages/people/Details'
 
 
 function App() {
@@ -29,6 +30,7 @@ function App() {
             <Route path="person/create" element={<PeopleIndex />} />
             <Route path="person/show/:id" element={<PeopleIndex />} />
             <Route path="person/edit/:id" element={<PeopleIndex />} />
+            <Route path="person/details/:id" element={<PersonDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>
