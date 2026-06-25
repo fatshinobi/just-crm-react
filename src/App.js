@@ -26,6 +26,7 @@ function App() {
             <Route path="company/show/:id" element={<CompaniesIndex />} />
             <Route path="company/create" element={<CompaniesIndex />} />
             <Route path="company/details/:id" element={<CompanyDetails />} />
+            <Route path="company_person/create/:company_id" element={<CompanyDetails />} />
             <Route path="people" element={<PeopleIndex />} />
             <Route path="person/create" element={<PeopleIndex />} />
             <Route path="person/show/:id" element={<PeopleIndex />} />
