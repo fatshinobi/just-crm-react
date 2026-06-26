@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link, useParams } from "react-router-dom";
-import PersonCard from "../../components/company_person/PersonCard";
 import NewCard from "../../components/NewCard";
+import ElementCard from "../../components/ElementCard";
 
 function CompanyDetails() {
   const [people, setPeople] = useState([]);
@@ -39,7 +39,7 @@ function CompanyDetails() {
 
       <div className="gap-4 flex m-5">
         {people.map((record, index) => (
-          <PersonCard record={record} key={index} />
+          <ElementCard record={record} default_image={"/def_person_ava.png"} link_path={`/company_person/edit/${record.id}/${record.customer_id}`} key={index} />
         ))}
         <NewCard parentId={id} />
       </div>

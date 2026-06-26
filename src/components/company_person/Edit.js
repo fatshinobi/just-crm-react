@@ -1,12 +1,38 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 
-function CompanyPersonCreate() {
+function CompanyPersonEdit() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
     const [people, setPeople] = useState([]);
+    const { person_id } = useParams();
     const { id } = useParams();
     const navigate = useNavigate();
 
+    useEffect(() => {
+        if (!person_id) return;
+        fetch(`http://localhost:3000/client_customers/${person_id}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+            return response.json();
+            } else {
+            throw new Error('Failed to fetch person');
+            }
+        })
+        .then(data => {
+            console.log('Company Person data:', data);
+            setCompanyPerson(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, [person_id]);
+    
     useEffect(() => {
         fetch(`http://localhost:3000/catalogs/clients_by_customer/${id}`, {
             method: 'GET',
@@ -41,10 +67,9 @@ function CompanyPersonCreate() {
         const formData = new FormData();
         if (companyPerson.role !== null) formData.append('role', companyPerson.role);
         if (companyPerson.client_id !== null) formData.append('client_id', companyPerson.client_id);
-        formData.append('customer_id', id);
 
-        fetch(`http://localhost:3000/client_customers`, {
-            method: 'POST',
+        fetch(`http://localhost:3000/client_customers/${person_id}`, {
+            method: 'PATCH',
             headers: {
                 'authorization': localStorage.getItem('accessToken')
             },
@@ -52,7 +77,7 @@ function CompanyPersonCreate() {
         })
         .then(response => {
             if (response.ok) {
-                navigate(`/company/details/${id}`);
+                navigate(`/company/details/${companyPerson.customer_id}`);
             } else {
                 throw new Error('Failed to create person for the company');
             }
@@ -67,7 +92,7 @@ function CompanyPersonCreate() {
 
     return (
         <div className="p-4">
-            <h1 className="text-3xl font-bold mb-6">Add Person</h1>
+            <h1 className="text-3xl font-bold mb-6">Edit Person</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-gray-700 mb-1">Person:</label>
@@ -85,10 +110,10 @@ function CompanyPersonCreate() {
                     <input type="text" name="role" value={companyPerson?.role || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
-                <Link to={`/company/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
+                <Link to={`/company/details/${companyPerson.customer_id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
     );
 }
 
-export default CompanyPersonCreate;
+export default CompanyPersonEdit;
