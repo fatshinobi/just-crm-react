@@ -92,7 +92,7 @@ function CompanyPersonEdit() {
 
     return (
         <div className="p-4">
-            <h1 className="text-3xl font-bold mb-6">Add Person</h1>
+            <h1 className="text-3xl font-bold mb-6">Edit Person</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-gray-700 mb-1">Person:</label>

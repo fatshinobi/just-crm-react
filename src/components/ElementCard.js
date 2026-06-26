@@ -1,11 +1,11 @@
 import { Link } from "react-router-dom";
 
-function PersonCard({ record }) {
+function ElementCard({ record, link_path, default_image }) {
   const avatar_url = record.avatar_url
     ? record.avatar_url
-    : process.env.PUBLIC_URL + "/def_person_ava.png";
+    : process.env.PUBLIC_URL + default_image;
   return (
-    <Link to={`/company_person/edit/${record.id}/${record.customer_id}`} style={{ textDecoration: 'none', color: 'inherit' }} >
+    <Link to={link_path} style={{ textDecoration: 'none', color: 'inherit' }} >
       <div className="border p-4 rounded-lg shadow-lg flex flex-col gap-4">
         <img
           width="120"
@@ -27,4 +27,4 @@ function PersonCard({ record }) {
   );
 }
 
-export default PersonCard;
+export default ElementCard;
