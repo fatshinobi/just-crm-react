@@ -1,37 +1,36 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 
-function CompanyPersonEdit() {
+function PersonCompanyCreate() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
-    const { person_id } = useParams();
+    const [companies, setCompanies] = useState([]);
     const { id } = useParams();
     const navigate = useNavigate();
 
     useEffect(() => {
-        if (!person_id) return;
-        fetch(`http://localhost:3000/client_customers/${person_id}`, {
+        fetch(`http://localhost:3000/catalogs/customers_by_client/${id}`, {
             method: 'GET',
             headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
+              'content-type': 'application/json',
+              'authorization': localStorage.getItem('accessToken')
             }
         })
         .then(response => {
-            if (response.ok) {
+          if (response.ok) {
             return response.json();
-            } else {
-            throw new Error('Failed to fetch person');
-            }
+          } else {
+            throw new Error('Failed to fetch companies');
+          }
         })
         .then(data => {
-            console.log('Company Person data:', data);
-            setCompanyPerson(data);
+          console.log('Companies data:', data);
+          setCompanies(data);
         })
         .catch(error => {
-            console.error('Error:', error);
+          console.error('Error:', error);
         });
-    }, [person_id]);
-    
+    }, []);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCompanyPerson(prev => ({ ...prev, [name]: value }));
@@ -41,10 +40,11 @@ function CompanyPersonEdit() {
         e.preventDefault();
         const formData = new FormData();
         if (companyPerson.role !== null) formData.append('role', companyPerson.role);
-        if (companyPerson.client_id !== null) formData.append('client_id', companyPerson.client_id);
+        if (companyPerson.customer_id !== null) formData.append('customer_id', companyPerson.customer_id);
+        formData.append('client_id', id);
 
-        fetch(`http://localhost:3000/client_customers/${person_id}`, {
-            method: 'PATCH',
+        fetch(`http://localhost:3000/client_customers`, {
+            method: 'POST',
             headers: {
                 'authorization': localStorage.getItem('accessToken')
             },
@@ -52,13 +52,13 @@ function CompanyPersonEdit() {
         })
         .then(response => {
             if (response.ok) {
-                navigate(`/company/details/${companyPerson.customer_id}`);
+                navigate(`/person/details/${id}`);
             } else {
-                throw new Error('Failed to create person for the company');
+                throw new Error('Failed to create company for the person');
             }
         })
         .then(data => {
-            console.log('Person for the company created:', data);
+            console.log('Company for the person created:', data);
         })
         .catch(error => {
             console.error('Error:', error);
@@ -67,21 +67,28 @@ function CompanyPersonEdit() {
 
     return (
         <div className="p-4">
-            <h1 className="text-3xl font-bold mb-6">Edit Person</h1>
+            <h1 className="text-3xl font-bold mb-6">Add Company</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <p className="mb-5"><strong>Person:</strong> {companyPerson.client_name}</p>
+                    <label className="block text-gray-700 mb-1">Company:</label>
+                    <select type="text" name="customer_id" value={companyPerson?.customer_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                        <option value="">Select a company</option>
+                        {companies.map(company => (
+                            <option key={company.key} value={company.key}>
+                                {company.value}
+                            </option>
+                        ))}
+                    </select>
                 </div>
-
                 <div>
                     <label className="block text-gray-700 mb-1">Role:</label>
                     <input type="text" name="role" value={companyPerson?.role || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
-                <Link to={`/company/details/${companyPerson.customer_id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
+                <Link to={`/person/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
     );
 }
 
-export default CompanyPersonEdit;
+export default PersonCompanyCreate;
