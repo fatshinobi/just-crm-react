@@ -41,7 +41,7 @@ function CompanyDetails() {
         {people.map((record, index) => (
           <ElementCard record={record} default_image={"/def_person_ava.png"} link_path={`/company_person/edit/${record.id}/${record.customer_id}`} key={index} />
         ))}
-        <NewCard parentId={id} />
+        <NewCard parentId={id} link_path={`/company_person/create/${id}`}/>
       </div>
     </div>
   );

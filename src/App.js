@@ -33,6 +33,8 @@ function App() {
             <Route path="person/show/:id" element={<PeopleIndex />} />
             <Route path="person/edit/:id" element={<PeopleIndex />} />
             <Route path="person/details/:id" element={<PersonDetails />} />
+            <Route path="person_company/create/:id" element={<PersonDetails />} />
+            <Route path="person_company/edit/:company_id/:id" element={<PersonDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>
