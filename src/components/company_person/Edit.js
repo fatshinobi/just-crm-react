@@ -70,7 +70,7 @@ function CompanyPersonEdit() {
             <h1 className="text-3xl font-bold mb-6">Edit Person</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
-                    <p className="mb-5"><strong>Person:</strong> {companyPerson.client_name}</p>
+                    <p className="mb-5"><strong>Person:</strong><Link to={`/person/show/${companyPerson.client_id}`} className="pl-3">{companyPerson.client_name}</Link></p>
                 </div>
 
                 <div>
