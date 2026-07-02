@@ -65,6 +65,8 @@ function CompanyEdit() {
             setFormErrors(prev => ({ ...prev, [record]: "Name must be present" }));
         } else if ((record === "phone") && ((value === null) || (value.trim() === ""))) {
             setFormErrors(prev => ({ ...prev, [record]: "Phone must be present" }));
+        } else if ((record === "user_id") && ((value === null) || (value.trim() === ""))) {
+            setFormErrors(prev => ({ ...prev, [record]: "User must be selected" }));
         } else if ((record === "email") && (!emailRegex.test(value))) {
             setFormErrors(prev => ({ ...prev, [record]: "Email must have correct format" }));
         } else {
@@ -158,6 +160,7 @@ function CompanyEdit() {
                             </option>
                         ))}
                     </select>
+                    {formErrors["user_id"] && <p style={{ color: "red" }}>{formErrors["user_id"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Company Logo:</label>
