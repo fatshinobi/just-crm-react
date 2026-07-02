@@ -6,6 +6,7 @@ function CompanyEdit() {
     const [company, setCompany] = useState({ name: '', about: '', email: '', phone: '', address: '' });
     const [users, setUsers] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -58,13 +59,34 @@ function CompanyEdit() {
         });
     }, [id]);
 
+    const fieldValidate = (record, value) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if ((record === "name") && ((value === null) || (value.trim() === ""))) {
+            setFormErrors(prev => ({ ...prev, [record]: "Name must be present" }));
+        } else if ((record === "phone") && ((value === null) || (value.trim() === ""))) {
+            setFormErrors(prev => ({ ...prev, [record]: "Phone must be present" }));
+        } else if ((record === "email") && (!emailRegex.test(value))) {
+            setFormErrors(prev => ({ ...prev, [record]: "Email must have correct format" }));
+        } else {
+            setFormErrors(prev => {
+                const { [record]: _, ...rest } = prev;
+                return rest;
+            });
+        }
+    }
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCompany(prev => ({ ...prev, [name]: value }));
+        fieldValidate(name, value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (Object.keys(formErrors).length !== 0) {
+            return;
+        }
+
         const formData = new FormData();
         if (company.name !== null) formData.append('name', company.name);
         if (company.about !== null) formData.append('about', company.about);
@@ -106,6 +128,7 @@ function CompanyEdit() {
                 <div>
                     <label className="block text-gray-700 mb-1">Company Name:</label>
                     <input type="text" name="name" value={company?.name || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    {formErrors["name"] && <p style={{ color: "red" }}>{formErrors["name"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Company Description:</label>
@@ -114,10 +137,12 @@ function CompanyEdit() {
                 <div>
                     <label className="block text-gray-700 mb-1">Company Email:</label>
                     <input type="email" name="email" value={company?.email || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    {formErrors["email"] && <p style={{ color: "red" }}>{formErrors["email"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Company Phone:</label>
                     <input type="text" name="phone" value={company?.phone || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    {formErrors["phone"] && <p style={{ color: "red" }}>{formErrors["phone"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Company Address:</label>
