@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 function PersonCreate() {
     const [person, setPerson] = useState({ name: '', about: '', email: '', phone: '', address: '' });
     const [users, setUsers] = useState([]);
     const [selectedFile, setSelectedFile] = useState(null);
+    const [formErrors, setFormErrors] = useState({
+        "name": "Name must be present",
+        "phone": "Phone must be present",
+        "user_id": "User must be selected"
+    });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,13 +36,35 @@ function PersonCreate() {
         });
     }, []);
 
+    const fieldValidate = (record, value) => {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if ((record === "name") && ((value === null) || (value.trim() === ""))) {
+            setFormErrors(prev => ({ ...prev, [record]: "Name must be present" }));
+        } else if ((record === "phone") && ((value === null) || (value.trim() === ""))) {
+            setFormErrors(prev => ({ ...prev, [record]: "Phone must be present" }));
+        } else if ((record === "user_id") && ((value === null) || (value.trim() === ""))) {
+            setFormErrors(prev => ({ ...prev, [record]: "User must be selected" }));
+        } else if ((record === "email") && (!emailRegex.test(value))) {
+            setFormErrors(prev => ({ ...prev, [record]: "Email must have correct format" }));
+        } else {
+            setFormErrors(prev => {
+                const { [record]: _, ...rest } = prev;
+                return rest;
+            });
+        }
+    }
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setPerson(prev => ({ ...prev, [name]: value }));
+        fieldValidate(name, value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (Object.keys(formErrors).length !== 0) {
+            return;
+        }
         const formData = new FormData();
         if (person.name !== null) formData.append('name', person.name);
         if (person.about !== null) formData.append('about', person.about);
@@ -79,6 +106,7 @@ function PersonCreate() {
                 <div>
                     <label className="block text-gray-700 mb-1">Person Name:</label>
                     <input type="text" name="name" value={person?.name || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    {formErrors["name"] && <p style={{ color: "red" }}>{formErrors["name"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Person Description:</label>
@@ -87,10 +115,12 @@ function PersonCreate() {
                 <div>
                     <label className="block text-gray-700 mb-1">Person Email:</label>
                     <input type="email" name="email" value={person?.email || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    {formErrors["email"] && <p style={{ color: "red" }}>{formErrors["email"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Person Phone:</label>
                     <input type="text" name="phone" value={person?.phone || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    {formErrors["phone"] && <p style={{ color: "red" }}>{formErrors["phone"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Person Social:</label>
@@ -106,6 +136,7 @@ function PersonCreate() {
                             </option>
                         ))}
                     </select>
+                    {formErrors["user_id"] && <p style={{ color: "red" }}>{formErrors["user_id"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Person Logo:</label>
