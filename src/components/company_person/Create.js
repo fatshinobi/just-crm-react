@@ -5,6 +5,7 @@ function CompanyPersonCreate() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
     const [people, setPeople] = useState([]);
     const { id } = useParams();
+    const [formErrors, setFormErrors] = useState({ "role": "Role must be present" });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -31,13 +32,28 @@ function CompanyPersonCreate() {
         });
     }, []);
 
+    const fieldValidate = (record, value) => {
+        if ((record === "role") && ((value === null) || (value.trim() === ""))) {
+            setFormErrors(prev => ({ ...prev, [record]: "Role must be present" }));
+        } else {
+            setFormErrors(prev => {
+                const { [record]: _, ...rest } = prev;
+                return rest;
+            });
+        }
+    }
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setCompanyPerson(prev => ({ ...prev, [name]: value }));
+        fieldValidate(name, value);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        if (Object.keys(formErrors).length !== 0) {
+            return;
+        }
         const formData = new FormData();
         if (companyPerson.role !== null) formData.append('role', companyPerson.role);
         if (companyPerson.client_id !== null) formData.append('client_id', companyPerson.client_id);
@@ -83,6 +99,7 @@ function CompanyPersonCreate() {
                 <div>
                     <label className="block text-gray-700 mb-1">Role:</label>
                     <input type="text" name="role" value={companyPerson?.role || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    {formErrors["role"] && <p style={{ color: "red" }}>{formErrors["role"]}</p>}
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
                 <Link to={`/company/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
