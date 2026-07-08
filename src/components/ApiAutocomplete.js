@@ -15,7 +15,6 @@ const ApiAutocomplete = ({curValue, fieldName, fieldChangeHandler}) => {
         }
 
         const fetchRecords = async () => {
-            console.log("Fetched start");
             try {
                 const result = await fetch(`http://localhost:3000/roles/${query}`, {
                     method: 'GET',
@@ -26,7 +25,6 @@ const ApiAutocomplete = ({curValue, fieldName, fieldChangeHandler}) => {
                 })
 
                 const data = await result.json();
-                console.log("Fetched suggestions:", data);
                 setSuggestions(data);
             } catch (err) {
                 console.error("Error fetching data:", err);
@@ -38,7 +36,6 @@ const ApiAutocomplete = ({curValue, fieldName, fieldChangeHandler}) => {
 
     return (
         <>
-            {console.log("query inp", query)}
             <input
                 type="text"
                 list="records-suggestions"
