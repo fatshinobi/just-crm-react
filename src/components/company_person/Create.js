@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import ApiAutocomplete from "../ApiAutocomplete"
 
 function CompanyPersonCreate() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
     const [people, setPeople] = useState([]);
     const { id } = useParams();
-    const [formErrors, setFormErrors] = useState({ "role": "Role must be present" });
+    const [formErrors, setFormErrors] = useState({ "role": "Role must be present", "client_id": "Person must be selected" });
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -35,6 +36,8 @@ function CompanyPersonCreate() {
     const fieldValidate = (record, value) => {
         if ((record === "role") && ((value === null) || (value.trim() === ""))) {
             setFormErrors(prev => ({ ...prev, [record]: "Role must be present" }));
+        } else if ((record === "client_id") && ((value === null) || (value.trim() === ""))) {
+            setFormErrors(prev => ({ ...prev, [record]: "Person must be selected" }));
         } else {
             setFormErrors(prev => {
                 const { [record]: _, ...rest } = prev;
@@ -95,10 +98,11 @@ function CompanyPersonCreate() {
                             </option>
                         ))}
                     </select>
+                    {formErrors["client_id"] && <p style={{ color: "red" }}>{formErrors["client_id"]}</p>}
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Role:</label>
-                    <input type="text" name="role" value={companyPerson?.role || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                    <ApiAutocomplete curValue={companyPerson?.role || ''} fieldName="role" fieldChangeHandler={handleChange} />
                     {formErrors["role"] && <p style={{ color: "red" }}>{formErrors["role"]}</p>}
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
