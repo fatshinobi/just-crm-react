@@ -4,6 +4,7 @@ import { useParams, useNavigate, Link } from 'react-router-dom'
 function EditTags({ tagType }) {
     const { id } = useParams();
     const [tags, setTags] = useState("");
+    const [cloudTags, setCloudTags] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -29,10 +30,34 @@ function EditTags({ tagType }) {
         .catch(error => {
             console.error('Error:', error);
         });
-}, []);
+    }, [id]);
+
+    useEffect(() => {
+        fetch(`http://localhost:3000//customer_tags`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch tags');
+            }
+        })
+        .then(data => {
+            console.log('Tags data:', data);
+            setCloudTags(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, []);
 
     const handleChange = (e) => {
-        const { name, value } = e.target;
+        const { value } = e.target;
         setTags( value );
     };
 
@@ -64,6 +89,10 @@ function EditTags({ tagType }) {
         });
     };
 
+    const addTagToList = (tagVal) => {
+        setTags(prevText => `${prevText}, ${tagVal}`);
+    }
+
     return (
         <div className="p-4">
             <h1 className="text-3xl font-bold mb-6">Tags Edit</h1>
@@ -75,8 +104,13 @@ function EditTags({ tagType }) {
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
                 <Link to={`/company/details/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-6 ml-2 rounded">View</Link>
             </form>
+            <div className="m-1">
+                {cloudTags.map((tagRecord, tagIndex) => (
+                    <button onClick={() => addTagToList(tagRecord[0])}>{`${tagRecord[0]}(${tagRecord[1]})`}</button>
+                ))}
+            </div>
         </div>
-    );    
+    );
 }
 
 export default EditTags;
