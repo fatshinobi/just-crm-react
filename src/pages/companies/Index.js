@@ -1,16 +1,22 @@
 import {useEffect, useState} from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import RecordList from "../../components/RecordList";
 
 
 function CompaniesIndex() {
     const [companies, setCompanies] = useState([]);
     const location = useLocation();
+    const { tag } = useParams();
 
     useEffect(() => {
-        if (location.pathname !== '/companies' && location.pathname !== '/' && companies.length > 0) return;
+        if (!location.pathname.includes('/companies') && location.pathname !== '/' && companies.length > 0) return;
         // Fetch companies data from API and update state
-        fetch('http://localhost:3000/customers', {
+        let url = 'http://localhost:3000/customers';
+        if (typeof tag !== "undefined") {
+          url = `${url}?tag=${tag}`;
+        }
+
+        fetch(url, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',

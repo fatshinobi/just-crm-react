@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import TagsCloud from "../TagsCloud";
 
 function CompaniesTagsSidebar() {
     const [cloudTags, setCloudTags] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         fetch(`http://localhost:3000//customer_tags`, {
@@ -29,12 +31,12 @@ function CompaniesTagsSidebar() {
     }, []);
 
     const filterByTag = (tagVal) => {
-        console.log("Filter by tag: ", tagVal);
+        navigate(`/companies/tags/${tagVal}`);
     }
 
     return (
-        <div>
-            <label className="text-2xl font-semibold mb-2 ml-3">Tags</label>
+        <div className="ml-3">
+            <label className="text-2xl font-semibold mb-2">Tags</label>
             <TagsCloud cloudTags={cloudTags} processTag={filterByTag} />
         </div>
     )
