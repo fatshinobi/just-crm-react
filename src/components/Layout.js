@@ -10,6 +10,7 @@ import CompanyPersonCreate from "./company_person/Create"
 import PersonCompanyCreate from "./person_company/Create"
 import CompanyPersonEdit from "./company_person/Edit"
 import PersonCompanyEdit from "./person_company/Edit"
+import EditTags from "./EditTags"
 
 function Layout({setAccessToken}) {
     const location = useLocation();
@@ -30,6 +31,8 @@ function Layout({setAccessToken}) {
           return <CompanyCreate />;
         case location.pathname.includes("/company/details"):
           return <CompanyShow isDetails={true} />;
+        case location.pathname.includes("/company/tags"):
+          return <EditTags tagType={"0"} />;
         case location.pathname.includes("/company_person/create"):
           return <CompanyPersonCreate />;
         case location.pathname.includes("/company_person/edit"):

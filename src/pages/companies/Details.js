@@ -5,6 +5,7 @@ import ElementCard from "../../components/ElementCard";
 
 function CompanyDetails() {
   const [people, setPeople] = useState([]);
+  const [tags, setTags] = useState([]);
   const location = useLocation();
   const { id } = useParams();
 
@@ -32,9 +33,40 @@ function CompanyDetails() {
       });
   }, [location.key, location.pathname]);
 
+    useEffect(() => {
+        if (!id) return;
+        fetch(`http://localhost:3000/customers/${id}/tags`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+            return response.json();
+            } else {
+            throw new Error('Failed to fetch company tags');
+            }
+        })
+        .then(data => {
+            console.log('Company Person data:', data);
+            setTags(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+  }, [location.key, location.pathname]);
+
   return (
     <div>
       <h1 className="text-4xl font-bold m-4">Company details</h1>
+      <label className="ml-4">Tags:</label>
+      {tags.map((tagRecord, tagIndex) => (
+        <span className="bg-gray-500 text-white font-semibold py-1 px-2 ml-2 rounded">{tagRecord}</span>
+      ))}
+
+      <Link to={`/company/tags/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 ml-2 rounded">Edit Tags+</Link>
       <h2 className="text-3xl font-bold m-4">People</h2>
 
       <div className="gap-4 flex m-5">
