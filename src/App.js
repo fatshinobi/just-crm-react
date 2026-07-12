@@ -30,6 +30,7 @@ function App() {
             <Route path="company_person/create/:id" element={<CompanyDetails />} />
             <Route path="company_person/edit/:person_id/:id" element={<CompanyDetails />} />
             <Route path="company/tags/:id" element={<CompanyDetails />} />
+            <Route path="people/tags/:tag" element={<PeopleIndex />} />
             <Route path="people" element={<PeopleIndex />} />
             <Route path="person/create" element={<PeopleIndex />} />
             <Route path="person/show/:id" element={<PeopleIndex />} />
@@ -37,6 +38,7 @@ function App() {
             <Route path="person/details/:id" element={<PersonDetails />} />
             <Route path="person_company/create/:id" element={<PersonDetails />} />
             <Route path="person_company/edit/:company_id/:id" element={<PersonDetails />} />
+            <Route path="person/tags/:id" element={<PersonDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>
