@@ -7,10 +7,13 @@ function EditTags({ tagType }) {
     const [tags, setTags] = useState("");
     const [cloudTags, setCloudTags] = useState([]);
     const navigate = useNavigate();
+    const url = tagType === "0" ? `/customers/${id}/tags` : `/clients/${id}/tags`
+    const tags_url = tagType === "0" ? "/customer_tags" : "/client_tags";
+    const navigation_route = tagType === "0" ? "company" : "person";
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:3000/customers/${id}/tags`, {
+        fetch(`http://localhost:3000${url}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -34,7 +37,7 @@ function EditTags({ tagType }) {
     }, [id]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000//customer_tags`, {
+        fetch(`http://localhost:3000${tags_url}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -68,7 +71,7 @@ function EditTags({ tagType }) {
         const formData = new FormData();
         formData.append('tags', tags);
 
-        fetch(`http://localhost:3000/customers/${id}/tags`, {
+        fetch(`http://localhost:3000${url}`, {
             method: 'POST',
             headers: {
                 'authorization': localStorage.getItem('accessToken')
@@ -77,7 +80,7 @@ function EditTags({ tagType }) {
         })
         .then(response => {
             if (response.ok) {
-                navigate(`/company/details/${id}`);
+                navigate(`/${navigation_route}/details/${id}`);
             } else {
                 throw new Error('Failed to update customer tags');
             }
@@ -103,7 +106,7 @@ function EditTags({ tagType }) {
                     <input type="text" name="tags" value={tags || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
-                <Link to={`/company/details/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-6 ml-2 rounded">View</Link>
+                <Link to={`/${navigation_route}/details/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-6 ml-2 rounded">View</Link>
             </form>
             <TagsCloud cloudTags={cloudTags} processTag={addTagToList} />
         </div>
