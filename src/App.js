@@ -37,6 +37,7 @@ function App() {
             <Route path="person/details/:id" element={<PersonDetails />} />
             <Route path="person_company/create/:id" element={<PersonDetails />} />
             <Route path="person_company/edit/:company_id/:id" element={<PersonDetails />} />
+            <Route path="person/tags/:id" element={<PersonDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

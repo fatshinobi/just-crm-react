@@ -34,6 +34,8 @@ function Layout({setAccessToken}) {
           return <CompanyShow isDetails={true} />;
         case location.pathname.includes("/company/tags"):
           return <EditTags tagType={"0"} />;
+        case location.pathname.includes("/person/tags"):
+          return <EditTags tagType={"1"} />;
         case location.pathname.includes("/company_person/create"):
           return <CompanyPersonCreate />;
         case location.pathname.includes("/company_person/edit"):
