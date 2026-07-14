@@ -11,7 +11,8 @@ function CompaniesIndex() {
     useEffect(() => {
         if (!location.pathname.includes('/companies') && location.pathname !== '/' && companies.length > 0) return;
         // Fetch companies data from API and update state
-        let url = 'http://localhost:3000/customers';
+
+        let url = `${process.env.REACT_APP_API_HOST}/customers`;
         if (typeof tag !== "undefined") {
           url = `${url}?tag=${tag}`;
         }
