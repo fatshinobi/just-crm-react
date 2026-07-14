@@ -11,7 +11,7 @@ function CompanyEdit() {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:3000/customers/${id}`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/customers/${id}`, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',
@@ -36,7 +36,7 @@ function CompanyEdit() {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:3000/catalogs/users`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',
@@ -100,7 +100,7 @@ function CompanyEdit() {
             formData.append('avatar', selectedFile);
         }
 
-        fetch(`http://localhost:3000/customers/${id}`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/customers/${id}`, {
             method: 'PATCH',
             headers: {
                 'authorization': localStorage.getItem('accessToken')

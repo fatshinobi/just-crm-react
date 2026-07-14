@@ -10,7 +10,7 @@ function CompanyPersonCreate() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/catalogs/clients_by_customer/${id}`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/clients_by_customer/${id}`, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',
@@ -62,7 +62,7 @@ function CompanyPersonCreate() {
         if (companyPerson.client_id !== null) formData.append('client_id', companyPerson.client_id);
         formData.append('customer_id', id);
 
-        fetch(`http://localhost:3000/client_customers`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/client_customers`, {
             method: 'POST',
             headers: {
                 'authorization': localStorage.getItem('accessToken')

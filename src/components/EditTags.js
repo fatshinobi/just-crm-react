@@ -13,8 +13,8 @@ function EditTags({ tagType }) {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:3000${url}`, {
-            method: 'GET',
+fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
+             method: 'GET',
             headers: {
                 'content-type': 'application/json',
                 'authorization': localStorage.getItem('accessToken')
@@ -37,8 +37,8 @@ function EditTags({ tagType }) {
     }, [id]);
 
     useEffect(() => {
-        fetch(`http://localhost:3000${tags_url}`, {
-            method: 'GET',
+fetch(`${process.env.REACT_APP_API_HOST}${tags_url}`, {
+             method: 'GET',
             headers: {
                 'content-type': 'application/json',
                 'authorization': localStorage.getItem('accessToken')
@@ -71,8 +71,8 @@ function EditTags({ tagType }) {
         const formData = new FormData();
         formData.append('tags', tags);
 
-        fetch(`http://localhost:3000${url}`, {
-            method: 'POST',
+fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
+             method: 'POST',
             headers: {
                 'authorization': localStorage.getItem('accessToken')
             },

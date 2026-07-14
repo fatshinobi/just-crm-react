@@ -7,7 +7,7 @@ function PeopleTagsSidebar() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/client_tags`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/client_tags`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',

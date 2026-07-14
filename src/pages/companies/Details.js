@@ -10,7 +10,7 @@ function CompanyDetails() {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`http://localhost:3000/customers/clients/${id}`, {
+    fetch(`${process.env.REACT_APP_API_HOST}/customers/clients/${id}`, {
       method: "GET",
       headers: {
         "content-type": "application/json",
@@ -35,7 +35,7 @@ function CompanyDetails() {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:3000/customers/${id}/tags`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/customers/${id}/tags`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',

@@ -11,7 +11,7 @@ function PersonCompanyEdit() {
 
     useEffect(() => {
         if (!company_id) return;
-        fetch(`http://localhost:3000/client_customers/${company_id}`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/client_customers/${company_id}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -59,10 +59,10 @@ function PersonCompanyEdit() {
             return;
         }
         const formData = new FormData();
-        if (companyPerson.role !== null) formData.append('role', companyPerson.role);
+if (companyPerson.role !== null) formData.append('role', companyPerson.role);
 
-        fetch(`http://localhost:3000/client_customers/${company_id}`, {
-            method: 'PATCH',
+         fetch(`${process.env.REACT_APP_API_HOST}/client_customers/${company_id}`, {
+             method: 'PATCH',
             headers: {
                 'authorization': localStorage.getItem('accessToken')
             },

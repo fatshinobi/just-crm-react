@@ -9,7 +9,7 @@ function CompanyShow({isDetails}) {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:3000/customers/${id}`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/customers/${id}`, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',
