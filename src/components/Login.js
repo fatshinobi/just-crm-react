@@ -6,7 +6,7 @@ function Login({setAccessToken}) {
         const password = formData.get('password');
         const userInfo = { "user": { email: email, password: password } };
 
-        fetch('http://localhost:3000/login', {
+        fetch(`${process.env.REACT_APP_API_HOST}/login`, {
             method: 'POST',
             headers: {
               'content-type': 'application/json',

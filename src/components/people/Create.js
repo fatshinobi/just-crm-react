@@ -13,7 +13,7 @@ function PersonCreate() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3000/catalogs/users`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',
@@ -76,7 +76,7 @@ function PersonCreate() {
             formData.append('avatar', selectedFile);
         }
 
-        fetch(`http://localhost:3000/clients`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/clients`, {
             method: 'POST',
             headers: {
                 'authorization': localStorage.getItem('accessToken')

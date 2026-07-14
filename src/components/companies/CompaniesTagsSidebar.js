@@ -7,7 +7,7 @@ function CompaniesTagsSidebar() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`http://localhost:3000//customer_tags`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/customer_tags`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',

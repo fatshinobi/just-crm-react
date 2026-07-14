@@ -11,7 +11,7 @@ function PeopleIndex() {
     useEffect(() => {
         if (!location.pathname.includes('/people') && people.length > 0) return;
         // Fetch people data from API and update state
-        let url = 'http://localhost:3000/clients';
+        let url = `${process.env.REACT_APP_API_HOST}/clients`;
         if (typeof tag !== "undefined") {
           url = `${url}?tag=${tag}`;
         }

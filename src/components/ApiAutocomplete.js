@@ -16,7 +16,7 @@ const ApiAutocomplete = ({curValue, fieldName, fieldChangeHandler}) => {
 
         const fetchRecords = async () => {
             try {
-                const result = await fetch(`http://localhost:3000/roles/${query}`, {
+                const result = await fetch(`${process.env.REACT_APP_API_HOST}/roles/${query}`, {
                     method: 'GET',
                     headers: {
                         'content-type': 'application/json',

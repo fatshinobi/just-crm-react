@@ -9,7 +9,7 @@ function PersonShow({isDetails}) {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`http://localhost:3000/clients/${id}`, {
+        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',
