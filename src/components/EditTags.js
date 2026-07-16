@@ -13,12 +13,12 @@ function EditTags({ tagType }) {
 
     useEffect(() => {
         if (!id) return;
-fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
-             method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
+            fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
+                method: 'GET',
+                headers: {
+                    'content-type': 'application/json',
+                    'authorization': localStorage.getItem('accessToken')
+                }
         })
         .then(response => {
             if (response.ok) {
@@ -37,8 +37,8 @@ fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
     }, [id]);
 
     useEffect(() => {
-fetch(`${process.env.REACT_APP_API_HOST}${tags_url}`, {
-             method: 'GET',
+        fetch(`${process.env.REACT_APP_API_HOST}${tags_url}`, {
+            method: 'GET',
             headers: {
                 'content-type': 'application/json',
                 'authorization': localStorage.getItem('accessToken')
@@ -71,8 +71,8 @@ fetch(`${process.env.REACT_APP_API_HOST}${tags_url}`, {
         const formData = new FormData();
         formData.append('tags', tags);
 
-fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
-             method: 'POST',
+        fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
+            method: 'POST',
             headers: {
                 'authorization': localStorage.getItem('accessToken')
             },

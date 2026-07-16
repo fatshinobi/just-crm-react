@@ -7,14 +7,17 @@ function CompaniesIndex() {
     const [companies, setCompanies] = useState([]);
     const location = useLocation();
     const { tag } = useParams();
+    const { query } = useParams();
 
     useEffect(() => {
         if (!location.pathname.includes('/companies') && location.pathname !== '/' && companies.length > 0) return;
         // Fetch companies data from API and update state
-
+        console.log("query", query);
         let url = `${process.env.REACT_APP_API_HOST}/customers`;
         if (typeof tag !== "undefined") {
           url = `${url}?tag=${tag}`;
+        } else if (typeof query !== "undefined" && query.length > 2 ) {
+          url = `${url}?search=${query}`;
         }
 
         fetch(url, {
