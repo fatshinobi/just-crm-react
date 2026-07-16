@@ -13,6 +13,7 @@ import PersonCompanyEdit from "./person_company/Edit"
 import EditTags from "./EditTags"
 import CompaniesTagsSidebar from "./companies/CompaniesTagsSidebar"
 import PeopleTagsSidebar from "./people/PeopleTagsSidebar"
+import SearchPanel from "./SearchPanel"
 
 function SidebarSwitcher() {
     const location = useLocation();
@@ -20,7 +21,7 @@ function SidebarSwitcher() {
     const renderSidebar = () => {
       switch (true) {
         case location.pathname.includes("/companies"):
-          return <div><Sidebar /> <CompaniesTagsSidebar /></div>;
+          return <div><SearchPanel tagType={"0"} /><Sidebar /> <CompaniesTagsSidebar /></div>;
         case location.pathname.includes("/company/edit"):
           return <CompanyEdit />;
         case location.pathname.includes("/company/show"):
