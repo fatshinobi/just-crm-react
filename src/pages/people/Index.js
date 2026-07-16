@@ -7,6 +7,7 @@ function PeopleIndex() {
     const [people, setPeople] = useState([]);
     const location = useLocation();
     const { tag } = useParams();
+    const { query } = useParams();
 
     useEffect(() => {
         if (!location.pathname.includes('/people') && people.length > 0) return;
@@ -14,6 +15,8 @@ function PeopleIndex() {
         let url = `${process.env.REACT_APP_API_HOST}/clients`;
         if (typeof tag !== "undefined") {
           url = `${url}?tag=${tag}`;
+        } else if (typeof query !== "undefined" && query.length > 2 ) {
+          url = `${url}?search=${query}`;
         }
 
         fetch(url, {

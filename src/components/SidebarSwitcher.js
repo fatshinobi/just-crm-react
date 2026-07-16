@@ -43,7 +43,7 @@ function SidebarSwitcher() {
         case location.pathname.includes("/person_company/create"):
           return <PersonCompanyCreate />;
         case location.pathname.includes("/people"):
-           return <div><Sidebar /> <PeopleTagsSidebar /></div>;
+           return <div><SearchPanel tagType={"1"} /><Sidebar /> <PeopleTagsSidebar /></div>;
         case location.pathname.includes("/person/create"):
           return <PersonCreate />;
         case location.pathname.includes("/person/show"):
