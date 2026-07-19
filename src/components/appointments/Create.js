@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, Link } from 'react-router-dom'
 
 function AppointmentCreate() {
     const [appointment, setAppointment] = useState({});
@@ -243,6 +243,7 @@ function AppointmentCreate() {
                 </div>
 
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
+                <Link to={"/companies"} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
     );
