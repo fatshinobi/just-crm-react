@@ -14,12 +14,15 @@ import EditTags from "./EditTags"
 import CompaniesTagsSidebar from "./companies/CompaniesTagsSidebar"
 import PeopleTagsSidebar from "./people/PeopleTagsSidebar"
 import SearchPanel from "./SearchPanel"
+import AppointmentCreate from "./appointments/Create"
 
 function SidebarSwitcher() {
     const location = useLocation();
 
     const renderSidebar = () => {
       switch (true) {
+        case location.pathname.includes("/companies/appointment/create"):
+          return <AppointmentCreate />;
         case location.pathname.includes("/companies"):
           return <div><SearchPanel tagType={"0"} /><Sidebar /> <CompaniesTagsSidebar /></div>;
         case location.pathname.includes("/company/edit"):

@@ -1,6 +1,16 @@
-import { Link } from "react-router-dom"
+import { useLocation, Link } from "react-router-dom"
 
 function Sidebar() {
+    const location = useLocation();
+
+    const createAppointmentsLink = () => {
+      switch (true) {
+        case location.pathname.includes("/companies"):
+            return "companies/appointment/create";
+        case location.pathname.includes("/people"):
+            return "people/appointment/create";
+      }
+    };
 
     return (
         <div className="p-4 space-y-2">
@@ -15,6 +25,12 @@ function Sidebar() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
                 </svg>
                 Create Person
+            </Link>
+            <Link to={createAppointmentsLink()} className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                </svg>
+                Create Appointment
             </Link>
         </div>
     );
