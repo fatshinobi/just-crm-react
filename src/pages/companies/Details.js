@@ -75,6 +75,9 @@ function CompanyDetails() {
         ))}
         <NewCard parentId={id} link_path={`/company_person/create/${id}`}/>
       </div>
+
+      <h2 className="text-3xl font-bold m-4">Appointments</h2>
+      <Link to={`/company/appointments/create/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 ml-2 rounded">Add appointment+</Link>
     </div>
   );
 }
