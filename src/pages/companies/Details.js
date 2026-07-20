@@ -4,6 +4,7 @@ import NewCard from "../../components/NewCard";
 import ElementCard from "../../components/ElementCard";
 import AppointmentCard from "../../components/appointments/Card";
 import AppointmentCreate from "../../components/appointments/Create";
+import AppointmentNewCard from "../../components/appointments/NewCard";
 
 function CompanyDetails() {
   const [people, setPeople] = useState([]);
@@ -105,7 +106,7 @@ function CompanyDetails() {
       </div>
 
       <h2 className="text-3xl font-bold m-4">Appointments</h2>
-      <Link to={`/company/appointments/create/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 ml-2 rounded">Add appointment+</Link>
+      <AppointmentNewCard link_path={`/company/appointments/create/${id}`} />
       <div className="">
         {appointments.map((record, index) => (
           <AppointmentCard record={record} link_path={`/company_person/edit/${record.id}/${record.customer_id}`} key={index} />
