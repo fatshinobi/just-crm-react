@@ -33,6 +33,8 @@ function SidebarSwitcher() {
           return <CompanyCreate />;
         case location.pathname.includes("/company/details"):
           return <CompanyShow isDetails={true} />;
+        case location.pathname.includes("/company/appointments/create"):
+          return <AppointmentCreate />;
         case location.pathname.includes("/company/tags"):
           return <EditTags tagType={"0"} />;
         case location.pathname.includes("/person/tags"):
