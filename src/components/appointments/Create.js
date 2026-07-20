@@ -214,7 +214,7 @@ function AppointmentCreate() {
                     <select type="text" name="communication_type" value={appointment?.communication_type || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
                         <option value="">Select a Communication Type</option>
                         {communicationTypes.map(type => (
-                            <option key={type.key} value={type.value}>
+                            <option key={type.key} value={type.key}>
                                 {type.value}
                             </option>
                         ))}
@@ -226,7 +226,7 @@ function AppointmentCreate() {
                     <select type="text" name="status" value={appointment?.status || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
                         <option value="">Select Status</option>
                         {appointmentStatuses.map(status => (
-                            <option key={status.key} value={status.value}>
+                            <option key={status.key} value={status.key}>
                                 {status.value}
                             </option>
                         ))}
