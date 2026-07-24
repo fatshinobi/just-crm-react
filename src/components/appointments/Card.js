@@ -14,7 +14,22 @@ function AppointmentCard({ record, link_path }) {
                 return "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z";
             }
     };
-        
+
+    const slassForStatus = () => {
+        switch (record.status) {
+            case 0:
+                return "text-gray-500";
+            case 1:
+                return "text-black";
+            case 2:
+                return "text-black line-through";
+            default:
+                return "text-gray-500";
+        }
+    };
+
+    const localWhen = new Date(record.when);
+
     return (
         <div className="min-w-md m-6 md:mb-0 col-span-12 sm:col-span-6 lg:col-span-4 border p-4 rounded-lg shadow-lg flex gap-4">
             <svg className="w-16 h-16 md:w-20 md:h-20 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
@@ -22,9 +37,15 @@ function AppointmentCard({ record, link_path }) {
             </svg>
 
             <div className="flex flex-col">
-                <span className="link-underline link-underline-black text-black font-bold text-lg mb-2">
-                    {record.when}
+                <span className={`${slassForStatus()} link-underline link-underline-black font-bold text-lg mb-2`}>
+                    {localWhen.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
                 </span>
+
+                <span className="text-black text-lg mb-2">
+                    Customer: <span className="font-bold">{record.customer_name}</span>
+                    <span className="ml-2">Client:</span> <span className="font-bold">{record.client_name}</span>
+                </span>
+
                 <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">{record.about}</p>
                 <Link to={link_path} className="inline-flex items-center px-7 py-3 text-md font-bold leading-5 text-white font-display mr-2 capitalize bg-blue-500 w-fit rounded-md hover:bg-gray-700">View</Link>
             </div>
