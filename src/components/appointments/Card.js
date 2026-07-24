@@ -1,4 +1,8 @@
 import { Link } from "react-router-dom";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 function AppointmentCard({ record, link_path }) {
     const defaultImage = () => {
@@ -28,28 +32,29 @@ function AppointmentCard({ record, link_path }) {
         }
     };
 
-    const localWhen = new Date(record.when);
+    const localTime = dayjs.utc(record.formatted_when).local().format('MMMM D, YYYY hh:mm A');
 
     return (
-        <div className="min-w-md m-6 md:mb-0 col-span-12 sm:col-span-6 lg:col-span-4 border p-4 rounded-lg shadow-lg flex gap-4">
-            <svg className="w-16 h-16 md:w-20 md:h-20 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d={defaultImage()}></path>
-            </svg>
+        <Link to={link_path} style={{ textDecoration: 'none', color: 'inherit' }} >
+            <div className="min-w-md m-6 md:mb-0 col-span-12 sm:col-span-6 lg:col-span-4 border p-4 rounded-lg shadow-lg flex gap-4">
+                <svg className="w-16 h-16 md:w-20 md:h-20 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d={defaultImage()}></path>
+                </svg>
 
-            <div className="flex flex-col">
-                <span className={`${slassForStatus()} link-underline link-underline-black font-bold text-lg mb-2`}>
-                    {localWhen.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
-                </span>
+                <div className="flex flex-col">
+                    <span className={`${slassForStatus()} link-underline link-underline-black font-bold text-lg mb-2`}>
+                        {localTime}
+                    </span>
 
-                <span className="text-black text-lg mb-2">
-                    Customer: <span className="font-bold">{record.customer_name}</span>
-                    <span className="ml-2">Client:</span> <span className="font-bold">{record.client_name}</span>
-                </span>
+                    <span className="text-black text-lg mb-2">
+                        Customer: <span className="font-bold">{record.customer_name}</span>
+                        <span className="ml-2">Client:</span> <span className="font-bold">{record.client_name}</span>
+                    </span>
 
-                <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">{record.about}</p>
-                <Link to={link_path} className="inline-flex items-center px-7 py-3 text-md font-bold leading-5 text-white font-display mr-2 capitalize bg-blue-500 w-fit rounded-md hover:bg-gray-700">View</Link>
+                    <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">{record.about}</p>
+                </div>
             </div>
-        </div>
+        </Link>
     );
 }
 
