@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom'
+import { communicationTypes, appointmentStatuses } from '../../constants/appointmentOptions';
 
 function AppointmentCreate() {
     const { id = "" } = useParams();
@@ -10,17 +11,6 @@ function AppointmentCreate() {
     const [people, setPeople] = useState([]);
     let currentCompany = null;
 
-    const communicationTypes = [
-        {key: "0", value: "Task"},
-        {key: "1", value: "Email"},
-        {key: "2", value: "Phone"}
-    ];
-
-    const appointmentStatuses = [
-        {key: "0", value: "Draft"},
-        {key: "1", value: "Planned"},
-        {key: "2", value: "Finished"}
-    ];
     let defaultValidationErrors = {
         "about": "About must be present",
         "user_id": "User must be selected",
