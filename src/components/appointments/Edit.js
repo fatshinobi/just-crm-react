@@ -35,10 +35,8 @@ function AppointmentEdit() {
 
     const navigatePath = () => {
       switch (true) {
-        case location.pathname.includes("/company/appointments/create/"):
+        case location.pathname.includes("/company/appointments/edit/"):
             return `/company/details/${id}`;
-        case location.pathname.includes("/companies/appointment/create"):
-            return "/companies";
       }
     }
 
@@ -184,7 +182,7 @@ function AppointmentEdit() {
         if ((appointment.client_id !== null) && (typeof appointment.client_id !== "undefined")) formData.append('client_id', appointment.client_id);
 
         fetch(`${process.env.REACT_APP_API_HOST}/appointments/${appointment_id}`, {
-            method: 'PATH',
+            method: 'PATCH',
             headers: {
                 'authorization': localStorage.getItem('accessToken')
             },
