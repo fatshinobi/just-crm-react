@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom'
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
+import { communicationTypes, appointmentStatuses } from '../../constants/appointmentOptions';
 
 dayjs.extend(utc);
 
@@ -13,18 +14,6 @@ function AppointmentEdit() {
     const [companies, setCompanies] = useState([]);
     const [people, setPeople] = useState([]);
     let currentCompany = null;
-
-    const communicationTypes = [
-        {key: "0", value: "Task"},
-        {key: "1", value: "Email"},
-        {key: "2", value: "Phone"}
-    ];
-
-    const appointmentStatuses = [
-        {key: "0", value: "Draft"},
-        {key: "1", value: "Planned"},
-        {key: "2", value: "Finished"}
-    ];
 
     const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
