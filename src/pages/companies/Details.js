@@ -109,7 +109,7 @@ function CompanyDetails() {
       <AppointmentNewCard link_path={`/company/appointments/create/${id}`} />
       <div className="">
         {appointments.map((record, index) => (
-          <AppointmentCard record={record} link_path={`/company_person/edit/${record.id}/${record.customer_id}`} key={index} />
+          <AppointmentCard record={record} link_path={`/company/appointments/edit/${id}/${record.id}`} key={index} />
         ))}
       </div>
 

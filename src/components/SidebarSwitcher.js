@@ -15,6 +15,7 @@ import CompaniesTagsSidebar from "./companies/CompaniesTagsSidebar"
 import PeopleTagsSidebar from "./people/PeopleTagsSidebar"
 import SearchPanel from "./SearchPanel"
 import AppointmentCreate from "./appointments/Create"
+import AppointmentEdit from "./appointments/Edit"
 
 function SidebarSwitcher() {
     const location = useLocation();
@@ -35,6 +36,8 @@ function SidebarSwitcher() {
           return <CompanyShow isDetails={true} />;
         case location.pathname.includes("/company/appointments/create"):
           return <AppointmentCreate />;
+        case location.pathname.includes("/company/appointments/edit"):
+          return <AppointmentEdit />;
         case location.pathname.includes("/company/tags"):
           return <EditTags tagType={"0"} />;
         case location.pathname.includes("/person/tags"):
