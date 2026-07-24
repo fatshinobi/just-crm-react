@@ -1,4 +1,8 @@
 import { Link } from "react-router-dom";
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 function AppointmentCard({ record, link_path }) {
     const defaultImage = () => {
@@ -28,7 +32,7 @@ function AppointmentCard({ record, link_path }) {
         }
     };
 
-    const localWhen = new Date(record.when);
+    const localTime = dayjs.utc(record.formatted_when).local().format('MMMM D, YYYY hh:mm A');
 
     return (
         <Link to={link_path} style={{ textDecoration: 'none', color: 'inherit' }} >
@@ -39,7 +43,7 @@ function AppointmentCard({ record, link_path }) {
 
                 <div className="flex flex-col">
                     <span className={`${slassForStatus()} link-underline link-underline-black font-bold text-lg mb-2`}>
-                        {localWhen.toLocaleString('en-US', { month: 'long', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: true })}
+                        {localTime}
                     </span>
 
                     <span className="text-black text-lg mb-2">

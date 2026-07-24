@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom'
+import dayjs from 'dayjs';
+import utc from 'dayjs/plugin/utc';
+
+dayjs.extend(utc);
 
 function AppointmentEdit() {
     const { id } = useParams();
@@ -25,6 +29,9 @@ function AppointmentEdit() {
     const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
     const location = useLocation();
+
+    const localTime = dayjs.utc(appointment.formatted_when).local().format('YYYY-MM-DDThh:mm');
+    console.log('Local Time:', localTime);
 
     const navigatePath = () => {
       switch (true) {
@@ -204,7 +211,7 @@ function AppointmentEdit() {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-gray-700 mb-1">When:</label>
-                    <input type="datetime-local" name="when" value={appointment?.formatted_when || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+                    <input type="datetime-local" name="when" value={localTime || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
                     {formErrors["when"] && <p style={{ color: "red" }}>{formErrors["when"]}</p>}
                 </div>
                 <div>
