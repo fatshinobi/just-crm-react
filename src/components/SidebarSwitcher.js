@@ -58,6 +58,10 @@ function SidebarSwitcher() {
           return <PersonShow />;
         case location.pathname.includes("/person/edit"):
           return <PersonEdit />;
+        case location.pathname.includes("/person/appointments/create"):
+          return <AppointmentCreate />;
+        case location.pathname.includes("/person/appointments/edit"):
+          return <AppointmentEdit />;
         case location.pathname.includes("/person/details"):
           return <PersonShow isDetails={true} />;
         default:

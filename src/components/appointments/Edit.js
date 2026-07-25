@@ -13,6 +13,7 @@ function AppointmentEdit() {
     const [users, setUsers] = useState([]);
     const [companies, setCompanies] = useState([]);
     const [people, setPeople] = useState([]);
+    const [person, setPerson] = useState(null);
     let currentCompany = null;
 
     const [formErrors, setFormErrors] = useState({});
@@ -26,6 +27,8 @@ function AppointmentEdit() {
       switch (true) {
         case location.pathname.includes("/company/appointments/edit/"):
             return `/company/details/${id}`;
+        case location.pathname.includes("/person/appointments/edit/"):
+            return `/person/details/${id}`;
       }
     }
 
@@ -128,6 +131,31 @@ function AppointmentEdit() {
           console.error('Error:', error);
         });
     }, [appointment.customer_id]);
+
+    useEffect(() => {
+        if (!location.pathname.includes("/person/appointments/edit/") || id === "") return;
+        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch person');
+            }
+        })
+        .then(data => {
+            console.log('Person data:', data);
+            setPerson(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, [location.pathname, id]);
 
     const fieldValidate = (record, value) => {
         if ((record === "about") && ((value === null) || (value.trim() === ""))) {
@@ -242,7 +270,21 @@ function AppointmentEdit() {
                     </select>
                     {formErrors["status"] && <p style={{ color: "red" }}>{formErrors["status"]}</p>}
                 </div>
-                    { (id === "") ?
+                { location.pathname.includes("/person/appointments/edit/") ?
+                    <div>
+                        <label className="block text-gray-700 mb-1">Company:</label>
+                        <select type="text" name="customer_id" value={appointment?.customer_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                            <option value="">Select a company</option>
+                            {companies.map(company => (
+                                <option key={company.key} value={company.key}>
+                                    {company.value}
+                                </option>
+                            ))}
+                        </select>
+                        {formErrors["customer_id"] && <p style={{ color: "red" }}>{formErrors["customer_id"]}</p>}
+                    </div>
+                :
+                    (id === "") ?
                         <div>
                             <label className="block text-gray-700 mb-1">Company:</label>
                             <select type="text" name="customer_id" value={appointment?.customer_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
@@ -260,19 +302,32 @@ function AppointmentEdit() {
                             <label className="block text-gray-700 mb-1">Company:</label>
                             <p>{ companies.find(company => company.key.toString() === id)?.value }</p>
                         </div>
-                    }
-                <div>
-                    <label className="block text-gray-700 mb-1">Person:</label>
-                    <select type="text" name="client_id" value={appointment?.client_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
-                        <option value="">Select a person</option>
-                        {people.map(person => (
-                            <option key={person.key} value={person.key}>
-                                {person.value}
-                            </option>
-                        ))}
-                    </select>
-                    {formErrors["client_id"] && <p style={{ color: "red" }}>{formErrors["client_id"]}</p>}
-                </div>
+                }
+                { location.pathname.includes("/person/appointments/edit/") ?
+                    <div>
+                        <label className="block text-gray-700 mb-1">Person:</label>
+                        <p>{ person?.name || person?.fio || id }</p>
+                    </div>
+                :
+                    (id === "") ?
+                        <div>
+                            <label className="block text-gray-700 mb-1">Person:</label>
+                            <select type="text" name="client_id" value={appointment?.client_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                                <option value="">Select a person</option>
+                                {people.map(person => (
+                                    <option key={person.key} value={person.key}>
+                                        {person.value}
+                                    </option>
+                                ))}
+                            </select>
+                            {formErrors["client_id"] && <p style={{ color: "red" }}>{formErrors["client_id"]}</p>}
+                        </div>
+                    :
+                        <div>
+                            <label className="block text-gray-700 mb-1">Person:</label>
+                            <p>{ people.find(person => person.key.toString() === id)?.value }</p>
+                        </div>
+                }
 
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
                 <Link to={navigatePath()} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
