@@ -35,7 +35,7 @@ function AppointmentCard({ record, link_path }) {
     const localTime = dayjs.utc(record.formatted_when).local().format('MMMM D, YYYY hh:mm A');
 
     return (
-        <Link to={link_path} style={{ textDecoration: 'none', color: 'inherit' }} >
+        <Link to={link_path} onClick={() => window.scrollTo(0, 0)} style={{ textDecoration: 'none', color: 'inherit' }} >
             <div className="min-w-md m-6 md:mb-0 col-span-12 sm:col-span-6 lg:col-span-4 border p-4 rounded-lg shadow-lg flex gap-4">
                 <svg className="w-16 h-16 md:w-20 md:h-20 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d={defaultImage()}></path>
@@ -47,8 +47,9 @@ function AppointmentCard({ record, link_path }) {
                     </span>
 
                     <span className="text-black text-lg mb-2">
-                        Customer: <span className="font-bold">{record.customer_name}</span>
-                        <span className="ml-2">Client:</span> <span className="font-bold">{record.client_name}</span>
+                        Company: <span className="font-bold">{record.customer_name}</span>
+                        <span className="ml-2">Person:</span> <span className="font-bold">{record.client_name}</span>
+                        <span className="ml-2">User:</span> <span className="font-bold">{record.user_name}</span>
                     </span>
 
                     <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">{record.about}</p>

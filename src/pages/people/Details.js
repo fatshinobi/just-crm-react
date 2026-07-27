@@ -2,11 +2,14 @@ import {useEffect, useState} from "react";
 import { useLocation, useParams, Link } from "react-router-dom";
 import NewCard from "../../components/NewCard";
 import ElementCard from "../../components/ElementCard";
+import AppointmentCard from "../../components/appointments/Card";
+import AppointmentNewCard from "../../components/appointments/NewCard";
 
 function PersonDetails() {
     const [companies, setCompanies] = useState([]);
     const location = useLocation();
     const [tags, setTags] = useState([]);
+    const [appointments, setAppointments] = useState([]);
     const { id } = useParams();
 
     useEffect(() => {
@@ -56,6 +59,31 @@ function PersonDetails() {
         .catch(error => {
             console.error('Error:', error);
         });
+}, [location.key, location.pathname]);
+
+    useEffect(() => {
+        if (!id) return;
+        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}/appointments`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+            return response.json();
+            } else {
+            throw new Error('Failed to fetch person appointments');
+            }
+        })
+        .then(data => {
+            console.log('Person Appointments data:', data);
+            setAppointments(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
   }, [location.key, location.pathname]);
 
     return (
@@ -74,6 +102,14 @@ function PersonDetails() {
                     <ElementCard record={record} default_image={"/def_company_logo.png"} link_path={`/person_company/edit/${record.id}/${id}`} key={index} />
                 ))}
                 <NewCard parentId={id} link_path={`/person_company/create/${id}`} />
+            </div>
+
+            <h2 className="text-3xl font-bold m-4">Appointments</h2>
+            <AppointmentNewCard link_path={`/person/appointments/create/${id}`} />
+            <div className="">
+                {appointments.map((record, index) => (
+                    <AppointmentCard record={record} link_path={`/person/appointments/edit/${record.id}/${id}`} key={index} />
+                ))}
             </div>
         </div>
     );
