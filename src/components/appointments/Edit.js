@@ -267,7 +267,7 @@ function AppointmentEdit() {
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Communication Type:</label>
-                    <select type="text" name="communication_type" value={appointment?.communication_type || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                    <select type="text" name="communication_type" value={appointment?.communication_type} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
                         <option value="">Select a Communication Type</option>
                         {communicationTypes.map(type => (
                             <option key={type.key} value={type.key}>
@@ -279,7 +279,7 @@ function AppointmentEdit() {
                 </div>
                 <div>
                     <label className="block text-gray-700 mb-1">Status:</label>
-                    <select type="text" name="status" value={appointment?.status || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                    <select type="text" name="status" value={appointment.status} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
                         <option value="">Select Status</option>
                         {appointmentStatuses.map(status => (
                             <option key={status.key} value={status.key}>
