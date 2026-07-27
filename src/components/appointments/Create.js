@@ -75,7 +75,7 @@ function AppointmentCreate() {
     }, []);
 
     useEffect(() => {
-        let customerUrl = isPersonContext ?
+        const customerUrl = isPersonContext ?
             `${process.env.REACT_APP_API_HOST}/catalogs/customers_for_client/${id}`
         :
             `${process.env.REACT_APP_API_HOST}/catalogs/customers`
