@@ -6,7 +6,7 @@ function AppointmentCreate() {
     const { id = "" } = useParams();
     const location = useLocation();
     const isPersonContext = location.pathname.includes("/person/appointments/create/");
-    const initValues = isPersonContext ? {"client_id": id} : {"customer_id": id}
+    const initValues = id === "" ? {} : (isPersonContext ? {"client_id": id} : {"customer_id": id})
     const [appointment, setAppointment] = useState(initValues);
     const [users, setUsers] = useState([]);
     const [companies, setCompanies] = useState([]);
@@ -22,7 +22,7 @@ function AppointmentCreate() {
         "when": "When must be selected"
     }
 
-    if (id === "") defaultValidationErrors["customer_id"] = "Company must be selected";
+    if ((id === "") || (isPersonContext)) defaultValidationErrors["customer_id"] = "Company must be selected";
 
     const [formErrors, setFormErrors] = useState(defaultValidationErrors);
     const navigate = useNavigate();
@@ -36,6 +36,18 @@ function AppointmentCreate() {
         case location.pathname.includes("/person/appointments/create/"):
             return `/person/details/${id}`;
       }
+    }
+
+    const selectCompany = () => {
+        if (id === "") return true;
+        if (isPersonContext) return true;
+        return false;
+    }
+
+    const selectPerson = () => {
+        if (id === "") return true;
+        if (isPersonContext) return false;
+        return true;
     }
 
     useEffect(() => {
@@ -63,7 +75,12 @@ function AppointmentCreate() {
     }, []);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/customers`, {
+        let customerUrl = isPersonContext ?
+            `${process.env.REACT_APP_API_HOST}/catalogs/customers_for_client/${id}`
+        :
+            `${process.env.REACT_APP_API_HOST}/catalogs/customers`
+
+        fetch(customerUrl, {
             method: 'GET',
             headers: {
               'content-type': 'application/json',
@@ -252,7 +269,7 @@ function AppointmentCreate() {
                     </select>
                     {formErrors["status"] && <p style={{ color: "red" }}>{formErrors["status"]}</p>}
                 </div>
-                { location.pathname.includes("/person/appointments/create/") ?
+                { selectCompany() ?
                     <div>
                         <label className="block text-gray-700 mb-1">Company:</label>
                         <select type="text" name="customer_id" value={appointment?.customer_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
@@ -266,49 +283,29 @@ function AppointmentCreate() {
                         {formErrors["customer_id"] && <p style={{ color: "red" }}>{formErrors["customer_id"]}</p>}
                     </div>
                 :
-                    (id === "") ?
-                        <div>
-                            <label className="block text-gray-700 mb-1">Company:</label>
-                            <select type="text" name="customer_id" value={appointment?.customer_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
-                                <option value="">Select a company</option>
-                                {companies.map(company => (
-                                    <option key={company.key} value={company.key}>
-                                        {company.value}
-                                    </option>
-                                ))}
-                            </select>
-                            {formErrors["customer_id"] && <p style={{ color: "red" }}>{formErrors["customer_id"]}</p>}
-                        </div>
-                    :
-                        <div>
-                            <label className="block text-gray-700 mb-1">Company:</label>
-                            <p>{ companies.find(company => company.key.toString() === id)?.value }</p>
-                        </div>
+                    <div>
+                        <label className="block text-gray-700 mb-1">Company:</label>
+                        <p>{ companies.find(company => company.key.toString() === id)?.value }</p>
+                    </div>
                 }
-                { location.pathname.includes("/person/appointments/create/") ?
+                {  selectPerson() ?
                     <div>
                         <label className="block text-gray-700 mb-1">Person:</label>
-                        <p>{ person?.name || person?.fio || id }</p>
+                        <select type="text" name="client_id" value={appointment?.client_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                            <option value="">Select a person</option>
+                            {people.map(person => (
+                                <option key={person.key} value={person.key}>
+                                    {person.value}
+                                </option>
+                            ))}
+                        </select>
+                        {formErrors["client_id"] && <p style={{ color: "red" }}>{formErrors["client_id"]}</p>}
                     </div>
                 :
-                    (id === "") ?
-                        <div>
-                            <label className="block text-gray-700 mb-1">Person:</label>
-                            <select type="text" name="client_id" value={appointment?.client_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
-                                <option value="">Select a person</option>
-                                {people.map(person => (
-                                    <option key={person.key} value={person.key}>
-                                        {person.value}
-                                    </option>
-                                ))}
-                            </select>
-                            {formErrors["client_id"] && <p style={{ color: "red" }}>{formErrors["client_id"]}</p>}
-                        </div>
-                    :
-                        <div>
-                            <label className="block text-gray-700 mb-1">Person:</label>
-                            <p>{ people.find(person => person.key.toString() === id)?.value }</p>
-                        </div>
+                    <div>
+                        <label className="block text-gray-700 mb-1">Person:</label>
+                        <p>{ person?.name }</p>
+                    </div>
                 }
 
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
