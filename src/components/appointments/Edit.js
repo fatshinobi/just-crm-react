@@ -184,7 +184,7 @@ function AppointmentEdit() {
         } else if ((record === "status") && ((value === null) || (value.trim() === ""))) {
             setFormErrors(prev => ({ ...prev, [record]: "Status must be present" }));
         } else if ((record === "when") && ((value === null) || (value.trim() === ""))) {
-            setFormErrors(prev => ({ ...prev, [record]: "Status must be present" }));
+            setFormErrors(prev => ({ ...prev, [record]: "When must be present" }));
         } else if ((record === "user_id") && ((value === null) || (value.trim() === ""))) {
             setFormErrors(prev => ({ ...prev, [record]: "User must be selected" }));
         } else if ((record === "customer_id") && ((value === null) || (value.trim() === ""))) {
