@@ -55,7 +55,6 @@ function Dashboards() {
             description: appointment.about
           }));
           setAllEvents(allEventsData);
-          console.log('events:', allEventsData);
         })
         .catch(error => {
           console.error('Error:', error);
