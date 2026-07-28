@@ -24,6 +24,10 @@ function Login({setAccessToken}) {
             throw new Error('Login failed');
           }
         })
+        .then(data => {
+          localStorage.setItem('userDataId', data.id);
+          localStorage.setItem('userDataName', data.name);
+        })
         .catch(error => {
           console.error('Error:', error);
         });

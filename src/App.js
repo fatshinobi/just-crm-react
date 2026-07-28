@@ -8,6 +8,7 @@ import CompaniesIndex from './pages/companies/Index'
 import PeopleIndex from './pages/people/Index'
 import CompanyDetails from './pages/companies/Details'
 import PersonDetails from './pages/people/Details'
+import Dashboards from "./pages/Dashboards";
 
 
 function App() {
@@ -20,7 +21,7 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Layout setAccessToken={setAccessToken}/>}>
-            <Route index element={<CompaniesIndex />} />
+            <Route index element={<Dashboards />} />
             <Route path="companies/tags/:tag" element={<CompaniesIndex />} />
             <Route path="companies/search/:query" element={<CompaniesIndex />} />
             <Route path="companies/appointment/create" element={<CompaniesIndex />} />
