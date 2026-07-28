@@ -65,7 +65,7 @@ function SidebarSwitcher() {
         case location.pathname.includes("/person/details"):
           return <PersonShow isDetails={true} />;
         default:
-          return <div>Default Sidebar</div>;
+          return <Sidebar />;
       }
     };
 
