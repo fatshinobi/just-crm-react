@@ -45,6 +45,7 @@ function App() {
             <Route path="person_company/create/:id" element={<PersonDetails />} />
             <Route path="person_company/edit/:company_id/:id" element={<PersonDetails />} />
             <Route path="person/tags/:id" element={<PersonDetails />} />
+            <Route path="dashboard/appointments/show/:appointment_id" element={<Dashboards />} />
             <Route path="person/appointments/create/:id" element={<PersonDetails />} />
             <Route path="person/appointments/edit/:appointment_id/:id" element={<PersonDetails />} />
           </Route>
