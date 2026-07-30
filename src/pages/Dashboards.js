@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import format from "date-fns/format";
 import getDay from "date-fns/getDay";
 import parse from "date-fns/parse";
@@ -12,6 +12,7 @@ import "react-datepicker/dist/react-datepicker.css";
 function Dashboards() {
     const [allEvents, setAllEvents] = useState([])
     const [currentView, setCurrentView] = useState("week");
+    const navigate = useNavigate();
 
     const locales = {
         "en-US": require('date-fns/locale/en-US')
@@ -28,6 +29,11 @@ function Dashboards() {
     const convertToFinishDate = (startDate) => {
         const finishDate = new Date(startDate);
         return new Date(finishDate.getTime() + 30 * 60000);
+    };
+
+    const handleSelectedEvent = (event) => {
+        console.log('Selected event:', event.id);
+        navigate(`/dashboard/appointments/show/${event.id}`);
     };
 
     useEffect(() => {
@@ -64,7 +70,9 @@ function Dashboards() {
     return (
         <div>
             <h1 className="text-4xl font-bold m-4">Dashboards</h1>
-            <Calendar localizer={localizer} events={allEvents} view={currentView} defaultView="week" onView={(view) => setCurrentView(view)}
+            <Calendar localizer={localizer} events={allEvents} view={currentView} defaultView="week"
+                onView={(view) => setCurrentView(view)}
+                onSelectEvent={(e) => handleSelectedEvent(e)}
                 startAccessor="start" endAccessor="finish" style={{height: 500, margin: "50px"}} />
         </div>
     )
