@@ -35,6 +35,11 @@ function AppointmentCreate() {
             return "/companies";
         case location.pathname.includes("/person/appointments/create/"):
             return `/person/details/${id}`;
+        case location.pathname.includes("/people/appointment/create"):
+            return `/people`;
+        default:
+            return "/";
+
       }
     }
 

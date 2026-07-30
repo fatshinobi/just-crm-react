@@ -9,6 +9,8 @@ function Sidebar() {
             return "companies/appointment/create";
         case location.pathname.includes("/people"):
             return "people/appointment/create";
+        default:
+            return "dashboard/appointments/create";
       }
     };
 

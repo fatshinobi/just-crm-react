@@ -37,6 +37,7 @@ function App() {
             <Route path="company/tags/:id" element={<CompanyDetails />} />
             <Route path="people/tags/:tag" element={<PeopleIndex />} />
             <Route path="people/search/:query" element={<PeopleIndex />} />
+            <Route path="people/appointment/create" element={<PeopleIndex />} />
             <Route path="people" element={<PeopleIndex />} />
             <Route path="person/create" element={<PeopleIndex />} />
             <Route path="person/show/:id" element={<PeopleIndex />} />
@@ -46,6 +47,8 @@ function App() {
             <Route path="person_company/edit/:company_id/:id" element={<PersonDetails />} />
             <Route path="person/tags/:id" element={<PersonDetails />} />
             <Route path="dashboard/appointments/show/:appointment_id" element={<Dashboards />} />
+            <Route path="dashboard/appointments/edit/:appointment_id" element={<Dashboards />} />
+            <Route path="dashboard/appointments/create" element={<Dashboards />} />
             <Route path="person/appointments/create/:id" element={<PersonDetails />} />
             <Route path="person/appointments/edit/:appointment_id/:id" element={<PersonDetails />} />
           </Route>

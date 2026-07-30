@@ -41,6 +41,10 @@ function SidebarSwitcher() {
           return <AppointmentEdit />;
         case location.pathname.includes("/dashboard/appointments/show"):
           return <AppointmentShow />;
+        case location.pathname.includes("/dashboard/appointments/edit"):
+          return <AppointmentEdit />;
+        case location.pathname.includes("/dashboard/appointments/create"):
+          return <AppointmentCreate />;
         case location.pathname.includes("/company/tags"):
           return <EditTags tagType={"0"} />;
         case location.pathname.includes("/person/tags"):
@@ -53,6 +57,8 @@ function SidebarSwitcher() {
           return <PersonCompanyEdit />;
         case location.pathname.includes("/person_company/create"):
           return <PersonCompanyCreate />;
+        case location.pathname.includes("/people/appointment/create"):
+          return <AppointmentCreate />;
         case location.pathname.includes("/people"):
            return <div><SearchPanel tagType={"1"} /><Sidebar /> <PeopleTagsSidebar /></div>;
         case location.pathname.includes("/person/create"):

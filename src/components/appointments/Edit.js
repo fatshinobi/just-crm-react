@@ -7,7 +7,7 @@ import { communicationTypes, appointmentStatuses } from '../../constants/appoint
 dayjs.extend(utc);
 
 function AppointmentEdit() {
-    const { id } = useParams();
+    const { id="" } = useParams();
     const { appointment_id } = useParams();
     const [appointment, setAppointment] = useState({});
     const [users, setUsers] = useState([]);
@@ -31,6 +31,8 @@ function AppointmentEdit() {
             return `/company/details/${id}`;
         case location.pathname.includes("/person/appointments/edit/"):
             return `/person/details/${id}`;
+        case location.pathname.includes("/dashboard/appointments/edit/"):
+            return "/";
       }
     }
 

@@ -59,8 +59,8 @@ function AppointmentShow({isDetails}) {
                     <p className="mb-1"><strong>Company:</strong> {appointment.customer_name}</p>
                     <p className="mb-1"><strong>Person:</strong> {appointment.client_name}</p>
                     <p className="mb-5"><strong>User:</strong> {appointment.user_name}</p>
-                    <Link to={`/company/edit/${appointment_id}`} className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-md font-medium">Edit</Link>
-                    <Link to={`/company/details/${appointment_id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Details</Link>
+                    <Link to={`/dashboard/appointments/edit/${appointment_id}`} className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-md font-medium">Edit</Link>
+                    <Link to={`/`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
                 </div>
             ) : (
                 <p className="m-4">Loading appointment details...</p>
