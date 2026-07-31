@@ -14,6 +14,7 @@ function AppointmentEdit() {
     const [companies, setCompanies] = useState([]);
     const [people, setPeople] = useState([]);
     const [person, setPerson] = useState(null);
+    const [whenLocal, setWhenLocal] = useState(null);
     let currentCompany = null;
 
     const [formErrors, setFormErrors] = useState({});
@@ -22,8 +23,15 @@ function AppointmentEdit() {
 
     const isPersonContext = location.pathname.includes("/person/appointments/edit/");
 
-    const localTime = dayjs.utc(appointment.formatted_when).local().format('YYYY-MM-DDThh:mm');
-    console.log('Local Time:', localTime);
+    const toLocalTime = (utcTime) => {
+        if (!utcTime) return '';
+        return dayjs.utc(utcTime).local().format('YYYY-MM-DDTHH:mm');
+    };
+
+    const toUTCTime = (localTime) => {
+        if (!localTime) return '';
+        return dayjs(localTime).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+    };
 
     const navigatePath = () => {
       switch (true) {
@@ -66,6 +74,8 @@ function AppointmentEdit() {
         .then(data => {
           console.log('Appointment data:', data);
           setAppointment(data);
+          setWhenLocal(toLocalTime(data.formatted_when));
+          console.log('Local time:', toLocalTime(data.formatted_when));
         })
         .catch(error => {
           console.error('Error:', error);
@@ -205,6 +215,13 @@ function AppointmentEdit() {
         fieldValidate(name, value);
     };
 
+    const handleWhenChange = (e) => {
+        const { name, value } = e.target;
+        const utcTime = dayjs(value).utc().format('YYYY-MM-DDTHH:mm:ss[Z]');
+        setWhenLocal(value);
+        fieldValidate(name, value);
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         if (Object.keys(formErrors).length !== 0) {
@@ -214,7 +231,7 @@ function AppointmentEdit() {
         if (appointment.about !== null) formData.append('about', appointment.about);
         if (appointment.communication_type !== null) formData.append('communication_type', appointment.communication_type);
         if (appointment.status !== null) formData.append('status', appointment.status);
-        if (appointment.when !== null) formData.append('when', appointment.when);
+        if (appointment.when !== null) formData.append('when', toUTCTime(whenLocal));
         if (appointment.user_id !== null) formData.append('user_id', appointment.user_id);
         if (appointment.customer_id !== null) formData.append('customer_id', appointment.customer_id);
         if ((appointment.client_id !== null) && (typeof appointment.client_id !== "undefined")) formData.append('client_id', appointment.client_id);
@@ -247,7 +264,7 @@ function AppointmentEdit() {
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-gray-700 mb-1">When:</label>
-                    <input type="datetime-local" name="when" value={localTime || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
+                    <input type="datetime-local" name="when" value={whenLocal} onChange={handleWhenChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"></input>
                     {formErrors["when"] && <p style={{ color: "red" }}>{formErrors["when"]}</p>}
                 </div>
                 <div>
