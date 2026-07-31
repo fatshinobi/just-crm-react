@@ -75,7 +75,6 @@ function AppointmentEdit() {
           console.log('Appointment data:', data);
           setAppointment(data);
           setWhenLocal(toLocalTime(data.formatted_when));
-          console.log('Local time:', toLocalTime(data.formatted_when));
         })
         .catch(error => {
           console.error('Error:', error);
