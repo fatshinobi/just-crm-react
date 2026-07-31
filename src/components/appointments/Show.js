@@ -56,8 +56,8 @@ function AppointmentShow({isDetails}) {
 
                     <p className="mb-5"><strong>About:</strong> {appointment.about}</p>
                     <p className="mb-1"><strong>When:</strong> {appointment.when}</p>
-                    <p className="mb-1"><strong>Company:</strong> {appointment.customer_name}</p>
-                    <p className="mb-1"><strong>Person:</strong> {appointment.client_name}</p>
+                    <p className="mb-1"><strong>Company:</strong> <Link to={`/company/details/${appointment.customer_id}`} className="text-blue-800 font-medium py-1 px-3 transition-colors">{appointment.customer_name}</Link></p>
+                    <p className="mb-1"><strong>Person:</strong> <Link to={`/person/details/${appointment.client_id}`} className="text-blue-800 font-medium py-1 px-3 transition-colors">{appointment.client_name}</Link></p>
                     <p className="mb-5"><strong>User:</strong> {appointment.user_name}</p>
                     <Link to={`/dashboard/appointments/edit/${appointment_id}`} className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-md font-medium">Edit</Link>
                     <Link to={`/`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
