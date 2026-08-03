@@ -1,18 +1,40 @@
 import { Link } from "react-router-dom";
 
 function OpportunityCard({ record, link_path }) {
-    const defaultImage = () => {
+const defaultImage = () => {
         switch (record.stage) {
             case 0:
-                // task icon               
-                return "M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z";
+                // awareness icon - target/bullseye
+                return "M12 8v4l3 3m-3-7a7 7 0 100 14A7 7 0 0012 8z";
             case 1:
-                // email icon
-                return "M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z";
+                // interest icon - eye
+                return "M1 12s8 7 11 7 11-7 11-7-8-7-11-7S1 12 1 12z";
             case 2:
-                // phone icon
-                return "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z";
-            }
+                // decision icon - chess knight
+                return "M12 2l3 9h9l-6 5 2 9-7-5-7 5 2-9z";
+            case 3:
+                // buy/won icon - checkmark
+                return "M5 13l4 4L19 7";
+        }
+    };
+
+    const slassForStage = () => {
+        switch (record.stage) {
+            case 0:
+                // awareness - gray
+                return "text-gray-500";
+            case 1:
+                // interest - blue
+                return "text-blue-500";
+            case 2:
+                // decision - orange
+                return "text-orange-500";
+            case 3:
+                // buy/won - green
+                return "text-green-500";
+            default:
+                return "text-gray-500";
+        }
     };
 
     const slassForStatus = () => {
@@ -31,7 +53,7 @@ function OpportunityCard({ record, link_path }) {
 
     return (
         <div className="min-w-md m-6 md:mb-0 col-span-12 sm:col-span-6 lg:col-span-4 border p-4 rounded-lg shadow-lg flex gap-4">
-            <svg className="w-16 h-16 md:w-20 md:h-20 mr-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <svg className={`w-16 h-16 md:w-20 md:h-20 mr-4 ${slassForStage()}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d={defaultImage()}></path>
             </svg>
 
