@@ -9,10 +9,12 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
+
 function Dashboards() {
     const [allEvents, setAllEvents] = useState([])
     const [currentView, setCurrentView] = useState("week");
     const navigate = useNavigate();
+    const [currentDate, setCurrentDate] = useState(new Date());
 
     const locales = {
         "en-US": require('date-fns/locale/en-US')
@@ -24,7 +26,7 @@ function Dashboards() {
         startOfWeek,
         getDay,
         locales
-    })
+    });
 
     const convertToFinishDate = (startDate) => {
         const finishDate = new Date(startDate);
@@ -32,7 +34,6 @@ function Dashboards() {
     };
 
     const handleSelectedEvent = (event) => {
-        console.log('Selected event:', event.id);
         navigate(`/dashboard/appointments/show/${event.id}`);
     };
 
@@ -73,6 +74,10 @@ function Dashboards() {
             <Calendar localizer={localizer} events={allEvents} view={currentView} defaultView="week"
                 onView={(view) => setCurrentView(view)}
                 onSelectEvent={(e) => handleSelectedEvent(e)}
+                date={currentDate}
+                onNavigate={(newDate, view, action) => {
+                  setCurrentDate(newDate);
+                }}
                 startAccessor="start" endAccessor="finish" style={{height: 500, margin: "50px"}} />
         </div>
     )
