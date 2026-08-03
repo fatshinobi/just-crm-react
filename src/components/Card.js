@@ -10,6 +10,11 @@ function Card({ record, defaultImage }) {
                 <span className="link-underline link-underline-black text-black font-bold text-lg mb-2">
                     {record.caption}
                 </span>
+                <div className="flex flex-wrap mb-2">
+                    {record.tags.map((tagRecord, tagIndex) => (
+                        <span className="bg-gray-500 text-white text-xs mr-2 pl-2 pr-2 rounded">{tagRecord}</span>
+                    ))}
+                </div>
                 <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">{record.description}</p>
                 <Link to={record.show_path} className="inline-flex items-center px-7 py-3 text-md font-bold leading-5 text-white font-display mr-2 capitalize bg-blue-500 w-fit rounded-md hover:bg-gray-700">View</Link>
             </div>
