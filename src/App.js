@@ -9,7 +9,7 @@ import PeopleIndex from './pages/people/Index'
 import CompanyDetails from './pages/companies/Details'
 import PersonDetails from './pages/people/Details'
 import Dashboards from "./pages/Dashboards";
-
+import OpportunitiesIndex from "./pages/opportunities/Index";
 
 function App() {
   const [accessToken, setAccessToken] = useState(null);
@@ -51,6 +51,7 @@ function App() {
             <Route path="dashboard/appointments/create" element={<Dashboards />} />
             <Route path="person/appointments/create/:id" element={<PersonDetails />} />
             <Route path="person/appointments/edit/:appointment_id/:id" element={<PersonDetails />} />
+            <Route path="opportunities" element={<OpportunitiesIndex />} />
           </Route>
         </Routes>
       </BrowserRouter>
