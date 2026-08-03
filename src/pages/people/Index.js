@@ -52,7 +52,8 @@ function PeopleIndex() {
                 description: person.about,
                 show_path: `/person/show/${person.id}`,
                 edit_path: `/person/edit/${person.id}`,
-                avatar_url: person.avatar_url
+                avatar_url: person.avatar_url,
+                tags: person.tags.map(tag => (tag.name))
               })
             )} defaultImage="/def_person_ava.png" />
         </div>
