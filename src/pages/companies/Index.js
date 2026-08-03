@@ -52,7 +52,8 @@ function CompaniesIndex() {
                 description: company.about,
                 show_path: `/company/show/${company.id}`,
                 edit_path: `/company/edit/${company.id}`,
-                avatar_url: company.avatar_url
+                avatar_url: company.avatar_url,
+                tags: company.tags.map(tag => (tag.name))
               })
             )} defaultImage="/def_company_logo.png" />
         </div>
