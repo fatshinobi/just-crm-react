@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import { useLocation, useParams } from "react-router-dom";
+import OpportunityCard from "../../components/opportunities/Card";
 
 function OpportunitiesIndex() {
     const [opportunities, setOpportunities] = useState([]);
@@ -43,6 +44,11 @@ function OpportunitiesIndex() {
     return (
         <div>
             <h1 className="text-4xl font-bold m-4">Opportunities List</h1>
+            <div>
+                {opportunities.map((record, index) => (
+                <OpportunityCard record={record} link_path={`/opportunity/${record.id}`} key={index} />
+                ))}
+            </div>
         </div>
     );
 }
