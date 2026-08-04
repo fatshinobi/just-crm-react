@@ -15,6 +15,7 @@ function Layout({setAccessToken}) {
               <Link to="/" className="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Home</Link>
               <Link to="/people" className="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">People</Link>
               <Link to="/companies" className="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Companies</Link>
+              <Link to="/opportunities" className="text-white hover:bg-gray-700 px-3 py-2 rounded-md text-sm font-medium">Sales</Link>
             </div>
             <button onClick={Logout} className="ml-auto bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded">
               Logout
