@@ -58,10 +58,14 @@ const defaultImage = () => {
             </svg>
 
             <div className="flex flex-col">
-                <span className="link-underline link-underline-black text-black font-bold text-lg mb-2">
+                <span className={`link-underline link-underline-black text-black font-bold text-lg mb-2 ${slassForStatus()}`}>
                     {record.title}
                 </span>
 
+                <span className="text-black text-lg mb-2">
+                    Start: <span className="font-bold">{record.start}</span>
+                    <span className="ml-2">Finish:</span> <span className="font-bold">{record.finish}</span>
+                </span>
                 <span className="text-black text-lg mb-2">
                     Company: <span className="font-bold">{record.customer_name}</span>
                     <span className="ml-2">Person:</span> <span className="font-bold">{record.client_name}</span>
