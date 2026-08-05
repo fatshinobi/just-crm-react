@@ -52,6 +52,7 @@ function App() {
             <Route path="person/appointments/create/:id" element={<PersonDetails />} />
             <Route path="person/appointments/edit/:appointment_id/:id" element={<PersonDetails />} />
             <Route path="opportunities" element={<OpportunitiesIndex />} />
+            <Route path="opportunity/show/:id" element={<OpportunitiesIndex />} />
           </Route>
         </Routes>
       </BrowserRouter>

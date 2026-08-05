@@ -46,7 +46,7 @@ function OpportunitiesIndex() {
             <h1 className="text-4xl font-bold m-4">Opportunities List</h1>
             <div>
                 {opportunities.map((record, index) => (
-                <OpportunityCard record={record} link_path={`/opportunity/${record.id}`} key={index} />
+                <OpportunityCard record={record} link_path={`/opportunity/show/${record.id}`} key={index} />
                 ))}
             </div>
         </div>
