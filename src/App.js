@@ -12,6 +12,7 @@ import Dashboards from "./pages/Dashboards";
 import OpportunitiesIndex from "./pages/opportunities/Index";
 import OpportunityShow from "./components/opportunities/Show";
 import OpportunityCreate from "./components/opportunities/Create";
+import OpportunityEdit from "./components/opportunities/Edit";
 
 function App() {
   const [accessToken, setAccessToken] = useState(null);
@@ -55,12 +56,14 @@ function App() {
             <Route path="person/appointments/edit/:appointment_id/:id" element={<PersonDetails />} />
             <Route path="opportunities" element={<OpportunitiesIndex />} />
             <Route path="opportunity/show/:id" element={<OpportunitiesIndex />} />
-            <Route path="opportunity/edit/:id" element={<OpportunitiesIndex />} />
+            <Route path="opportunity/edit/:opportunity_id" element={<OpportunitiesIndex />} />
             <Route path="opportunities/create" element={<OpportunitiesIndex />} />
             <Route path="companies/opportunity/create" element={<OpportunityCreate />} />
             <Route path="companies/opportunity/create/:id" element={<OpportunityCreate />} />
+            <Route path="companies/opportunities/edit/:id" element={<OpportunityEdit />} />
             <Route path="people/opportunity/create" element={<OpportunityCreate />} />
             <Route path="people/opportunity/create/:id" element={<OpportunityCreate />} />
+            <Route path="people/opportunities/edit/:id" element={<OpportunityEdit />} />
             <Route path="person/opportunity/create/:id" element={<OpportunityCreate />} />
             <Route path="company/opportunity/create/:id" element={<OpportunityCreate />} />
           </Route>
