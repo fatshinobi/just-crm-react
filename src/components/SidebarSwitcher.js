@@ -18,6 +18,7 @@ import AppointmentCreate from "./appointments/Create"
 import AppointmentEdit from "./appointments/Edit"
 import AppointmentShow from "./appointments/Show"
 import OpportunityShow from "./opportunities/Show"
+import OpportunityCreate from "./opportunities/Create"
 
 function SidebarSwitcher() {
     const location = useLocation();
@@ -76,6 +77,16 @@ function SidebarSwitcher() {
           return <div><Sidebar /></div>;
         case location.pathname.includes("/opportunity/show"):
           return <OpportunityShow />;
+        case location.pathname.includes("/opportunities/create"):
+          return <OpportunityCreate />;
+        case location.pathname.includes("/companies/opportunity/create"):
+          return <OpportunityCreate />;
+        case location.pathname.includes("/company/opportunity/create"):
+          return <OpportunityCreate />;
+        case location.pathname.includes("/people/opportunity/create"):
+          return <OpportunityCreate />;
+        case location.pathname.includes("/person/opportunity/create"):
+          return <OpportunityCreate />;
         case location.pathname.includes("/person/details"):
           return <PersonShow isDetails={true} />;
         default:

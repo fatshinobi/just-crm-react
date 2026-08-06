@@ -14,6 +14,17 @@ function Sidebar() {
       }
     };
 
+    const createOpportunitiesLink = () => {
+      switch (true) {
+        case location.pathname.includes("/companies"):
+            return "opportunities/create";
+        case location.pathname.includes("/people"):
+            return "opportunities/create";
+        default:
+            return "opportunities/create";
+      }
+    };
+
     return (
         <div className="p-4 space-y-2">
             <Link to="/company/create" className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-colors">
@@ -33,6 +44,12 @@ function Sidebar() {
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
                 </svg>
                 Create Appointment
+            </Link>
+            <Link to={createOpportunitiesLink()} className="flex items-center px-3 py-2 text-sm font-medium text-gray-700 rounded-md hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 22C6.477 22 2 17.523 2 12S6.477 2 12 2s10 4.477 10 10-4.477 10-10 10zm-1-8.414l-2.293-2.293a1 1 0 0 0-1.414 1.414l3 3a1 1 0 0 0 1.414 0l6-6a1 1 0 0 0-1.414-1.414L11 13.586z"></path>
+                </svg>
+                Create Opportunity
             </Link>
         </div>
     );
