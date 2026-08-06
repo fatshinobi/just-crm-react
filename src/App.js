@@ -58,14 +58,8 @@ function App() {
             <Route path="opportunity/show/:id" element={<OpportunitiesIndex />} />
             <Route path="opportunity/edit/:opportunity_id" element={<OpportunitiesIndex />} />
             <Route path="opportunities/create" element={<OpportunitiesIndex />} />
-            <Route path="companies/opportunity/create" element={<OpportunityCreate />} />
-            <Route path="companies/opportunity/create/:id" element={<OpportunityCreate />} />
-            <Route path="companies/opportunities/edit/:id" element={<OpportunityEdit />} />
-            <Route path="people/opportunity/create" element={<OpportunityCreate />} />
-            <Route path="people/opportunity/create/:id" element={<OpportunityCreate />} />
-            <Route path="people/opportunities/edit/:id" element={<OpportunityEdit />} />
-            <Route path="person/opportunity/create/:id" element={<OpportunityCreate />} />
-            <Route path="company/opportunity/create/:id" element={<OpportunityCreate />} />
+            <Route path="company/opportunities/create/:id" element={<CompanyDetails />} />
+            <Route path="company/opportunities/edit/:opportunity_id/:id" element={<CompanyDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

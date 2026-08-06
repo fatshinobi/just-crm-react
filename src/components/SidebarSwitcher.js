@@ -82,20 +82,10 @@ function SidebarSwitcher() {
           return <OpportunityEdit />;
         case location.pathname.includes("/opportunities/create"):
           return <OpportunityCreate />;
-        case location.pathname.includes("/companies/opportunity/create"):
-          return <OpportunityCreate />;
-        case location.pathname.includes("/companies/opportunities/edit"):
+        case location.pathname.includes("/company/opportunities/edit"):
           return <OpportunityEdit />;
         case location.pathname.includes("/company/opportunity/create"):
           return <OpportunityCreate />;
-        case location.pathname.includes("/people/opportunity/create"):
-          return <OpportunityCreate />;
-        case location.pathname.includes("/people/opportunities/edit"):
-          return <OpportunityEdit />;
-        case location.pathname.includes("/person/opportunity/create"):
-          return <OpportunityCreate />;
-        case location.pathname.includes("/person/opportunities/edit"):
-          return <OpportunityEdit />;
         case location.pathname.includes("/person/details"):
           return <PersonShow isDetails={true} />;
         default:

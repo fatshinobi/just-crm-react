@@ -5,11 +5,14 @@ import ElementCard from "../../components/ElementCard";
 import AppointmentCard from "../../components/appointments/Card";
 import AppointmentCreate from "../../components/appointments/Create";
 import AppointmentNewCard from "../../components/appointments/NewCard";
+import OpportunityElementCard from "../../components/opportunities/ElementCard";
+import OpportunityNewCard from "../../components/opportunities/NewCard";
 
 function CompanyDetails() {
   const [people, setPeople] = useState([]);
   const [tags, setTags] = useState([]);
   const [appointments, setAppointments] = useState([]);
+  const [opportunities, setOpportunities] = useState([]);
   const location = useLocation();
   const { id } = useParams();
 
@@ -85,7 +88,32 @@ function CompanyDetails() {
         .catch(error => {
             console.error('Error:', error);
         });
-  }, [location.key, location.pathname]);
+    }, [location.key, location.pathname]);
+
+    useEffect(() => {
+        if (!id) return;
+        fetch(`${process.env.REACT_APP_API_HOST}/customers/${id}/opportunities`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch company opportunities');
+            }
+        })
+        .then(data => {
+            console.log('Company Opportunities data:', data);
+            setOpportunities(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, [location.key, location.pathname]);
 
   return (
     <div>
@@ -105,6 +133,14 @@ function CompanyDetails() {
         <NewCard parentId={id} link_path={`/company_person/create/${id}`}/>
       </div>
 
+      <h2 className="text-3xl font-bold m-4">Opportunities</h2>
+      <OpportunityNewCard link_path={`/company/opportunities/create/${id}`} />
+      <div className="">
+        {opportunities.map((record, index) => (
+          <OpportunityElementCard record={record} link_path={`/company/opportunities/edit/${record.id}/${id}`} key={index} />
+        ))}
+      </div>
+
       <h2 className="text-3xl font-bold m-4">Appointments</h2>
       <AppointmentNewCard link_path={`/company/appointments/create/${id}`} />
       <div className="">
@@ -112,7 +148,6 @@ function CompanyDetails() {
           <AppointmentCard record={record} link_path={`/company/appointments/edit/${id}/${record.id}`} key={index} />
         ))}
       </div>
-
     </div>
   );
 }
