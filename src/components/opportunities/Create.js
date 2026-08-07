@@ -6,7 +6,7 @@ function OpportunityCreate() {
     const { id = "" } = useParams();
     const location = useLocation();
     const isPersonContext = location.pathname.includes("/people/opportunity/create");
-    const isCompanyContext = location.pathname.includes("/companies/opportunity/create");
+    const isCompanyContext = location.pathname.includes("/company/opportunities/create");
     const initValues = id === "" ? {} : (isPersonContext ? {"client_id": id} : {"customer_id": id})
     const [opportunity, setOpportunity] = useState(initValues);
     const [users, setUsers] = useState([]);
@@ -30,10 +30,8 @@ function OpportunityCreate() {
 
     const navigatePath = () => {
       switch (true) {
-        case location.pathname.includes("/companies/opportunity/create/"):
+        case location.pathname.includes("/company/opportunities/create"):
             return `/company/details/${id}`;
-        case location.pathname.includes("/companies/opportunity/create"):
-            return "/companies";
         case location.pathname.includes("/people/opportunity/create/"):
             return `/person/details/${id}`;
         case location.pathname.includes("/people/opportunity/create"):
