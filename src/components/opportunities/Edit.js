@@ -62,7 +62,7 @@ function OpportunityEdit() {
         .catch(error => {
           console.error('Error:', error);
         });
-    }, [id]);
+    }, [opportunity_id]);
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
