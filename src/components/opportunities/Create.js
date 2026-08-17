@@ -5,7 +5,7 @@ import { opportunityStages, opportunityStatuses } from '../../constants/opportun
 function OpportunityCreate() {
     const { id = "" } = useParams();
     const location = useLocation();
-    const isPersonContext = location.pathname.includes("/people/opportunity/create");
+    const isPersonContext = location.pathname.includes("/person/opportunities/create");
     const isCompanyContext = location.pathname.includes("/company/opportunities/create");
     const initValues = id === "" ? {} : (isPersonContext ? {"client_id": id} : {"customer_id": id})
     const [opportunity, setOpportunity] = useState(initValues);
@@ -32,10 +32,8 @@ function OpportunityCreate() {
       switch (true) {
         case location.pathname.includes("/company/opportunities/create"):
             return `/company/details/${id}`;
-        case location.pathname.includes("/people/opportunity/create/"):
+        case location.pathname.includes("/person/opportunities/create/"):
             return `/person/details/${id}`;
-        case location.pathname.includes("/people/opportunity/create"):
-            return "/people";
         default:
             return "/opportunities";
       }
@@ -49,7 +47,7 @@ function OpportunityCreate() {
 
     const selectPerson = () => {
         if (id === "") return true;
-        if (isPersonContext) return true;
+        if (isPersonContext) return false;
         if (isCompanyContext) return true;
         return false;
     }
@@ -79,8 +77,8 @@ function OpportunityCreate() {
     }, []);
 
     useEffect(() => {
-        const customerUrl = isPersonContext || isCompanyContext ?
-            `${process.env.REACT_APP_API_HOST}/catalogs/customers`
+        const customerUrl = isPersonContext ?
+            `${process.env.REACT_APP_API_HOST}/catalogs/customers_for_client/${id}`
         :
             `${process.env.REACT_APP_API_HOST}/catalogs/customers`
 
