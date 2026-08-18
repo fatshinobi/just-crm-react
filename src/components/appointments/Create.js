@@ -6,12 +6,15 @@ function AppointmentCreate() {
     const { id = "" } = useParams();
     const location = useLocation();
     const isPersonContext = location.pathname.includes("/person/appointments/create/");
+    const isCompanyContext = location.pathname.includes("/company/appointments/create/");
     const initValues = id === "" ? {} : (isPersonContext ? {"client_id": id} : {"customer_id": id})
     const [appointment, setAppointment] = useState(initValues);
     const [users, setUsers] = useState([]);
     const [companies, setCompanies] = useState([]);
     const [people, setPeople] = useState([]);
     const [person, setPerson] = useState(null);
+    const [opportunities, setOpportunities] = useState([]);
+
     let currentCompany = null;
 
     let defaultValidationErrors = {
@@ -161,6 +164,49 @@ function AppointmentCreate() {
         });
     }, [isPersonContext, id]);
 
+    useEffect(() => {
+        let opportunityUrl = null;
+        if (isCompanyContext && ((typeof appointment.customer_id === "undefined") || (appointment.customer_id === ""))) {
+            setOpportunities([]);
+            return;
+        }
+
+        if (isPersonContext && ((typeof appointment.client_id === "undefined") || (appointment.client_id === ""))) {
+            setOpportunities([]);
+            return;
+        }
+
+        if ((typeof appointment.client_id !== "undefined") && (appointment.client_id !== "") && (typeof appointment.customer_id !== "undefined") && (appointment.customer_id !== "")) {
+            opportunityUrl = `catalogs/opportunities_for_client_customer/${appointment.client_id}/${appointment.customer_id}`;
+        } else if (isPersonContext) {
+            opportunityUrl = `catalogs/opportunities_for_client/${appointment.client_id}`;
+        } else {
+            opportunityUrl = `catalogs/opportunities_for_customer/${appointment.customer_id}`;
+        }
+
+        fetch(`${process.env.REACT_APP_API_HOST}/${opportunityUrl}`, {
+            method: 'GET',
+            headers: {
+              'content-type': 'application/json',
+              'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Failed to fetch opportunities');
+          }
+        })
+        .then(data => {
+          console.log('Opportunities data:', data);
+          setOpportunities(data);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+        });
+    }, [appointment.customer_id, appointment.client_id]);
+
     const fieldValidate = (record, value) => {
         if ((record === "about") && ((value === null) || (value.trim() === ""))) {
             setFormErrors(prev => ({ ...prev, [record]: "Name must be present" }));
@@ -200,6 +246,7 @@ function AppointmentCreate() {
         if (appointment.when !== null) formData.append('when', appointment.when);
         if (appointment.user_id !== null) formData.append('user_id', appointment.user_id);
         if (appointment.customer_id !== null) formData.append('customer_id', appointment.customer_id);
+        if (appointment.opportunity_id !== null) formData.append('opportunity_id', appointment.opportunity_id);
         if ((appointment.client_id !== null) && (typeof appointment.client_id !== "undefined")) formData.append('client_id', appointment.client_id);
 
         fetch(`${process.env.REACT_APP_API_HOST}/appointments`, {
@@ -312,6 +359,18 @@ function AppointmentCreate() {
                         <p>{ person?.name }</p>
                     </div>
                 }
+
+                <div>
+                    <label className="block text-gray-700 mb-1">Opportunity:</label>
+                    <select type="text" name="opportunity_id" value={appointment?.opportunity_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                        <option value="">Select an opportunities</option>
+                        {opportunities.map(opportunity => (
+                            <option key={opportunity.key} value={opportunity.key}>
+                                {opportunity.value}
+                            </option>
+                        ))}
+                    </select>
+                </div>
 
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
                 <Link to={navigatePath()} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>

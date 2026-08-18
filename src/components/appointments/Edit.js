@@ -166,20 +166,30 @@ function AppointmentEdit() {
 
     useEffect(() => {
         let opportunityUrl = null;
-        if (isCompanyContext && (typeof appointment.customer_id === "undefined") || (appointment.customer_id === "")) {
+        if (isCompanyContext && ((typeof appointment.customer_id === "undefined") || (appointment.customer_id === ""))) {
             setOpportunities([]);
             return;
         }
 
-        if (isPersonContext && (typeof appointment.client_id === "undefined") || (appointment.client_id === "")) {
+        if ((isPersonContext) && ((typeof appointment.client_id === "undefined") || (appointment.client_id === ""))) {
             setOpportunities([]);
             return;
         }
 
-        if (isPersonContext) {
+        if (isCompanyContext && (typeof appointment.client_id !== "undefined") && (appointment.client_id !== "") && (appointment.client_id !== null)) {
+            opportunityUrl = `catalogs/opportunities_for_client_customer/${appointment.client_id}/${id}`;
+        } else if (isPersonContext && (typeof appointment.customer_id !== "undefined") && (appointment.customer_id !== "") && (appointment.customer_id !== null)) {
+            opportunityUrl = `catalogs/opportunities_for_client_customer/${id}/${appointment.customer_id}`;
+        } else if (isPersonContext) {
             opportunityUrl = `catalogs/opportunities_for_client/${appointment.client_id}`;
-        } else {
+        } else if (isCompanyContext) {
             opportunityUrl = `catalogs/opportunities_for_customer/${appointment.customer_id}`;
+        } else if ((typeof appointment.customer_id !== "undefined") && (appointment.customer_id !== "") && (appointment.customer_id !== null) && (typeof appointment.client_id !== "undefined") && (appointment.client_id !== "") && (appointment.client_id !== null)) {
+            opportunityUrl = `catalogs/opportunities_for_client_customer/${appointment.client_id}/${appointment.customer_id}`;
+        } else if ((typeof appointment.customer_id !== "undefined") && (appointment.customer_id !== "") && (appointment.customer_id !== null)) {
+            opportunityUrl = `catalogs/opportunities_for_customer/${appointment.customer_id}`;
+        } else if ((typeof appointment.client_id !== "undefined") && (appointment.client_id !== "") && (appointment.client_id !== null)) {
+            opportunityUrl = `catalogs/opportunities_for_client/${appointment.client_id}`;
         }
 
         fetch(`${process.env.REACT_APP_API_HOST}/${opportunityUrl}`, {
