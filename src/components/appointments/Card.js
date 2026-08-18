@@ -50,6 +50,7 @@ function AppointmentCard({ record, link_path }) {
                         Company: <span className="font-bold">{record.customer_name}</span>
                         <span className="ml-2">Person:</span> <span className="font-bold">{record.client_name}</span>
                         <span className="ml-2">User:</span> <span className="font-bold">{record.user_name}</span>
+                        <span className="ml-2">Opportunity:</span> <span className="font-bold">{record.opportunity_name}</span>
                     </span>
 
                     <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">{record.about}</p>
