@@ -13,6 +13,7 @@ import OpportunitiesIndex from "./pages/opportunities/Index";
 import OpportunityShow from "./components/opportunities/Show";
 import OpportunityCreate from "./components/opportunities/Create";
 import OpportunityEdit from "./components/opportunities/Edit";
+import OpportunityDetails from "./pages/opportunities/Details";
 
 function App() {
   const [accessToken, setAccessToken] = useState(null);
@@ -58,6 +59,7 @@ function App() {
             <Route path="person/appointments/edit/:appointment_id/:id" element={<PersonDetails />} />
             <Route path="opportunities" element={<OpportunitiesIndex />} />
             <Route path="opportunity/show/:id" element={<OpportunitiesIndex />} />
+            <Route path="opportunity/details/:id" element={<OpportunityDetails />} />
             <Route path="opportunity/edit/:opportunity_id" element={<OpportunitiesIndex />} />
             <Route path="opportunities/create" element={<OpportunitiesIndex />} />
             <Route path="company/opportunities/create/:id" element={<CompanyDetails />} />
