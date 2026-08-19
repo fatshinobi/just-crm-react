@@ -59,7 +59,7 @@ function OpportunityShow({ isDetails }) {
                     <p className="mb-1"><strong>Person:</strong> <Link to={`/person/details/${opportunity.client_id}`} className="text-blue-800 font-medium py-1 px-3 transition-colors">{opportunity.client_name}</Link></p>
                     <p className="mb-5"><strong>User:</strong> {opportunity.user_name}</p>
                     <Link to={`/opportunity/edit/${opportunity.id}`} className="bg-green-500 hover:bg-green-700 px-7 py-3 mb-5 rounded-md text-md font-medium">Edit</Link>
-                    <Link to={`/`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
+                    {!isDetails ? <Link to={`/opportunity/details/${opportunity.id}`} className="bg-gray-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Details</Link> : <Link to={`/opportunities`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Sales</Link>}
                 </div>
             ) : (
                 <p className="m-4">Loading opportunity details...</p>
