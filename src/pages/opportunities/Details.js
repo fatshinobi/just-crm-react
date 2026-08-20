@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useLocation, Link, useParams } from "react-router-dom";
 import AppointmentCard from "../../components/appointments/Card";
+import AppointmentNewCard from "../../components/appointments/NewCard";
 
 function OpportunityDetails() {
     const [appointments, setAppointments] = useState([]);
@@ -60,17 +61,19 @@ function OpportunityDetails() {
 
     return (
         <div>
-            <h1 className="text-3xl font-bold m-4">Opportunity</h1>
+            {opportunity && (
+                <Link to={`/opportunity/show/${opportunity.id}`} className="bg-gray-200 hover:bg-gray-400 px-7 py-3 mb-5 rounded-md text-md font-medium">Back to Opportunity</Link>
+            )}
+
+            <h1 className="text-4xl font-bold m-4">Opportunity details</h1>
             <h2 className="text-3xl font-bold m-4">Appointments</h2>
 
+            <AppointmentNewCard link_path={`/opportunity/appointments/create/${id}`} />
             <div className="">
                 {appointments.map((record, index) => (
                     <AppointmentCard record={record} link_path={`/appointment/show/${record.id}`} key={index} />
                 ))}
             </div>
-            {opportunity && (
-                <Link to={`/opportunity/show/${opportunity.id}`} className="bg-gray-200 hover:bg-gray-400 px-7 py-3 mb-5 rounded-md text-md font-medium">Back to Opportunity</Link>
-            )}
         </div>
     );
 }

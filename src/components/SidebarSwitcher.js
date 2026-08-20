@@ -84,6 +84,8 @@ function SidebarSwitcher() {
           return <OpportunityEdit />;
         case location.pathname.includes("/opportunities/create"):
           return <OpportunityCreate />;
+        case location.pathname.includes("/opportunity/appointments/create"):
+          return <AppointmentCreate />;
         case location.pathname.includes("/company/opportunities/edit"):
           return <OpportunityEdit />;
         case location.pathname.includes("/company/opportunity/create"):

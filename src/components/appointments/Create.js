@@ -7,13 +7,13 @@ function AppointmentCreate() {
     const location = useLocation();
     const isPersonContext = location.pathname.includes("/person/appointments/create/");
     const isCompanyContext = location.pathname.includes("/company/appointments/create/");
-    const initValues = id === "" ? {} : (isPersonContext ? {"client_id": id} : {"customer_id": id})
-    const [appointment, setAppointment] = useState(initValues);
+    const isOpportunityContext = location.pathname.includes("/opportunity/appointments/create/");
     const [users, setUsers] = useState([]);
     const [companies, setCompanies] = useState([]);
     const [people, setPeople] = useState([]);
     const [person, setPerson] = useState(null);
     const [opportunities, setOpportunities] = useState([]);
+    const [opportunity, setOpportunity] = useState(null);
 
     let currentCompany = null;
 
@@ -30,6 +30,21 @@ function AppointmentCreate() {
     const [formErrors, setFormErrors] = useState(defaultValidationErrors);
     const navigate = useNavigate();
 
+    const initValues = () => {
+        switch (true) {
+        case isPersonContext:
+            return {"client_id": id};
+        case isCompanyContext:
+            return {"customer_id": id};
+        case isOpportunityContext:
+            return {"opportunity_id": id};
+        default:
+            return {};
+        }
+    }
+
+    const [appointment, setAppointment] = useState(initValues());
+
     const navigatePath = () => {
       switch (true) {
         case location.pathname.includes("/company/appointments/create/"):
@@ -38,6 +53,8 @@ function AppointmentCreate() {
             return "/companies";
         case location.pathname.includes("/person/appointments/create/"):
             return `/person/details/${id}`;
+        case location.pathname.includes("/opportunity/appointments/create/"):
+            return `/opportunity/details/${id}`;
         case location.pathname.includes("/people/appointment/create"):
             return `/people`;
         default:
@@ -49,13 +66,30 @@ function AppointmentCreate() {
     const selectCompany = () => {
         if (id === "") return true;
         if (isPersonContext) return true;
+        if (isOpportunityContext) return false;
         return false;
     }
 
     const selectPerson = () => {
         if (id === "") return true;
         if (isPersonContext) return false;
+        if (isOpportunityContext) return true;
         return true;
+    }
+
+    const selectOpportunity = () => {
+        if (id === "") return true;
+        if (isPersonContext) return true;
+        if (isOpportunityContext) return false;
+        return true;
+    }
+
+    const companyName = () => {
+        if (opportunity) {
+            return opportunity?.customer_name;
+        } else {
+            return companies.find(company => company.key.toString() === id)?.value;
+        }
     }
 
     useEffect(() => {
@@ -116,6 +150,7 @@ function AppointmentCreate() {
             setPeople([]);
             return;
         }
+
         fetch(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${appointment.customer_id}`, {
             method: 'GET',
             headers: {
@@ -163,6 +198,32 @@ function AppointmentCreate() {
             console.error('Error:', error);
         });
     }, [isPersonContext, id]);
+
+    useEffect(() => {
+        if (!isOpportunityContext) return;
+        fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${id}`, {
+            method: 'GET',
+            headers: {
+                'content-type': 'application/json',
+                'authorization': localStorage.getItem('accessToken')
+            }
+        })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            } else {
+                throw new Error('Failed to fetch opportunity');
+            }
+        })
+        .then(data => {
+            console.log('Opportunity data:', data);
+            setOpportunity(data);
+            appointment.customer_id = data.customer_id;
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, []);
 
     useEffect(() => {
         let opportunityUrl = null;
@@ -337,7 +398,7 @@ function AppointmentCreate() {
                 :
                     <div>
                         <label className="block text-gray-700 mb-1">Company:</label>
-                        <p>{ companies.find(company => company.key.toString() === id)?.value }</p>
+                        <p>{ companyName() }</p>
                     </div>
                 }
                 {  selectPerson() ?
@@ -359,19 +420,24 @@ function AppointmentCreate() {
                         <p>{ person?.name }</p>
                     </div>
                 }
-
-                <div>
-                    <label className="block text-gray-700 mb-1">Opportunity:</label>
-                    <select type="text" name="opportunity_id" value={appointment?.opportunity_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
-                        <option value="">Select an opportunities</option>
-                        {opportunities.map(opportunity => (
-                            <option key={opportunity.key} value={opportunity.key}>
-                                {opportunity.value}
-                            </option>
-                        ))}
-                    </select>
-                </div>
-
+                {  selectOpportunity() ?
+                    <div>
+                        <label className="block text-gray-700 mb-1">Opportunity:</label>
+                        <select type="text" name="opportunity_id" value={appointment?.opportunity_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                            <option value="">Select an opportunities</option>
+                            {opportunities.map(opportunity => (
+                                <option key={opportunity.key} value={opportunity.key}>
+                                    {opportunity.value}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                    :
+                    <div>
+                        <label className="block text-gray-700 mb-1">Opportunity:</label>
+                        <p>{ opportunity?.title }</p>
+                    </div>
+                }
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
                 <Link to={navigatePath()} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
