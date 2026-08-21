@@ -24,6 +24,7 @@ function AppointmentEdit() {
 
     const isPersonContext = location.pathname.includes("/person/appointments/edit/");
     const isCompanyContext = location.pathname.includes("/company/appointments/edit/");
+    const isOpportunityContext = location.pathname.includes("/opportunity/appointments/edit/");
 
     const toLocalTime = (utcTime) => {
         if (!utcTime) return '';
@@ -41,6 +42,8 @@ function AppointmentEdit() {
             return `/company/details/${id}`;
         case location.pathname.includes("/person/appointments/edit/"):
             return `/person/details/${id}`;
+        case location.pathname.includes("/opportunity/appointments/edit/"):
+            return `/opportunity/details/${id}`;
         case location.pathname.includes("/dashboard/appointments/edit/"):
             return "/";
       }
@@ -55,6 +58,12 @@ function AppointmentEdit() {
     const selectPerson = () => {
         if (id === "") return true;
         if (isPersonContext) return false;
+        return true;
+    }
+
+    const selectOpportunity = () => {
+        if (id === "") return true;
+        if (isOpportunityContext) return false;
         return true;
     }
 
@@ -400,17 +409,24 @@ function AppointmentEdit() {
                     </div>
                 }
 
-                <div>
-                    <label className="block text-gray-700 mb-1">Opportunity:</label>
-                    <select type="text" name="opportunity_id" value={appointment?.opportunity_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
-                        <option value="">Select an opportunities</option>
-                        {opportunities.map(opportunity => (
-                            <option key={opportunity.key} value={opportunity.key}>
-                                {opportunity.value}
-                            </option>
-                        ))}
-                    </select>
-                </div>
+                { selectOpportunity() ?
+                    <div>
+                        <label className="block text-gray-700 mb-1">Opportunity:</label>
+                        <select type="text" name="opportunity_id" value={appointment?.opportunity_id || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" >
+                            <option value="">Select an opportunities</option>
+                            {opportunities.map(opportunity => (
+                                <option key={opportunity.key} value={opportunity.key}>
+                                    {opportunity.value}
+                                </option>
+                            ))}
+                        </select>
+                    </div>
+                :
+                    <div>
+                        <label className="block text-gray-700 mb-1">Opportunity:</label>
+                        <p>{ opportunities.find(opportunity => opportunity.key.toString() === appointment.opportunity_id?.toString())?.value }</p>
+                    </div>
+                }
 
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
                 <Link to={navigatePath()} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>

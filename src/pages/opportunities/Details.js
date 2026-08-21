@@ -35,6 +35,7 @@ function OpportunityDetails() {
     }, [location.key, location.pathname, id]);
 
     useEffect(() => {
+        console.log('Fetching appointments for opportunity ID:', id);
         if (!id) return;
         fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${id}/appointments`, {
             method: 'GET',
@@ -71,7 +72,7 @@ function OpportunityDetails() {
             <AppointmentNewCard link_path={`/opportunity/appointments/create/${id}`} />
             <div className="">
                 {appointments.map((record, index) => (
-                    <AppointmentCard record={record} link_path={`/appointment/show/${record.id}`} key={index} />
+                    <AppointmentCard record={record} link_path={`/opportunity/appointments/edit/${record.id}/${id}`} key={index} />
                 ))}
             </div>
         </div>

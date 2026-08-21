@@ -63,6 +63,7 @@ function App() {
             <Route path="opportunity/edit/:opportunity_id" element={<OpportunitiesIndex />} />
             <Route path="opportunities/create" element={<OpportunitiesIndex />} />
             <Route path="opportunity/appointments/create/:id" element={<OpportunityDetails />} />
+            <Route path="opportunity/appointments/edit/:appointment_id/:id" element={<OpportunityDetails />} />
             <Route path="company/opportunities/create/:id" element={<CompanyDetails />} />
             <Route path="company/opportunities/edit/:opportunity_id/:id" element={<CompanyDetails />} />
           </Route>
