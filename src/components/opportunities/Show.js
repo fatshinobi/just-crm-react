@@ -18,6 +18,34 @@ function OpportunityShow({ isDetails }) {
         2: "Closed"
     };
 
+    const defaultImage = (record) => {
+        switch (record.stage) {
+            case 0:
+                return "M12 8v4l3 3m-3-7a7 7 0 100 14A7 7 0 0012 8z";
+            case 1:
+                return "M1 12s8 7 11 7 11-7 11-7-8-7-11-7S1 12 1 12z";
+            case 2:
+                return "M12 2l3 9h9l-6 5 2 9-7-5-7 5 2-9z";
+            case 3:
+                return "M5 13l4 4L19 7";
+        }
+    };
+
+    const slassForStage = (record) => {
+        switch (record.stage) {
+            case 0:
+                return "text-gray-500";
+            case 1:
+                return "text-blue-500";
+            case 2:
+                return "text-orange-500";
+            case 3:
+                return "text-green-500";
+            default:
+                return "text-gray-500";
+        }
+    };
+
     useEffect(() => {
         if (!id) return;
         fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${id}`, {
@@ -48,6 +76,10 @@ function OpportunityShow({ isDetails }) {
             <h1 className="text-3xl font-bold m-4">Opportunity</h1>
             {opportunity ? (
                 <div className="m-4 p-4 border rounded-lg shadow-lg pb-7">
+                    <svg className={`w-16 h-16 md:w-20 md:h-20 mr-4 mb-4 ${slassForStage(opportunity)}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d={defaultImage(opportunity)}></path>
+                    </svg>
+
                     <h2 className="text-2xl font-semibold mb-2">{opportunity.title}</h2>
                     <p className="mb-5"><strong>Description:</strong> {opportunity.description}</p>
                     <p className="mb-1"><strong>Amount:</strong> ${opportunity.amount}</p>
