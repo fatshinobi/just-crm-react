@@ -1,6 +1,7 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import { useParams } from 'react-router-dom'
+import dayjs from 'dayjs';
 
 function AppointmentShow({isDetails}) {
     const { appointment_id } = useParams();
@@ -18,6 +19,11 @@ function AppointmentShow({isDetails}) {
                 // phone icon
                 return "M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z";
             }
+    };
+
+    const toLocalTimeView = (utcTime) => {
+        if (!utcTime) return '';
+        return dayjs.utc(utcTime).local().format('YYYY-MM-DD hh:mm A');
     };
 
     useEffect(() => {
@@ -55,7 +61,7 @@ function AppointmentShow({isDetails}) {
                     </svg>
 
                     <p className="mb-5"><strong>About:</strong> {appointment.about}</p>
-                    <p className="mb-1"><strong>When:</strong> {appointment.when}</p>
+                    <p className="mb-1"><strong>When:</strong> {toLocalTimeView(appointment.formatted_when)}</p>
                     <p className="mb-1"><strong>Company:</strong> <Link to={`/company/details/${appointment.customer_id}`} className="text-blue-800 font-medium py-1 px-3 transition-colors">{appointment.customer_name}</Link></p>
                     <p className="mb-1"><strong>Person:</strong> <Link to={`/person/details/${appointment.client_id}`} className="text-blue-800 font-medium py-1 px-3 transition-colors">{appointment.client_name}</Link></p>
                     <p className="mb-5"><strong>User:</strong> {appointment.user_name}</p>

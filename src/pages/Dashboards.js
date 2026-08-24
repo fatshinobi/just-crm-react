@@ -9,8 +9,6 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from 'dayjs';
-import utc from 'dayjs/plugin/utc';
-
 
 function Dashboards() {
     const [allEvents, setAllEvents] = useState([])
