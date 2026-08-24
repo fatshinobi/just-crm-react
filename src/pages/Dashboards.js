@@ -8,7 +8,7 @@ import { Calendar, dateFnsLocalizer } from "react-big-calendar";
 import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import dayjs from 'dayjs';
 
 function Dashboards() {
     const [allEvents, setAllEvents] = useState([])
@@ -29,7 +29,7 @@ function Dashboards() {
     });
 
     const convertToFinishDate = (startDate) => {
-        const finishDate = new Date(startDate);
+        const finishDate = new Date(dayjs.utc(startDate).local());
         return new Date(finishDate.getTime() + 30 * 60000);
     };
 
@@ -57,7 +57,7 @@ function Dashboards() {
           console.log('Appointments data:', data);
           const allEventsData = data.map(appointment => ({
             id: appointment.id,
-            start: new Date(appointment.formatted_when),
+            start: new Date(dayjs.utc(appointment.formatted_when).local()),
             finish: convertToFinishDate(appointment.formatted_when),
             description: appointment.about
           }));
