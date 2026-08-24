@@ -1,50 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from "react-router-dom"
+import { defaultImage, slassForStage, opportunityStages, opportunityStatuses } from "../../constants/opportunityOptions"
 
 function OpportunityShow({ isDetails }) {
     const { id } = useParams();
     const [opportunity, setOpportunity] = useState(null);
 
-    const stageNames = {
-        0: "Awareness",
-        1: "Interest",
-        2: "Decision",
-        3: "Buy"
-    };
-
-    const statusNames = {
-        0: "Draft",
-        1: "Active",
-        2: "Closed"
-    };
-
-    const defaultImage = (record) => {
-        switch (record.stage) {
-            case 0:
-                return "M12 8v4l3 3m-3-7a7 7 0 100 14A7 7 0 0012 8z";
-            case 1:
-                return "M1 12s8 7 11 7 11-7 11-7-8-7-11-7S1 12 1 12z";
-            case 2:
-                return "M12 2l3 9h9l-6 5 2 9-7-5-7 5 2-9z";
-            case 3:
-                return "M5 13l4 4L19 7";
-        }
-    };
-
-    const slassForStage = (record) => {
-        switch (record.stage) {
-            case 0:
-                return "text-gray-500";
-            case 1:
-                return "text-blue-500";
-            case 2:
-                return "text-orange-500";
-            case 3:
-                return "text-green-500";
-            default:
-                return "text-gray-500";
-        }
-    };
+    const stageNames = {};
+    opportunityStatuses.forEach(s => { stageNames[s.key] = s.value; });
 
     useEffect(() => {
         if (!id) return;
@@ -84,7 +47,6 @@ function OpportunityShow({ isDetails }) {
                     <p className="mb-5"><strong>Description:</strong> {opportunity.description}</p>
                     <p className="mb-1"><strong>Amount:</strong> ${opportunity.amount}</p>
                     <p className="mb-1"><strong>Stage:</strong> {stageNames[opportunity.stage] || "Unknown"}</p>
-                    <p className="mb-1"><strong>Status:</strong> {statusNames[opportunity.status] || "Unknown"}</p>
                     <p className="mb-1"><strong>Start:</strong> {opportunity.start}</p>
                     <p className="mb-1"><strong>Finish:</strong> {opportunity.finish}</p>
                     <p className="mb-1"><strong>Company:</strong> <Link to={`/company/details/${opportunity.customer_id}`} className="text-blue-800 font-medium py-1 px-3 transition-colors">{opportunity.customer_name}</Link></p>
