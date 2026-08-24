@@ -1,22 +1,13 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from "react-router-dom"
+import { defaultImage, slassForStage, opportunityStages, opportunityStatuses } from "../../constants/opportunityOptions"
 
 function OpportunityShow({ isDetails }) {
     const { id } = useParams();
     const [opportunity, setOpportunity] = useState(null);
 
-    const stageNames = {
-        0: "Awareness",
-        1: "Interest",
-        2: "Decision",
-        3: "Buy"
-    };
-
-    const statusNames = {
-        0: "Draft",
-        1: "Active",
-        2: "Closed"
-    };
+    const stageNames = {};
+    opportunityStatuses.forEach(s => { stageNames[s.key] = s.value; });
 
     useEffect(() => {
         if (!id) return;
@@ -48,11 +39,14 @@ function OpportunityShow({ isDetails }) {
             <h1 className="text-3xl font-bold m-4">Opportunity</h1>
             {opportunity ? (
                 <div className="m-4 p-4 border rounded-lg shadow-lg pb-7">
+                    <svg className={`w-16 h-16 md:w-20 md:h-20 mr-4 mb-4 ${slassForStage(opportunity)}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="3" d={defaultImage(opportunity)}></path>
+                    </svg>
+
                     <h2 className="text-2xl font-semibold mb-2">{opportunity.title}</h2>
                     <p className="mb-5"><strong>Description:</strong> {opportunity.description}</p>
                     <p className="mb-1"><strong>Amount:</strong> ${opportunity.amount}</p>
                     <p className="mb-1"><strong>Stage:</strong> {stageNames[opportunity.stage] || "Unknown"}</p>
-                    <p className="mb-1"><strong>Status:</strong> {statusNames[opportunity.status] || "Unknown"}</p>
                     <p className="mb-1"><strong>Start:</strong> {opportunity.start}</p>
                     <p className="mb-1"><strong>Finish:</strong> {opportunity.finish}</p>
                     <p className="mb-1"><strong>Company:</strong> <Link to={`/company/details/${opportunity.customer_id}`} className="text-blue-800 font-medium py-1 px-3 transition-colors">{opportunity.customer_name}</Link></p>
