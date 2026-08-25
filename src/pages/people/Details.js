@@ -116,6 +116,7 @@ function PersonDetails() {
 
     return (
         <div>
+            <Link to={`/person/show/${id}`} className="bg-gray-200 hover:bg-gray-400 px-7 py-3 mb-5 rounded-md text-md font-medium">Back to Person</Link>
             <h1 className="text-4xl font-bold m-4">Person details</h1>
             <label className="ml-4">Tags:</label>
             {tags.map((tagRecord, tagIndex) => (
