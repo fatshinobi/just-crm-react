@@ -117,6 +117,8 @@ function CompanyDetails() {
 
   return (
     <div>
+      <Link to={`/company/show/${id}`} className="bg-gray-200 hover:bg-gray-400 px-7 py-3 mb-5 rounded-md text-md font-medium">Back to Company</Link>
+
       <h1 className="text-4xl font-bold m-4">Company details</h1>
       <label className="ml-4">Tags:</label>
       {tags.map((tagRecord, tagIndex) => (
