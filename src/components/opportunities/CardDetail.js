@@ -14,6 +14,12 @@ function OpportunityCardDetail({ record, showViewButton = false, linkPath = null
                     {record.title}
                 </span>
 
+                <div className="flex flex-wrap mb-2">
+                    {record.tags.map((tagRecord, tagIndex) => (
+                        <span className="bg-gray-500 text-white text-xs mr-2 pl-2 pr-2 rounded">{tagRecord.name}</span>
+                    ))}
+                </div>
+
                 <span className="text-black text-lg mb-2">
                     Start: <span className="font-bold">{record.start}</span>
                     <span className="ml-2">Finish:</span> <span className="font-bold">{record.finish}</span>
