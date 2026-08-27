@@ -6,11 +6,11 @@ import AppointmentCard from "../../components/appointments/Card";
 import AppointmentNewCard from "../../components/appointments/NewCard";
 import OpportunityElementCard from "../../components/opportunities/ElementCard";
 import OpportunityNewCard from "../../components/opportunities/NewCard";
+import TagsDetails from "../../components/TagsDetails";
 
 function PersonDetails() {
     const [companies, setCompanies] = useState([]);
     const location = useLocation();
-    const [tags, setTags] = useState([]);
     const [appointments, setAppointments] = useState([]);
     const [opportunities, setOpportunities] = useState([]);
     const { id } = useParams();
@@ -38,31 +38,6 @@ function PersonDetails() {
             console.error("Error:", error);
         });
     }, [location.key, location.pathname]);
-
-    useEffect(() => {
-        if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}/tags`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-            return response.json();
-            } else {
-            throw new Error('Failed to fetch person tags');
-            }
-        })
-        .then(data => {
-            console.log('Person tags data:', data);
-            setTags(data);
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-}, [location.key, location.pathname]);
 
     useEffect(() => {
         if (!id) return;
@@ -118,12 +93,7 @@ function PersonDetails() {
         <div>
             <Link to={`/person/show/${id}`} className="bg-gray-200 hover:bg-gray-400 px-7 py-3 mb-5 rounded-md text-md font-medium">Back to Person</Link>
             <h1 className="text-4xl font-bold m-4">Person details</h1>
-            <label className="ml-4">Tags:</label>
-            {tags.map((tagRecord, tagIndex) => (
-                <span className="bg-gray-500 text-white font-semibold py-1 px-2 ml-2 rounded">{tagRecord}</span>
-            ))}
-            <Link to={`/person/tags/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-1 px-2 ml-2 rounded">Edit Tags+</Link>
-
+            <TagsDetails tagType={1} tagName="Person" />
             <h2 className="text-3xl font-bold m-4">Companies</h2>
 
             <div className="gap-4 flex m-5">

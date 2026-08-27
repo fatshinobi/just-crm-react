@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useLocation, Link, useParams } from "react-router-dom";
 import AppointmentCard from "../../components/appointments/Card";
 import AppointmentNewCard from "../../components/appointments/NewCard";
+import TagsDetails from "../../components/TagsDetails";
 
 function OpportunityDetails() {
     const [appointments, setAppointments] = useState([]);
@@ -67,6 +68,8 @@ function OpportunityDetails() {
             )}
 
             <h1 className="text-4xl font-bold m-4">Opportunity details</h1>
+            <TagsDetails tagType={2} tagName="Opportunity" />
+
             <h2 className="text-3xl font-bold m-4">Appointments</h2>
 
             <AppointmentNewCard link_path={`/opportunity/appointments/create/${id}`} />
