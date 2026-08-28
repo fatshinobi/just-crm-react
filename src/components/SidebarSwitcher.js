@@ -52,6 +52,8 @@ function SidebarSwitcher() {
           return <EditTags tagType={"0"} />;
         case location.pathname.includes("/person/tags"):
           return <EditTags tagType={"1"} />;
+        case location.pathname.includes("/opportunity/tags"):
+          return <EditTags tagType={"2"} />;
         case location.pathname.includes("/company_person/create"):
           return <CompanyPersonCreate />;
         case location.pathname.includes("/company_person/edit"):

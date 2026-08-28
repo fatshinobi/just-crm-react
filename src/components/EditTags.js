@@ -7,13 +7,45 @@ function EditTags({ tagType }) {
     const [tags, setTags] = useState("");
     const [cloudTags, setCloudTags] = useState([]);
     const navigate = useNavigate();
-    const url = tagType === "0" ? `/customers/${id}/tags` : `/clients/${id}/tags`
-    const tags_url = tagType === "0" ? "/customer_tags" : "/client_tags";
-    const navigation_route = tagType === "0" ? "company" : "person";
+
+    const tags_url = () => {
+        switch (tagType) {
+            case "0":
+                return "/customer_tags";
+            case "1":
+                return "/client_tags";
+            case "2":
+                return "/opportunity_tags";
+
+        }
+    }
+
+    const url = () => {
+        switch (tagType) {
+            case "0":
+                return `/customers/${id}/tags`
+            case "1":
+                return `/clients/${id}/tags`
+            case "2":
+                return `/opportunities/${id}/tags`
+
+        }
+    }
+
+    const navigation_route = () => {
+        switch (tagType) {
+            case "0":
+                return "company"
+            case "1":
+                return "person";
+            case "2":
+                return "opportunity";
+        }
+    }
 
     useEffect(() => {
         if (!id) return;
-            fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
+            fetch(`${process.env.REACT_APP_API_HOST}${url()}`, {
                 method: 'GET',
                 headers: {
                     'content-type': 'application/json',
@@ -24,11 +56,11 @@ function EditTags({ tagType }) {
             if (response.ok) {
             return response.json();
             } else {
-            throw new Error('Failed to fetch company tags');
+            throw new Error('Failed to fetch tags');
             }
         })
         .then(data => {
-            console.log('Company Person data:', data);
+            console.log('Tags data:', data);
             setTags(data.join(", "));
         })
         .catch(error => {
@@ -37,7 +69,7 @@ function EditTags({ tagType }) {
     }, [id]);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}${tags_url}`, {
+        fetch(`${process.env.REACT_APP_API_HOST}${tags_url()}`, {
             method: 'GET',
             headers: {
                 'content-type': 'application/json',
@@ -71,7 +103,7 @@ function EditTags({ tagType }) {
         const formData = new FormData();
         formData.append('tags', tags);
 
-        fetch(`${process.env.REACT_APP_API_HOST}${url}`, {
+        fetch(`${process.env.REACT_APP_API_HOST}${url()}`, {
             method: 'POST',
             headers: {
                 'authorization': localStorage.getItem('accessToken')
@@ -80,7 +112,7 @@ function EditTags({ tagType }) {
         })
         .then(response => {
             if (response.ok) {
-                navigate(`/${navigation_route}/details/${id}`);
+                navigate(`/${navigation_route()}/details/${id}`);
             } else {
                 throw new Error('Failed to update customer tags');
             }
@@ -106,7 +138,7 @@ function EditTags({ tagType }) {
                     <input type="text" name="tags" value={tags || ''} onChange={handleChange} className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
-                <Link to={`/${navigation_route}/details/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-6 ml-2 rounded">View</Link>
+                <Link to={`/${navigation_route()}/details/${id}`} className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-3 px-6 ml-2 rounded">View</Link>
             </form>
             <TagsCloud cloudTags={cloudTags} processTag={addTagToList} />
         </div>
