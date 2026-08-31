@@ -4,12 +4,24 @@ import { useNavigate } from 'react-router-dom'
 function SearchPanel({ tagType }) {
     const [searchValue, setSearchValue] = useState([]);
     const navigate = useNavigate();
-    const navigationRoute = tagType === "0" ? "companies" : "people";
+
+    const navigationRoute = () => {
+        switch (tagType) {
+            case "0":
+                return "companies";
+            case "1":
+                return "people";
+            case "2":
+                return "opportunities";
+            default:
+                return "";
+        }
+    }
 
     const handleChange = (e) => {
         const { value } = e.target;
         setSearchValue(value);
-        const resolvedRoute = (value === "") ? `/${navigationRoute}` : `/${navigationRoute}/search/${value}`
+        const resolvedRoute = (value === "") ? `/${navigationRoute()}` : `/${navigationRoute()}/search/${value}`
 
         navigate(resolvedRoute);
     };

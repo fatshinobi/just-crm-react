@@ -100,7 +100,7 @@ function SidebarSwitcher() {
         case location.pathname.includes("/person/opportunities/edit"):
           return <OpportunityEdit />;
         case location.pathname.includes("/opportunities"):
-          return <div><Sidebar /><OpportunityTagsSidebar /></div>;
+          return <div><SearchPanel tagType={"2"} /><Sidebar /><OpportunityTagsSidebar /></div>;
         case location.pathname.includes("/person/details"):
           return <PersonShow isDetails={true} />;
         default:
