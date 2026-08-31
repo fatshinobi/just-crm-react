@@ -57,6 +57,7 @@ function App() {
             <Route path="dashboard/appointments/create" element={<Dashboards />} />
             <Route path="person/appointments/create/:id" element={<PersonDetails />} />
             <Route path="person/appointments/edit/:appointment_id/:id" element={<PersonDetails />} />
+            <Route path="opportunities/search/:query" element={<OpportunitiesIndex />} />
             <Route path="opportunities/tags/:tag" element={<OpportunitiesIndex />} />
             <Route path="opportunities" element={<OpportunitiesIndex />} />
             <Route path="opportunity/show/:id" element={<OpportunitiesIndex />} />
