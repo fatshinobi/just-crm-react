@@ -21,6 +21,7 @@ import OpportunityShow from "./opportunities/Show"
 import OpportunityCreate from "./opportunities/Create"
 import OpportunityEdit from "./opportunities/Edit"
 import OpportunityTagsSidebar from "./opportunities/TagsSidebar"
+import SalesFunnelBar from "./SalesFunnelBar"
 
 function SidebarSwitcher() {
     const location = useLocation();
@@ -100,7 +101,7 @@ function SidebarSwitcher() {
         case location.pathname.includes("/person/opportunities/edit"):
           return <OpportunityEdit />;
         case location.pathname.includes("/opportunities"):
-          return <div><SearchPanel tagType={"2"} /><Sidebar /><OpportunityTagsSidebar /></div>;
+          return <div><SearchPanel tagType={"2"} /><Sidebar /><OpportunityTagsSidebar /><SalesFunnelBar /></div>;
         case location.pathname.includes("/person/details"):
           return <PersonShow isDetails={true} />;
         default:
