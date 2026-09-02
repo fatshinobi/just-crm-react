@@ -1,10 +1,17 @@
 import { useEffect, useState } from "react";
 import { FunnelChart } from 'react-funnel-pipeline'
 import 'react-funnel-pipeline/dist/index.css'
+import { useNavigate } from 'react-router-dom'
 import { opportunityStages } from '../constants/opportunityOptions.js'
 
 function SalesFunnelBar() {
     const [funnelData, setFunnelData] = useState([]);
+    const navigate = useNavigate();
+
+    const handleRowClick = (row) => {
+        const stage_id = opportunityStages.find(stage => stage.value === row.name)?.key;
+        navigate(`/opportunities/stages/${stage_id}`);
+    };
 
     useEffect(() => {
         fetch(`${process.env.REACT_APP_API_HOST}//opportunities/by_stages`, {
@@ -36,10 +43,10 @@ function SalesFunnelBar() {
             <FunnelChart 
                 pallette={['#4466a3', '#4e97a8', '#1d7b63', '#f39c35']}
                 data={opportunityStages.map(stage => ({ name: stage.value, value: funnelData[stage.key] || 0 }))}
+                onRowClick={handleRowClick}
             />
         </div>
-        
-    )
+    );
 }
 
 export default SalesFunnelBar;

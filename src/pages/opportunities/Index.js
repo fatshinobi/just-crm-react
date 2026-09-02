@@ -7,15 +7,18 @@ function OpportunitiesIndex() {
     const location = useLocation();
     const { tag } = useParams();
     const { query } = useParams();
+    const { stage } = useParams();
 
     useEffect(() => {
         if (!location.pathname.includes('/opportunities') && opportunities.length > 0) return;
 
         let url = `${process.env.REACT_APP_API_HOST}/opportunities`;
         if (typeof tag !== "undefined") {
-          url = `${url}?tag=${tag}`;
+            url = `${url}?tag=${tag}`;
         } else if (typeof query !== "undefined" && query.length > 2 ) {
-          url = `${url}?search=${query}`;
+            url = `${url}?search=${query}`;
+        } else if (typeof stage !== "undefined" ) {
+            url = `${url}?stage=${stage}`;
         }
 
         fetch(url, {
