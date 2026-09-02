@@ -59,7 +59,7 @@ function App() {
             <Route path="person/appointments/edit/:appointment_id/:id" element={<PersonDetails />} />
             <Route path="opportunities/search/:query" element={<OpportunitiesIndex />} />
             <Route path="opportunities/tags/:tag" element={<OpportunitiesIndex />} />
-            <Route path="opportunities/stages/:id" element={<OpportunitiesIndex />} />
+            <Route path="opportunities/stages/:stage" element={<OpportunitiesIndex />} />
             <Route path="opportunities" element={<OpportunitiesIndex />} />
             <Route path="opportunity/show/:id" element={<OpportunitiesIndex />} />
             <Route path="opportunity/details/:id" element={<OpportunityDetails />} />
