@@ -8,6 +8,7 @@ import AppointmentNewCard from "../../components/appointments/NewCard";
 import OpportunityElementCard from "../../components/opportunities/ElementCard";
 import OpportunityNewCard from "../../components/opportunities/NewCard";
 import TagsDetails from "../../components/TagsDetails";
+import { apiGet } from "../../api/apiFetch";
 
 function CompanyDetails() {
   const [people, setPeople] = useState([]);
@@ -17,20 +18,7 @@ function CompanyDetails() {
   const { id } = useParams();
 
   useEffect(() => {
-    fetch(`${process.env.REACT_APP_API_HOST}/customers/clients/${id}`, {
-      method: "GET",
-      headers: {
-        "content-type": "application/json",
-        authorization: localStorage.getItem("accessToken"),
-      },
-    })
-      .then((response) => {
-        if (response.ok) {
-          return response.json();
-        } else {
-          throw new Error("Failed to fetch people");
-        }
-      })
+    apiGet(`${process.env.REACT_APP_API_HOST}/customers/clients/${id}`)
       .then((data) => {
         console.log("People data:", data);
         setPeople(data);
@@ -38,24 +26,11 @@ function CompanyDetails() {
       .catch((error) => {
         console.error("Error:", error);
       });
-    }, [location.key, location.pathname]);
+  }, [location.key, location.pathname]);
 
-    useEffect(() => {
+  useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/customers/${id}/appointments`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-            return response.json();
-            } else {
-            throw new Error('Failed to fetch company appointments');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/customers/${id}/appointments`)
         .then(data => {
             console.log('Company Appointments data:', data);
             setAppointments(data);
@@ -63,24 +38,11 @@ function CompanyDetails() {
         .catch(error => {
             console.error('Error:', error);
         });
-    }, [location.key, location.pathname]);
+  }, [location.key, location.pathname]);
 
-    useEffect(() => {
+  useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/customers/${id}/opportunities`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch company opportunities');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/customers/${id}/opportunities`)
         .then(data => {
             console.log('Company Opportunities data:', data);
             setOpportunities(data);
@@ -88,7 +50,7 @@ function CompanyDetails() {
         .catch(error => {
             console.error('Error:', error);
         });
-    }, [location.key, location.pathname]);
+  }, [location.key, location.pathname]);
 
   return (
     <div>

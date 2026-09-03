@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import { useLocation, useParams } from "react-router-dom";
 import OpportunityCard from "../../components/opportunities/Card";
+import { apiGet } from "../../api/apiFetch";
 
 function OpportunitiesIndex() {
     const [opportunities, setOpportunities] = useState([]);
@@ -21,20 +22,7 @@ function OpportunitiesIndex() {
             url = `${url}?stage=${stage}`;
         }
 
-        fetch(url, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch opportunities');
-          }
-        })
+        apiGet(url)
         .then(data => {
           console.log('Opportunities data:', data);
           setOpportunities(data);

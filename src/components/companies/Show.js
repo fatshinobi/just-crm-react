@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import { useParams } from 'react-router-dom'
+import { apiGet } from "../../api/apiFetch"
 
 function CompanyShow({isDetails}) {
     const { id } = useParams();
@@ -9,20 +10,7 @@ function CompanyShow({isDetails}) {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/customers/${id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch company');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/customers/${id}`)
         .then(data => {
           console.log('Company data:', data);
           setCompany(data);

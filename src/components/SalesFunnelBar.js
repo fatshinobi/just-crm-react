@@ -3,6 +3,7 @@ import { FunnelChart } from 'react-funnel-pipeline'
 import 'react-funnel-pipeline/dist/index.css'
 import { useNavigate } from 'react-router-dom'
 import { opportunityStages } from '../constants/opportunityOptions.js'
+import { apiGet } from "../api/apiFetch";
 
 function SalesFunnelBar() {
     const [funnelData, setFunnelData] = useState([]);
@@ -14,20 +15,7 @@ function SalesFunnelBar() {
     };
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}//opportunities/by_stages`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch Sales funnel');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/opportunities/by_stages`)
         .then(data => {
             console.log("Sales funnel data:", data);
             setFunnelData(data);

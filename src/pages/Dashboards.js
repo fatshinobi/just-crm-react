@@ -9,6 +9,7 @@ import "react-big-calendar/lib/css/react-big-calendar.css";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import dayjs from 'dayjs';
+import { apiGet } from "../api/apiFetch";
 
 function Dashboards() {
     const [allEvents, setAllEvents] = useState([])
@@ -39,27 +40,14 @@ function Dashboards() {
 
     useEffect(() => {
         const userId = localStorage.getItem('userDataId');
-        fetch(`${process.env.REACT_APP_API_HOST}/users/${userId}/appointments`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch Appointments');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/users/${userId}/appointments`)
         .then(data => {
           console.log('Appointments data:', data);
           const allEventsData = data.map(appointment => ({
-            id: appointment.id,
-            start: new Date(dayjs.utc(appointment.formatted_when).local()),
-            finish: convertToFinishDate(appointment.formatted_when),
-            description: appointment.about
+              id: appointment.id,
+              start: new Date(dayjs.utc(appointment.formatted_when).local()),
+              finish: convertToFinishDate(appointment.formatted_when),
+              description: appointment.about
           }));
           setAllEvents(allEventsData);
         })

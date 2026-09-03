@@ -1,26 +1,14 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import TagsCloud from "../TagsCloud";
+import { apiGet } from "../../api/apiFetch";
 
 function OpportunityTagsSidebar() {
     const [cloudTags, setCloudTags] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/opportunity_tags`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch tags');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/opportunity_tags`)
         .then(data => {
             console.log('Tags data:', data);
             setCloudTags(data);

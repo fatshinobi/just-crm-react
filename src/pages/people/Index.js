@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import { useLocation, useParams } from "react-router-dom";
 import RecordList from "../../components/RecordList";
+import { apiGet } from "../../api/apiFetch";
 
 
 function PeopleIndex() {
@@ -19,20 +20,7 @@ function PeopleIndex() {
           url = `${url}?search=${query}`;
         }
 
-        fetch(url, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch people');
-          }
-        })
+        apiGet(url)
         .then(data => {
           console.log('People data:', data);
           setPeople(data);
@@ -53,9 +41,9 @@ function PeopleIndex() {
                 show_path: `/person/show/${person.id}`,
                 edit_path: `/person/edit/${person.id}`,
                 avatar_url: person.avatar_url,
-                tags: person.tags.map(tag => (tag.name))
-              })
-            )} defaultImage="/def_person_ava.png" />
+                tags: (person.tags || []).map(tag => tag.name)
+              }
+            ))} defaultImage="/def_person_ava.png" />
         </div>
     );
 }
