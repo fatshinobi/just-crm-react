@@ -1,5 +1,5 @@
 import {useEffect, useState} from "react";
-import { useLocation, useParams } from "react-router-dom";
+import { useLocation, useParams, useNavigate } from "react-router-dom";
 import RecordList from "../../components/RecordList";
 
 
@@ -8,6 +8,7 @@ function CompaniesIndex() {
     const location = useLocation();
     const { tag } = useParams();
     const { query } = useParams();
+    const navigate = useNavigate();
 
     useEffect(() => {
         if (!location.pathname.includes('/companies') && location.pathname !== '/' && companies.length > 0) return;
@@ -29,6 +30,9 @@ function CompaniesIndex() {
         .then(response => {
           if (response.ok) {
             return response.json();
+          } else if (response.status === 401) {
+            localStorage.removeItem("accessToken");
+            navigate(0);
           } else {
             throw new Error('Failed to fetch companies');
           }
@@ -42,22 +46,26 @@ function CompaniesIndex() {
         });
     }, [location.key, location.pathname]);
 
-    return (
-        <div>
-            <h1 className="text-4xl font-bold m-4">Companies List</h1>
-            <RecordList records={companies.map(company => (
-              {
-                id: company.id,
-                caption: company.name,
-                description: company.about,
-                show_path: `/company/show/${company.id}`,
-                edit_path: `/company/edit/${company.id}`,
-                avatar_url: company.avatar_url,
-                tags: company.tags.map(tag => (tag.name))
-              })
-            )} defaultImage="/def_company_logo.png" />
-        </div>
-    );
+    if (!companies || companies.length === 0) {
+        return <p className="m-4">No companies found.</p>;
+    } else if (companies.length > 0) {
+      return (
+          <div>
+              <h1 className="text-4xl font-bold m-4">Companies List</h1>
+              <RecordList records={companies?.map(company => (
+                {
+                  id: company.id,
+                  caption: company.name,
+                  description: company.about,
+                  show_path: `/company/show/${company.id}`,
+                  edit_path: `/company/edit/${company.id}`,
+                  avatar_url: company.avatar_url,
+                  tags: company.tags?.map(tag => (tag.name))
+                })
+              )} defaultImage="/def_company_logo.png" />
+          </div>
+      );
+    }
 }
 
 export default CompaniesIndex;

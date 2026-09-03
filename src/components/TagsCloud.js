@@ -9,7 +9,7 @@ function TagsCloud({cloudTags, processTag}) {
 
     return (
         <div className="m-1 flex flex-wrap gap-2">
-            {cloudTags.map((tagRecord, tagIndex) => (
+            {cloudTags?.map((tagRecord, tagIndex) => (
                 <button
                     key={tagIndex}
                     onClick={() => processTag(tagRecord[0])}
