@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import { useParams } from 'react-router-dom'
+import { apiGet } from "../../api/apiFetch"
 
 function PersonShow({isDetails}) {
     const { id } = useParams();
@@ -9,20 +10,7 @@ function PersonShow({isDetails}) {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch person');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/${id}`)
         .then(data => {
           console.log('Person data:', data);
           setPerson(data);

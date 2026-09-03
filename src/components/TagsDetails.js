@@ -1,10 +1,12 @@
 import { useEffect, useState } from "react";
-import { useLocation, Link, useParams } from "react-router-dom";
+import { useLocation, Link, useParams, useNavigate } from "react-router-dom";
+import { apiGet } from "../api/apiFetch";
 
 function TagsDetails({ tagType, tagName }) {
     const [tags, setTags] = useState([]);
     const location = useLocation();
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const tagApiEndpoints = {
         0: "customers",
@@ -26,20 +28,7 @@ function TagsDetails({ tagType, tagName }) {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/${tagApiEndpoints[tagType]}/${id}/tags`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch tags');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/${tagApiEndpoints[tagType]}/${id}/tags`)
         .then(data => {
             console.log(`${tagName} tags data:`, data);
             setTags(data);

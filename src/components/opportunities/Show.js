@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react'
 import { Link, useParams } from "react-router-dom"
+import { apiGet } from "../../api/apiFetch"
 import { defaultImage, slassForStage, opportunityStages, opportunityStatuses } from "../../constants/opportunityOptions"
 
 function OpportunityShow({ isDetails }) {
@@ -11,20 +12,7 @@ function OpportunityShow({ isDetails }) {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch opportunity');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/opportunities/${id}`)
         .then(data => {
             console.log('Opportunity data:', data);
             setOpportunity(data);

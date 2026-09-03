@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { Link } from "react-router-dom"
 import { useParams } from 'react-router-dom'
 import dayjs from 'dayjs';
+import { apiGet } from "../../api/apiFetch"
 import { defaultImage } from "../../constants/appointmentOptions";
 
 function AppointmentShow({isDetails}) {
@@ -15,20 +16,7 @@ function AppointmentShow({isDetails}) {
 
     useEffect(() => {
         if (!appointment_id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/appointments/${appointment_id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch appointment');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/appointments/${appointment_id}`)
         .then(data => {
           console.log('Appointment data:', data);
           setAppointment(data);

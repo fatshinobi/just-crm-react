@@ -7,6 +7,7 @@ import AppointmentNewCard from "../../components/appointments/NewCard";
 import OpportunityElementCard from "../../components/opportunities/ElementCard";
 import OpportunityNewCard from "../../components/opportunities/NewCard";
 import TagsDetails from "../../components/TagsDetails";
+import { apiGet } from "../../api/apiFetch";
 
 function PersonDetails() {
     const [companies, setCompanies] = useState([]);
@@ -16,20 +17,7 @@ function PersonDetails() {
     const { id } = useParams();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/customers/${id}`, {
-            method: "GET",
-            headers: {
-                "content-type": "application/json",
-                authorization: localStorage.getItem("accessToken"),
-            },
-        })
-        .then((response) => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error("Failed to fetch companies");
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/customers/${id}`)
         .then((data) => {
             console.log("Companies data:", data);
             setCompanies(data);
@@ -41,20 +29,7 @@ function PersonDetails() {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}/appointments`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-            return response.json();
-            } else {
-            throw new Error('Failed to fetch person appointments');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/${id}/appointments`)
         .then(data => {
             console.log('Person Appointments data:', data);
             setAppointments(data);
@@ -66,20 +41,7 @@ function PersonDetails() {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}/opportunities`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch person opportunities');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/${id}/opportunities`)
         .then(data => {
             console.log('Person Opportunities data:', data);
             setOpportunities(data);

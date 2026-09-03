@@ -3,6 +3,7 @@ import { useLocation, Link, useParams } from "react-router-dom";
 import AppointmentCard from "../../components/appointments/Card";
 import AppointmentNewCard from "../../components/appointments/NewCard";
 import TagsDetails from "../../components/TagsDetails";
+import { apiGet } from "../../api/apiFetch";
 
 function OpportunityDetails() {
     const [appointments, setAppointments] = useState([]);
@@ -12,20 +13,7 @@ function OpportunityDetails() {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-            return response.json();
-            } else {
-                throw new Error('Failed to fetch opportunity');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/opportunities/${id}`)
         .then(data => {
             console.log('Opportunity data:', data);
             setOpportunity(data);
@@ -36,22 +24,8 @@ function OpportunityDetails() {
     }, [location.key, location.pathname, id]);
 
     useEffect(() => {
-        console.log('Fetching appointments for opportunity ID:', id);
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${id}/appointments`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-            return response.json();
-            } else {
-                throw new Error('Failed to fetch opportunity appointments');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/opportunities/${id}/appointments`)
         .then(data => {
             console.log('Opportunity Appointments data:', data);
             setAppointments(data);

@@ -18,7 +18,15 @@ import OpportunityDetails from "./pages/opportunities/Details";
 function App() {
   const [accessToken, setAccessToken] = useState(null);
 
-  if (!accessToken) {
+  const accessTokenExists = () => {
+    const token = localStorage.getItem("accessToken");
+    if (token) {
+      return true;
+    }
+    return false;
+  };
+
+  if (!accessTokenExists()) {
     return <Login setAccessToken={setAccessToken} />
   } else {
     return (
