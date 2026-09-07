@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
+import { apiGet, apiPatch } from '../../api/apiFetch'
 
 function PersonEdit() {
     const { id } = useParams();
@@ -11,20 +12,7 @@ function PersonEdit() {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch person');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/${id}`)
         .then(data => {
           console.log('Person data:', data);
           setPerson(data);
@@ -36,20 +24,7 @@ function PersonEdit() {
 
     useEffect(() => {
         if (!id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch users');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/users`)
         .then(data => {
           console.log('Users data:', data);
           setUsers(data);
@@ -100,23 +75,10 @@ function PersonEdit() {
             formData.append('avatar', selectedFile);
         }
 
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
-            method: 'PATCH',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                //return response.json();
-                navigate("/people");
-            } else {
-                throw new Error('Failed to update person');
-            }
-        })
+        apiPatch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, formData)
         .then(data => {
             console.log('Person updated:', data);
+            navigate("/people");
         })
         .catch(error => {
             console.error('Error:', error);

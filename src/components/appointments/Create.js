@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom'
 import { communicationTypes, appointmentStatuses } from '../../constants/appointmentOptions';
+import { apiGet, apiPost } from '../../api/apiFetch';
 
 function AppointmentCreate() {
     const { id = "" } = useParams();
@@ -93,20 +94,7 @@ function AppointmentCreate() {
     }
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch users');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/users`)
         .then(data => {
           console.log('Users data:', data);
           setUsers(data);
@@ -122,20 +110,7 @@ function AppointmentCreate() {
         :
             `${process.env.REACT_APP_API_HOST}/catalogs/customers`
 
-        fetch(customerUrl, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch customers');
-          }
-        })
+        apiGet(customerUrl)
         .then(data => {
           console.log('Customers data:', data);
           setCompanies(data);
@@ -146,25 +121,12 @@ function AppointmentCreate() {
     }, []);
 
     useEffect(() => {
-        if ((typeof appointment.customer_id === "undefined") || (appointment.customer_id === "")) {
+        if ((typeof appointment?.customer_id === "undefined") || (appointment?.customer_id === "")) {
             setPeople([]);
             return;
         }
 
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${appointment.customer_id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch people');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${appointment.customer_id}`)
         .then(data => {
           console.log('People data:', data);
           setPeople(data);
@@ -172,24 +134,11 @@ function AppointmentCreate() {
         .catch(error => {
           console.error('Error:', error);
         });
-    }, [appointment.customer_id]);
+    }, [appointment?.customer_id]);
 
     useEffect(() => {
         if (!isPersonContext || id === "") return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch person');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/${id}`)
         .then(data => {
             console.log('Person data:', data);
             setPerson(data);
@@ -201,20 +150,7 @@ function AppointmentCreate() {
 
     useEffect(() => {
         if (!isOpportunityContext) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch opportunity');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/opportunities/${id}`)
         .then(data => {
             console.log('Opportunity data:', data);
             setOpportunity(data);
@@ -227,17 +163,17 @@ function AppointmentCreate() {
 
     useEffect(() => {
         let opportunityUrl = null;
-        if (isCompanyContext && ((typeof appointment.customer_id === "undefined") || (appointment.customer_id === ""))) {
+        if (isCompanyContext && ((typeof appointment?.customer_id === "undefined") || (appointment?.customer_id === ""))) {
             setOpportunities([]);
             return;
         }
 
-        if (isPersonContext && ((typeof appointment.client_id === "undefined") || (appointment.client_id === ""))) {
+        if (isPersonContext && ((typeof appointment?.client_id === "undefined") || (appointment?.client_id === ""))) {
             setOpportunities([]);
             return;
         }
 
-        if ((typeof appointment.client_id !== "undefined") && (appointment.client_id !== "") && (typeof appointment.customer_id !== "undefined") && (appointment.customer_id !== "")) {
+        if ((typeof appointment?.client_id !== "undefined") && (appointment?.client_id !== "") && (typeof appointment?.customer_id !== "undefined") && (appointment?.customer_id !== "")) {
             opportunityUrl = `catalogs/opportunities_for_client_customer/${appointment.client_id}/${appointment.customer_id}`;
         } else if (isPersonContext) {
             opportunityUrl = `catalogs/opportunities_for_client/${appointment.client_id}`;
@@ -245,20 +181,8 @@ function AppointmentCreate() {
             opportunityUrl = `catalogs/opportunities_for_customer/${appointment.customer_id}`;
         }
 
-        fetch(`${process.env.REACT_APP_API_HOST}/${opportunityUrl}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch opportunities');
-          }
-        })
+        if (!opportunityUrl) return;
+        apiGet(`${process.env.REACT_APP_API_HOST}/${opportunityUrl}`)
         .then(data => {
           console.log('Opportunities data:', data);
           setOpportunities(data);
@@ -266,7 +190,7 @@ function AppointmentCreate() {
         .catch(error => {
           console.error('Error:', error);
         });
-    }, [appointment.customer_id, appointment.client_id]);
+    }, [appointment?.customer_id, appointment?.client_id]);
 
     const fieldValidate = (record, value) => {
         if ((record === "about") && ((value === null) || (value.trim() === ""))) {
@@ -310,22 +234,10 @@ function AppointmentCreate() {
         if (appointment.opportunity_id !== null) formData.append('opportunity_id', appointment.opportunity_id);
         if ((appointment.client_id !== null) && (typeof appointment.client_id !== "undefined")) formData.append('client_id', appointment.client_id);
 
-        fetch(`${process.env.REACT_APP_API_HOST}/appointments`, {
-            method: 'POST',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                navigate(navigatePath());
-            } else {
-                throw new Error('Failed to create appointment');
-            }
-        })
+        apiPost(`${process.env.REACT_APP_API_HOST}/appointments`, formData)
         .then(data => {
             console.log('Appointment created:', data);
+            navigate(navigatePath());
         })
         .catch(error => {
             console.error('Error:', error);

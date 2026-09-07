@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import ApiAutocomplete from "../ApiAutocomplete"
+import { apiGet, apiPost } from "../../api/apiFetch";
 
 function PersonCompanyCreate() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
@@ -10,20 +11,7 @@ function PersonCompanyCreate() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/customers_by_client/${id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch companies');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/customers_by_client/${id}`)
         .then(data => {
           console.log('Companies data:', data);
           setCompanies(data);
@@ -62,22 +50,10 @@ function PersonCompanyCreate() {
         if (companyPerson.customer_id !== null) formData.append('customer_id', companyPerson.customer_id);
         formData.append('client_id', id);
 
-        fetch(`${process.env.REACT_APP_API_HOST}/client_customers`, {
-            method: 'POST',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                navigate(`/person/details/${id}`);
-            } else {
-                throw new Error('Failed to create company for the person');
-            }
-        })
+        apiPost(`${process.env.REACT_APP_API_HOST}/client_customers`, formData)
         .then(data => {
             console.log('Company for the person created:', data);
+            navigate(`/person/details/${id}`);
         })
         .catch(error => {
             console.error('Error:', error);

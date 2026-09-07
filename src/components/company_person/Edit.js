@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import ApiAutocomplete from "../ApiAutocomplete"
+import { apiGet, apiPatch } from "../../api/apiFetch";
 
 function CompanyPersonEdit() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
@@ -11,20 +12,7 @@ function CompanyPersonEdit() {
 
     useEffect(() => {
         if (!person_id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/client_customers/${person_id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-            return response.json();
-            } else {
-            throw new Error('Failed to fetch person');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/client_customers/${person_id}`)
         .then(data => {
             console.log('Company Person data:', data);
             setCompanyPerson(data);
@@ -60,22 +48,10 @@ function CompanyPersonEdit() {
         if (companyPerson.role !== null) formData.append('role', companyPerson.role);
 if (companyPerson.client_id !== null) formData.append('client_id', companyPerson.client_id);
 
-         fetch(`${process.env.REACT_APP_API_HOST}/client_customers/${person_id}`, {
-             method: 'PATCH',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                navigate(`/company/details/${companyPerson.customer_id}`);
-            } else {
-                throw new Error('Failed to create person for the company');
-            }
-        })
+        apiPatch(`${process.env.REACT_APP_API_HOST}/client_customers/${person_id}`, formData)
         .then(data => {
             console.log('Person for the company created:', data);
+            navigate(`/company/details/${companyPerson.customer_id}`);
         })
         .catch(error => {
             console.error('Error:', error);

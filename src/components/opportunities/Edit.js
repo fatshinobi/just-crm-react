@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom'
 import { opportunityStages, opportunityStatuses } from '../../constants/opportunityOptions';
+import { apiGet, apiPatch } from '../../api/apiFetch';
 
 function OpportunityEdit() {
     const { id = "" } = useParams();
@@ -41,20 +42,7 @@ function OpportunityEdit() {
     }
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${opportunity_id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch opportunity');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/opportunities/${opportunity_id}`)
         .then(data => {
           console.log('Opportunity data:', data);
           setOpportunity(data);
@@ -65,20 +53,7 @@ function OpportunityEdit() {
     }, [opportunity_id]);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch users');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/users`)
         .then(data => {
           console.log('Users data:', data);
           setUsers(data);
@@ -94,20 +69,7 @@ function OpportunityEdit() {
         :
             `${process.env.REACT_APP_API_HOST}/catalogs/customers`
 
-        fetch(customerUrl, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch customers');
-          }
-        })
+        apiGet(customerUrl)
         .then(data => {
           console.log('Customers data:', data);
           setCompanies(data);
@@ -122,20 +84,7 @@ function OpportunityEdit() {
             setPeople([]);
             return;
         }
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${opportunity.customer_id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch people');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${opportunity.customer_id}`)
         .then(data => {
           console.log('People data:', data);
           setPeople(data);
@@ -147,20 +96,7 @@ function OpportunityEdit() {
 
     useEffect(() => {
         if (!isPersonContext || id === "") return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch person');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/${id}`)
         .then(data => {
             console.log('Person data:', data);
             setPerson(data);
@@ -220,22 +156,10 @@ function OpportunityEdit() {
         if (opportunity.customer_id !== null) formData.append('customer_id', opportunity.customer_id);
         if ((opportunity.client_id !== null) && (typeof opportunity.client_id !== "undefined")) formData.append('client_id', opportunity.client_id);
 
-        fetch(`${process.env.REACT_APP_API_HOST}/opportunities/${opportunity_id}`, {
-            method: 'PATCH',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                navigate(navigatePath());
-            } else {
-                throw new Error('Failed to update opportunity');
-            }
-        })
+        apiPatch(`${process.env.REACT_APP_API_HOST}/opportunities/${opportunity_id}`, formData)
         .then(data => {
             console.log('Opportunity updated:', data);
+            navigate(navigatePath());
         })
         .catch(error => {
             console.error('Error:', error);

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate, Link, useParams, useLocation } from 'react-router-dom'
 import { opportunityStages, opportunityStatuses } from '../../constants/opportunityOptions';
+import { apiGet, apiPost } from '../../api/apiFetch';
 
 function OpportunityCreate() {
     const { id = "" } = useParams();
@@ -53,20 +54,7 @@ function OpportunityCreate() {
     }
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch users');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/users`)
         .then(data => {
           console.log('Users data:', data);
           setUsers(data);
@@ -82,20 +70,7 @@ function OpportunityCreate() {
         :
             `${process.env.REACT_APP_API_HOST}/catalogs/customers`
 
-        fetch(customerUrl, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch customers');
-          }
-        })
+        apiGet(customerUrl)
         .then(data => {
           console.log('Customers data:', data);
           setCompanies(data);
@@ -106,24 +81,11 @@ function OpportunityCreate() {
     }, []);
 
     useEffect(() => {
-        if ((typeof opportunity.customer_id === "undefined") || (opportunity.customer_id === "")) {
+        if ((typeof opportunity?.customer_id === "undefined") || (opportunity?.customer_id === "")) {
             setPeople([]);
             return;
         }
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${opportunity.customer_id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch people');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${opportunity.customer_id}`)
         .then(data => {
           console.log('People data:', data);
           setPeople(data);
@@ -131,24 +93,11 @@ function OpportunityCreate() {
         .catch(error => {
           console.error('Error:', error);
         });
-    }, [opportunity.customer_id]);
+    }, [opportunity?.customer_id]);
 
     useEffect(() => {
         if (!isPersonContext || id === "") return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch person');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/${id}`)
         .then(data => {
             console.log('Person data:', data);
             setPerson(data);
@@ -204,22 +153,10 @@ function OpportunityCreate() {
         if (opportunity.customer_id !== null) formData.append('customer_id', opportunity.customer_id);
         if ((opportunity.client_id !== null) && (typeof opportunity.client_id !== "undefined")) formData.append('client_id', opportunity.client_id);
 
-        fetch(`${process.env.REACT_APP_API_HOST}/opportunities`, {
-            method: 'POST',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                navigate(navigatePath());
-            } else {
-                throw new Error('Failed to create opportunity');
-            }
-        })
+        apiPost(`${process.env.REACT_APP_API_HOST}/opportunities`, formData)
         .then(data => {
             console.log('Opportunity created:', data);
+            navigate(navigatePath());
         })
         .catch(error => {
             console.error('Error:', error);

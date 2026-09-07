@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import TagsCloud from "./TagsCloud"
+import { apiGet, apiPost } from "../api/apiFetch";
 
 function EditTags({ tagType }) {
     const { id } = useParams();
@@ -45,20 +46,7 @@ function EditTags({ tagType }) {
 
     useEffect(() => {
         if (!id) return;
-            fetch(`${process.env.REACT_APP_API_HOST}${url()}`, {
-                method: 'GET',
-                headers: {
-                    'content-type': 'application/json',
-                    'authorization': localStorage.getItem('accessToken')
-                }
-        })
-        .then(response => {
-            if (response.ok) {
-            return response.json();
-            } else {
-            throw new Error('Failed to fetch tags');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}${url()}`)
         .then(data => {
             console.log('Tags data:', data);
             setTags(data.join(", "));
@@ -69,20 +57,7 @@ function EditTags({ tagType }) {
     }, [id]);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}${tags_url()}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch tags');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}${tags_url()}`)
         .then(data => {
             console.log('Tags data:', data);
             setCloudTags(data);
@@ -103,22 +78,10 @@ function EditTags({ tagType }) {
         const formData = new FormData();
         formData.append('tags', tags);
 
-        fetch(`${process.env.REACT_APP_API_HOST}${url()}`, {
-            method: 'POST',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                navigate(`/${navigation_route()}/details/${id}`);
-            } else {
-                throw new Error('Failed to update customer tags');
-            }
-        })
+        apiPost(`${process.env.REACT_APP_API_HOST}${url()}`, formData)
         .then(data => {
             console.log('Customer updated:', data);
+            navigate(`/${navigation_route()}/details/${id}`);
         })
         .catch(error => {
             console.error('Error:', error);
