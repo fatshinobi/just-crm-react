@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { apiGet, apiPost } from '../../api/apiFetch'
 
 function PersonCreate() {
     const [person, setPerson] = useState({ name: '', about: '', email: '', phone: '', address: '' });
@@ -13,20 +14,7 @@ function PersonCreate() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch users');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/users`)
         .then(data => {
           console.log('Users data:', data);
           setUsers(data);
@@ -76,23 +64,10 @@ function PersonCreate() {
             formData.append('avatar', selectedFile);
         }
 
-        fetch(`${process.env.REACT_APP_API_HOST}/clients`, {
-            method: 'POST',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                //return response.json();
-                navigate("/people");
-            } else {
-                throw new Error('Failed to create person');
-            }
-        })
+        apiPost(`${process.env.REACT_APP_API_HOST}/clients`, formData)
         .then(data => {
             console.log('Person created:', data);
+            navigate("/people");
         })
         .catch(error => {
             console.error('Error:', error);

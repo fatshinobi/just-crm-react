@@ -1,4 +1,5 @@
 import React, { useState, useEffect} from "react";
+import { apiGet } from "../api/apiFetch";
 
 const ApiAutocomplete = ({curValue, fieldName, fieldChangeHandler}) => {
     const [query, setQuery] = useState("");
@@ -16,15 +17,7 @@ const ApiAutocomplete = ({curValue, fieldName, fieldChangeHandler}) => {
 
         const fetchRecords = async () => {
             try {
-                const result = await fetch(`${process.env.REACT_APP_API_HOST}/roles/${query}`, {
-                    method: 'GET',
-                    headers: {
-                        'content-type': 'application/json',
-                        'authorization': localStorage.getItem('accessToken')
-                    }
-                })
-
-                const data = await result.json();
+                const data = await apiGet(`${process.env.REACT_APP_API_HOST}/roles/${query}`);
                 setSuggestions(data);
             } catch (err) {
                 console.error("Error fetching data:", err);

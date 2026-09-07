@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import ApiAutocomplete from "../ApiAutocomplete"
+import { apiGet, apiPatch } from "../../api/apiFetch";
 
 function PersonCompanyEdit() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
@@ -11,20 +12,7 @@ function PersonCompanyEdit() {
 
     useEffect(() => {
         if (!company_id) return;
-        fetch(`${process.env.REACT_APP_API_HOST}/client_customers/${company_id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-            return response.json();
-            } else {
-            throw new Error('Failed to fetch company person record');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/client_customers/${company_id}`)
         .then(data => {
             console.log('Company Person data:', data);
             setCompanyPerson(data);
@@ -61,22 +49,10 @@ function PersonCompanyEdit() {
         const formData = new FormData();
 if (companyPerson.role !== null) formData.append('role', companyPerson.role);
 
-         fetch(`${process.env.REACT_APP_API_HOST}/client_customers/${company_id}`, {
-             method: 'PATCH',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                navigate(`/person/details/${id}`);
-            } else {
-                throw new Error('Failed to update company for the person');
-            }
-        })
+        apiPatch(`${process.env.REACT_APP_API_HOST}/client_customers/${company_id}`, formData)
         .then(data => {
             console.log('Company for the person updated:', data);
+            navigate(`/person/details/${id}`);
         })
         .catch(error => {
             console.error('Error:', error);

@@ -3,6 +3,7 @@ import { useNavigate, Link, useParams, useLocation } from 'react-router-dom'
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { communicationTypes, appointmentStatuses } from '../../constants/appointmentOptions';
+import { apiGet, apiPatch } from '../../api/apiFetch';
 
 dayjs.extend(utc);
 
@@ -68,20 +69,7 @@ function AppointmentEdit() {
     }
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/appointments/${appointment_id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch appointment');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/appointments/${appointment_id}`)
         .then(data => {
           console.log('Appointment data:', data);
           setAppointment(data);
@@ -93,20 +81,7 @@ function AppointmentEdit() {
     }, [appointment_id]);
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch users');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/users`)
         .then(data => {
           console.log('Users data:', data);
           setUsers(data);
@@ -122,20 +97,7 @@ function AppointmentEdit() {
         :
             `${process.env.REACT_APP_API_HOST}/catalogs/customers`
 
-        fetch(customerUrl, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch customers');
-          }
-        })
+        apiGet(customerUrl)
         .then(data => {
           console.log('Customers data:', data);
           setCompanies(data);
@@ -146,24 +108,11 @@ function AppointmentEdit() {
     }, []);
 
     useEffect(() => {
-        if ((typeof appointment.customer_id === "undefined") || (appointment.customer_id === "")) {
+        if ((typeof appointment?.customer_id === "undefined") || (appointment?.customer_id === "")) {
             setPeople([]);
             return;
         }
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${appointment.customer_id}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch people');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/clients_for_customer/${appointment.customer_id}`)
         .then(data => {
           console.log('People data:', data);
           setPeople(data);
@@ -171,50 +120,38 @@ function AppointmentEdit() {
         .catch(error => {
           console.error('Error:', error);
         });
-    }, [appointment.customer_id]);
+    }, [appointment?.customer_id]);
 
     useEffect(() => {
         let opportunityUrl = null;
-        if (isCompanyContext && ((typeof appointment.customer_id === "undefined") || (appointment.customer_id === ""))) {
+        if (isCompanyContext && ((typeof appointment?.customer_id === "undefined") || (appointment?.customer_id === ""))) {
             setOpportunities([]);
             return;
         }
 
-        if ((isPersonContext) && ((typeof appointment.client_id === "undefined") || (appointment.client_id === ""))) {
+        if ((isPersonContext) && ((typeof appointment?.client_id === "undefined") || (appointment?.client_id === ""))) {
             setOpportunities([]);
             return;
         }
 
-        if (isCompanyContext && (typeof appointment.client_id !== "undefined") && (appointment.client_id !== "") && (appointment.client_id !== null)) {
+        if (isCompanyContext && (typeof appointment?.client_id !== "undefined") && (appointment?.client_id !== "") && (appointment?.client_id !== null)) {
             opportunityUrl = `catalogs/opportunities_for_client_customer/${appointment.client_id}/${id}`;
-        } else if (isPersonContext && (typeof appointment.customer_id !== "undefined") && (appointment.customer_id !== "") && (appointment.customer_id !== null)) {
+        } else if (isPersonContext && (typeof appointment?.customer_id !== "undefined") && (appointment?.customer_id !== "") && (appointment?.customer_id !== null)) {
             opportunityUrl = `catalogs/opportunities_for_client_customer/${id}/${appointment.customer_id}`;
         } else if (isPersonContext) {
             opportunityUrl = `catalogs/opportunities_for_client/${appointment.client_id}`;
         } else if (isCompanyContext) {
             opportunityUrl = `catalogs/opportunities_for_customer/${appointment.customer_id}`;
-        } else if ((typeof appointment.customer_id !== "undefined") && (appointment.customer_id !== "") && (appointment.customer_id !== null) && (typeof appointment.client_id !== "undefined") && (appointment.client_id !== "") && (appointment.client_id !== null)) {
+        } else if ((typeof appointment?.customer_id !== "undefined") && (appointment?.customer_id !== "") && (appointment?.customer_id !== null) && (typeof appointment?.client_id !== "undefined") && (appointment?.client_id !== "") && (appointment?.client_id !== null)) {
             opportunityUrl = `catalogs/opportunities_for_client_customer/${appointment.client_id}/${appointment.customer_id}`;
-        } else if ((typeof appointment.customer_id !== "undefined") && (appointment.customer_id !== "") && (appointment.customer_id !== null)) {
+        } else if ((typeof appointment?.customer_id !== "undefined") && (appointment?.customer_id !== "") && (appointment?.customer_id !== null)) {
             opportunityUrl = `catalogs/opportunities_for_customer/${appointment.customer_id}`;
-        } else if ((typeof appointment.client_id !== "undefined") && (appointment.client_id !== "") && (appointment.client_id !== null)) {
+        } else if ((typeof appointment?.client_id !== "undefined") && (appointment?.client_id !== "") && (appointment?.client_id !== null)) {
             opportunityUrl = `catalogs/opportunities_for_client/${appointment.client_id}`;
         }
 
-        fetch(`${process.env.REACT_APP_API_HOST}/${opportunityUrl}`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch opportunities');
-          }
-        })
+        if (!opportunityUrl) return;
+        apiGet(`${process.env.REACT_APP_API_HOST}/${opportunityUrl}`)
         .then(data => {
           console.log('Opportunities data:', data);
           setOpportunities(data);
@@ -222,24 +159,11 @@ function AppointmentEdit() {
         .catch(error => {
           console.error('Error:', error);
         });
-    }, [appointment.customer_id, appointment.client_id]);
+    }, [appointment?.customer_id, appointment?.client_id]);
 
     useEffect(() => {
         if (!location.pathname.includes("/person/appointments/edit/") || id === "") return;
-        fetch(`${process.env.REACT_APP_API_HOST}/clients/${id}`, {
-            method: 'GET',
-            headers: {
-                'content-type': 'application/json',
-                'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-            if (response.ok) {
-                return response.json();
-            } else {
-                throw new Error('Failed to fetch person');
-            }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/${id}`)
         .then(data => {
             console.log('Person data:', data);
             setPerson(data);
@@ -298,22 +222,10 @@ function AppointmentEdit() {
         if (appointment.opportunity_id !== null) formData.append('opportunity_id', appointment.opportunity_id);
         if ((appointment.client_id !== null) && (typeof appointment.client_id !== "undefined")) formData.append('client_id', appointment.client_id);
 
-        fetch(`${process.env.REACT_APP_API_HOST}/appointments/${appointment_id}`, {
-            method: 'PATCH',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                navigate(navigatePath());
-            } else {
-                throw new Error('Failed to update appointment');
-            }
-        })
+        apiPatch(`${process.env.REACT_APP_API_HOST}/appointments/${appointment_id}`, formData)
         .then(data => {
             console.log('Appointment updated:', data);
+            navigate(navigatePath());
         })
         .catch(error => {
             console.error('Error:', error);

@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { apiGet, apiPost } from '../../api/apiFetch'
 
 function CompanyCreate() {
     const [company, setCompany] = useState({ name: '', about: '', email: '', phone: '', address: '' });
@@ -13,20 +14,7 @@ function CompanyCreate() {
     const navigate = useNavigate();
 
     useEffect(() => {
-        fetch(`${process.env.REACT_APP_API_HOST}/catalogs/users`, {
-            method: 'GET',
-            headers: {
-              'content-type': 'application/json',
-              'authorization': localStorage.getItem('accessToken')
-            }
-        })
-        .then(response => {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Failed to fetch users');
-          }
-        })
+        apiGet(`${process.env.REACT_APP_API_HOST}/catalogs/users`)
         .then(data => {
           console.log('Users data:', data);
           setUsers(data);
@@ -76,23 +64,10 @@ function CompanyCreate() {
             formData.append('avatar', selectedFile);
         }
 
-        fetch(`${process.env.REACT_APP_API_HOST}/customers`, {
-            method: 'POST',
-            headers: {
-                'authorization': localStorage.getItem('accessToken')
-            },
-            body: formData
-        })
-        .then(response => {
-            if (response.ok) {
-                //return response.json();
-                navigate("/companies");
-            } else {
-                throw new Error('Failed to create company');
-            }
-        })
+        apiPost(`${process.env.REACT_APP_API_HOST}/customers`, formData)
         .then(data => {
             console.log('Company created:', data);
+            navigate("/companies");
         })
         .catch(error => {
             console.error('Error:', error);
