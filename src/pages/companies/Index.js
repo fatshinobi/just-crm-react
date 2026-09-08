@@ -29,6 +29,10 @@ function CompaniesIndex() {
         });
     }, [location.key, location.pathname]);
 
+    const handleDelete = (id) => {
+        setCompanies((prev) => prev.filter((company) => company.id !== id));
+    };
+
     return (
         <div>
             <h1 className="text-4xl font-bold m-4">Companies List</h1>
@@ -40,10 +44,11 @@ function CompaniesIndex() {
                   description: company.about,
                   show_path: `/company/show/${company.id}`,
                   edit_path: `/company/edit/${company.id}`,
+                  delete_path: `${process.env.REACT_APP_API_HOST}/customers/${company.id}`,
                   avatar_url: company.avatar_url,
                   tags: company.tags?.map(tag => (tag.name))
                 }
-              ))} defaultImage="/def_company_logo.png" />
+              ))} defaultImage="/def_company_logo.png" onDelete={handleDelete} />
             : <p>Loading companies...</p> }
         </div>
     );
