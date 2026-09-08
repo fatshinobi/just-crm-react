@@ -8,6 +8,7 @@ function Card({ record, defaultImage, onDelete }) {
 
     const handleDelete = () => {
         if (!record.delete_path || loading) return;
+        if (!window.confirm(`Delete "${record.caption}"? This action cannot be undone.`)) return;
         setLoading(true);
         apiDelete(record.delete_path)
             .then(() => {
