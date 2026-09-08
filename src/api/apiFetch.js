@@ -49,4 +49,8 @@ export const apiPut = (url, body) =>
     })
         .then(response => response.ok ? response.json() : Promise.reject(new Error('Request failed')));
 
+export const apiDelete = (url) =>
+    apiFetch(url, { method: 'DELETE' })
+        .then(response => response.ok ? response.json() : Promise.reject(new Error('Request failed')));
+
 export default apiFetch;

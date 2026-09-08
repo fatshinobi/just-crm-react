@@ -30,6 +30,10 @@ function PeopleIndex() {
         });
     }, [location.key, location.pathname]);
 
+    const handleDelete = (id) => {
+        setPeople((prev) => prev.filter((person) => person.id !== id));
+    };
+
     return (
         <div>
             <h1 className="text-4xl font-bold m-4">People List</h1>
@@ -40,10 +44,11 @@ function PeopleIndex() {
                 description: person.about,
                 show_path: `/person/show/${person.id}`,
                 edit_path: `/person/edit/${person.id}`,
+                delete_path: `${process.env.REACT_APP_API_HOST}/clients/${person.id}`,
                 avatar_url: person.avatar_url,
                 tags: (person.tags || []).map(tag => tag.name)
               }
-            ))} defaultImage="/def_person_ava.png" />
+            ))} defaultImage="/def_person_ava.png" onDelete={handleDelete} />
         </div>
     );
 }
