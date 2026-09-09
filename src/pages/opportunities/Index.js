@@ -32,12 +32,16 @@ function OpportunitiesIndex() {
         });
     }, [location.key, location.pathname]);
 
+    const handleDelete = (id) => {
+        setOpportunities((prev) => prev.filter((opportunity) => opportunity.id !== id));
+    };
+
     return (
         <div>
             <h1 className="text-4xl font-bold m-4">Opportunities List</h1>
             <div>
                 {opportunities.map((record, index) => (
-                <OpportunityCard record={record} link_path={`/opportunity/show/${record.id}`} key={index} />
+                <OpportunityCard record={record} link_path={`/opportunity/show/${record.id}`} delete_path={`${process.env.REACT_APP_API_HOST}/opportunities/${record.id}`} onDelete={handleDelete} key={index} />
                 ))}
             </div>
         </div>
