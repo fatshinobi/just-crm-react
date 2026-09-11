@@ -3,7 +3,7 @@ import { useNavigate, Link, useParams, useLocation } from 'react-router-dom'
 import dayjs from 'dayjs';
 import utc from 'dayjs/plugin/utc';
 import { communicationTypes, appointmentStatuses } from '../../constants/appointmentOptions';
-import { apiGet, apiPatch } from '../../api/apiFetch';
+import { apiGet, apiPatch, apiDelete } from '../../api/apiFetch';
 
 dayjs.extend(utc);
 
@@ -232,6 +232,18 @@ function AppointmentEdit() {
         });
     };
 
+    const handleDelete = (e) => {
+        e.stopPropagation();
+        if (!window.confirm(`Delete "${appointment.title}"? This action cannot be undone.`)) return;
+            apiDelete(`${process.env.REACT_APP_API_HOST}/appointments/${appointment.id}`)
+            .catch((error) => {
+                console.error('Delete error:', error);
+            })
+            .finally(() => {
+                navigate(navigatePath());
+            });
+    };
+
     return (
         <div className="p-4">
             <h1 className="text-3xl font-bold mb-6">Appointment Edit</h1>
@@ -341,6 +353,13 @@ function AppointmentEdit() {
                 }
 
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
+                <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded ml-4"
+                    aria-label="Delete"
+                >Delete</button>
+
                 <Link to={navigatePath()} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
