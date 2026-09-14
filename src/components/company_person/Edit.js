@@ -66,7 +66,6 @@ function CompanyPersonEdit() {
                 console.error('Delete error:', error);
             })
             .finally(() => {
-                //navigate(navigatePath());
                 navigate(`/company/details/${companyPerson.customer_id}`);
             });
     };
