@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
 import ApiAutocomplete from "../ApiAutocomplete"
-import { apiGet, apiPatch } from "../../api/apiFetch";
+import { apiGet, apiPatch, apiDelete } from "../../api/apiFetch";
 
 function CompanyPersonEdit() {
     const [companyPerson, setCompanyPerson] = useState({ role: '' });
@@ -46,7 +46,7 @@ function CompanyPersonEdit() {
         }
         const formData = new FormData();
         if (companyPerson.role !== null) formData.append('role', companyPerson.role);
-if (companyPerson.client_id !== null) formData.append('client_id', companyPerson.client_id);
+        if (companyPerson.client_id !== null) formData.append('client_id', companyPerson.client_id);
 
         apiPatch(`${process.env.REACT_APP_API_HOST}/client_customers/${person_id}`, formData)
         .then(data => {
@@ -56,6 +56,19 @@ if (companyPerson.client_id !== null) formData.append('client_id', companyPerson
         .catch(error => {
             console.error('Error:', error);
         });
+    };
+
+    const handleDelete = (e) => {
+        e.stopPropagation();
+        if (!window.confirm("Delete? This action cannot be undone.")) return;
+            apiDelete(`${process.env.REACT_APP_API_HOST}/client_customers/${companyPerson.id}`)
+            .catch((error) => {
+                console.error('Delete error:', error);
+            })
+            .finally(() => {
+                //navigate(navigatePath());
+                navigate(`/company/details/${companyPerson.customer_id}`);
+            });
     };
 
     return (
@@ -72,6 +85,12 @@ if (companyPerson.client_id !== null) formData.append('client_id', companyPerson
                     {formErrors["role"] && <p style={{ color: "red" }}>{formErrors["role"]}</p>}
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
+                <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded ml-4"
+                    aria-label="Delete"
+                >Delete</button>
                 <Link to={`/company/details/${companyPerson.customer_id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
