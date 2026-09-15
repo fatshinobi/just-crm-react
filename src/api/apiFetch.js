@@ -16,6 +16,9 @@ const apiFetch = (url, options = {}) => {
                 localStorage.removeItem('accessToken');
                 window.location.reload();
                 return Promise.reject(new Error('Unauthorized'));
+            } else if (!response.ok) {
+                console.error('API request failed:', response.status, response.statusText);
+                return Promise.reject(new Error('Request failed'));
             }
             return response;
         });

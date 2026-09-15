@@ -3,17 +3,18 @@ import { useLocation, Link, useParams } from "react-router-dom";
 import NewCard from "../../components/NewCard";
 import ElementCard from "../../components/ElementCard";
 import AppointmentCard from "../../components/appointments/Card";
-import AppointmentCreate from "../../components/appointments/Create";
 import AppointmentNewCard from "../../components/appointments/NewCard";
 import OpportunityElementCard from "../../components/opportunities/ElementCard";
 import OpportunityNewCard from "../../components/opportunities/NewCard";
 import TagsDetails from "../../components/TagsDetails";
+import AttachmentElementCard from "../../components/attachments/ElementCard";
 import { apiGet } from "../../api/apiFetch";
 
 function CompanyDetails() {
   const [people, setPeople] = useState([]);
   const [appointments, setAppointments] = useState([]);
   const [opportunities, setOpportunities] = useState([]);
+  const [attachments, setAttachments] = useState([]);
   const location = useLocation();
   const { id } = useParams();
 
@@ -22,6 +23,17 @@ function CompanyDetails() {
       .then((data) => {
         console.log("People data:", data);
         setPeople(data);
+      })
+      .catch((error) => {
+        console.error("Error:", error);
+      });
+  }, [location.key, location.pathname]);
+
+  useEffect(() => {
+    apiGet(`${process.env.REACT_APP_API_HOST}/customers/attachments/${id}`)
+      .then((data) => {
+        console.log("Attachments data:", data);
+        setAttachments(data);
       })
       .catch((error) => {
         console.error("Error:", error);
@@ -65,6 +77,14 @@ function CompanyDetails() {
           <ElementCard record={record} default_image={"/def_person_ava.png"} link_path={`/company_person/edit/${record.id}/${record.customer_id}`} key={index} />
         ))}
         <NewCard parentId={id} link_path={`/company_person/create/${id}`}/>
+      </div>
+
+      <h2 className="text-3xl font-bold m-4">Attachments</h2>
+
+      <div className="gap-4 flex m-5">
+        {attachments.map((record, index) => (
+          <AttachmentElementCard record={record} link_path={`/company_person/edit/${record.id}/${record.customer_id}`} key={index} />
+        ))}
       </div>
 
       <h2 className="text-3xl font-bold m-4">Opportunities</h2>
