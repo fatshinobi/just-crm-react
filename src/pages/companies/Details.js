@@ -8,6 +8,7 @@ import OpportunityElementCard from "../../components/opportunities/ElementCard";
 import OpportunityNewCard from "../../components/opportunities/NewCard";
 import TagsDetails from "../../components/TagsDetails";
 import AttachmentElementCard from "../../components/attachments/ElementCard";
+import NewAttachmentElementCard from "../../components/attachments/NewElementCard";
 import { apiGet } from "../../api/apiFetch";
 
 function CompanyDetails() {
@@ -85,6 +86,7 @@ function CompanyDetails() {
         {attachments.map((record, index) => (
           <AttachmentElementCard record={record} link_path={`/company_person/edit/${record.id}/${record.customer_id}`} key={index} />
         ))}
+        <NewAttachmentElementCard parentId={id} link_path={`/company/attachments/create/${id}`}/>
       </div>
 
       <h2 className="text-3xl font-bold m-4">Opportunities</h2>
