@@ -78,6 +78,7 @@ function App() {
             <Route path="company/opportunities/create/:id" element={<CompanyDetails />} />
             <Route path="company/opportunities/edit/:opportunity_id/:id" element={<CompanyDetails />} />
             <Route path="opportunity/tags/:id" element={<OpportunityDetails />} />
+            <Route path="company/attachments/create/:id" element={<CompanyDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>
