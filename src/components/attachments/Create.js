@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate, useParams, Link } from 'react-router-dom'
 import { apiPost } from '../../api/apiFetch'
 
 function AttachmentCreate() {
@@ -13,7 +13,6 @@ function AttachmentCreate() {
     const navigate = useNavigate();
 
     const fieldValidate = (record, value) => {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
         if ((record === "description") && ((value === null) || (value.trim() === ""))) {
             setFormErrors(prev => ({ ...prev, [record]: "Name must be present" }));
         } else if ((record === "uploaded_file") && ((value === null) || (value.trim() === ""))) {
@@ -74,6 +73,7 @@ function AttachmentCreate() {
                     {formErrors["description"] && <p style={{ color: "red" }}>{formErrors["description"]}</p>}
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
+                <Link to={`/company/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
     );
