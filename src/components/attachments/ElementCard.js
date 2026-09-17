@@ -44,7 +44,7 @@ function AttachmentElementCard({ record, link_path }) {
             {record?.description || "No description"}
           </span>
           <p className="font-mono text-xs font-normal opacity-75 text-black mb-2">
-            {record.role}
+            {record?.uploaded_file_name || "No file name"}
           </p>
         </div>
       </div>
