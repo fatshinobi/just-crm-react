@@ -23,6 +23,7 @@ import OpportunityEdit from "./opportunities/Edit"
 import OpportunityTagsSidebar from "./opportunities/TagsSidebar"
 import SalesFunnelBar from "./SalesFunnelBar"
 import AttachmentCreate from "./attachments/Create"
+import AttachmentEdit from "./attachments/Edit"
 
 function SidebarSwitcher() {
     const location = useLocation();
@@ -47,6 +48,8 @@ function SidebarSwitcher() {
           return <AppointmentEdit />;
         case location.pathname.includes("/company/attachments/create"):
           return <AttachmentCreate />;
+        case location.pathname.includes("/company/attachments/edit"):
+          return <AttachmentEdit />;
         case location.pathname.includes("/dashboard/appointments/show"):
           return <AppointmentShow />;
         case location.pathname.includes("/dashboard/appointments/edit"):

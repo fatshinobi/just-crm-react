@@ -84,7 +84,7 @@ function CompanyDetails() {
 
       <div className="gap-4 flex m-5">
         {attachments.map((record, index) => (
-          <AttachmentElementCard record={record} link_path={`/company_person/edit/${record.id}/${record.customer_id}`} key={index} />
+          <AttachmentElementCard record={record} link_path={`/company/attachments/edit/${record.customer_id}/${record.id}`} key={index} />
         ))}
         <NewAttachmentElementCard parentId={id} link_path={`/company/attachments/create/${id}`}/>
       </div>
