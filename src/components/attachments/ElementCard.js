@@ -34,7 +34,7 @@ function AttachmentElementCard({ record, link_path }) {
 
   return (
     <Link to={link_path} style={{ textDecoration: 'none', color: 'inherit' }} >
-      <div className="border p-4 rounded-lg shadow-lg flex flex-col gap-4">
+      <div className="border p-4 rounded-lg shadow-lg flex flex-col gap-4 min-h-[200px]">
         <svg className={`w-16 h-16 md:w-20 md:h-20 mr-4 ${slassForStage(record)}`} fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d={defaultImage(record)}></path>
         </svg>
