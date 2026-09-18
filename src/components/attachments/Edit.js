@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { useParams, useNavigate, Link } from 'react-router-dom'
-import { apiGet, apiPatch } from '../../api/apiFetch'
+import { apiGet, apiPatch, apiDelete } from '../../api/apiFetch'
 
 function AttachmentEdit() {
     const { id } = useParams();
@@ -57,6 +57,18 @@ function AttachmentEdit() {
         });
     };
 
+    const handleDelete = (e) => {
+        e.stopPropagation();
+        if (!window.confirm("Delete? This action cannot be undone.")) return;
+            apiDelete(`${process.env.REACT_APP_API_HOST}/customers/attachments/${id}/${attachment_id}`)
+            .catch((error) => {
+                console.error('Delete error:', error);
+            })
+            .finally(() => {
+                navigate(`company/details/${id}`);
+            });
+    };
+
     return (
         <div className="p-4">
             <h1 className="text-3xl font-bold mb-6">Company Create</h1>
@@ -67,6 +79,13 @@ function AttachmentEdit() {
                     {formErrors["description"] && <p style={{ color: "red" }}>{formErrors["description"]}</p>}
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
+                <button
+                    type="button"
+                    onClick={handleDelete}
+                    className="bg-red-500 hover:bg-red-600 text-white font-semibold py-3 px-6 rounded ml-4"
+                    aria-label="Delete"
+                >Delete</button>
+
                 <Link to={`/company/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
