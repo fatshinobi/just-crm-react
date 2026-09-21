@@ -71,7 +71,18 @@ function AttachmentEdit() {
 
     return (
         <div className="p-4">
-            <h1 className="text-3xl font-bold mb-6">Company Create</h1>
+            <h1 className="text-3xl font-bold mb-6">Edit Attachment</h1>
+            <div>
+                <label className="block text-gray-700 mb-1">File:</label>
+                {attachment?.uploaded_file_url ? (
+                    <a href="#" onClick={()=>window.open(`${process.env.REACT_APP_API_HOST}${attachment.uploaded_file_url}`, "_blank")} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+                        {attachment?.uploaded_file_name || "No file available"}
+                    </a>
+                ) : (
+                    <span className="text-gray-500">No file available</span>
+                )}
+            </div>
+
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-gray-700 mb-1">Description:</label>
