@@ -25,7 +25,7 @@ function PersonShow({isDetails}) {
             <h1 className="text-3xl font-bold m-4">Person Details</h1>
             {person ? (
                 <div className="m-4 p-4 border rounded-lg shadow-lg pb-7">
-                    <img src={person.avatar_url ? person.avatar_url :avatar_url} alt="Person Avatar" className="w-40 h-40 object-cover mb-4" />
+                    <img src={person.avatar_url ? process.env.REACT_APP_API_HOST + person.avatar_url : avatar_url} alt="Person Avatar" className="w-40 h-40 object-cover mb-4" />
                     <h2 className="text-2xl font-semibold mb-2">{person.name}</h2>
                     <p className="mb-5"><strong>Description:</strong> {person.about}</p>
                     <p className="mb-1"><strong>Email:</strong> {person.email}</p>

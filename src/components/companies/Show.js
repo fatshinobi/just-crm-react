@@ -25,7 +25,7 @@ function CompanyShow({isDetails}) {
             <h1 className="text-3xl font-bold m-4">Company</h1>
             {company ? (
                 <div className="m-4 p-4 border rounded-lg shadow-lg pb-7">
-                    <img src={company.avatar_url ? company.avatar_url :avatar_url} alt="Company Logo" className="w-40 h-40 object-cover mb-4" />
+                    <img src={company.avatar_url ? process.env.REACT_APP_API_HOST + company.avatar_url : avatar_url} alt="Company Logo" className="w-40 h-40 object-cover mb-4" />
                     <h2 className="text-2xl font-semibold mb-2">{company.name}</h2>
                     <p className="mb-5"><strong>Description:</strong> {company.about}</p>
                     <p className="mb-1"><strong>Email:</strong> {company.email}</p>

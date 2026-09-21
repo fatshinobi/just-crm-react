@@ -4,7 +4,7 @@ import { apiDelete } from "../api/apiFetch";
 
 function Card({ record, defaultImage, onDelete }) {
     const [loading, setLoading] = useState(false);
-    const avatar_url = record.avatar_url ? record.avatar_url : process.env.PUBLIC_URL + defaultImage;
+    const avatar_url = record.avatar_url ? process.env.REACT_APP_API_HOST + record.avatar_url : process.env.PUBLIC_URL + defaultImage;
 
     const handleDelete = () => {
         if (!record.delete_path || loading) return;
