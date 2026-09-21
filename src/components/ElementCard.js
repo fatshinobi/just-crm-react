@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 function ElementCard({ record, link_path, default_image }) {
   const avatar_url = record.avatar_url
-    ? record.avatar_url
+    ? process.env.REACT_APP_API_HOST + record.avatar_url
     : process.env.PUBLIC_URL + default_image;
   return (
     <Link to={link_path} style={{ textDecoration: 'none', color: 'inherit' }} >
