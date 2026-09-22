@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { useParams, useNavigate, Link } from 'react-router-dom'
+import { useParams, useNavigate, Link, useLocation } from 'react-router-dom'
 import { apiGet, apiPatch, apiDelete } from '../../api/apiFetch'
 
 function AttachmentEdit() {
@@ -8,10 +8,29 @@ function AttachmentEdit() {
     const [attachment, setAttachment] = useState({ description: '' });
     const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const editUrl = () => {
+        switch (true) {
+            case location.pathname.includes("/company/attachments/edit"):
+                return `${process.env.REACT_APP_API_HOST}/customers/attachments/${id}/${attachment_id}`;
+            case location.pathname.includes("/person/attachments/edit"):
+                return `${process.env.REACT_APP_API_HOST}/clients/attachments/${id}/${attachment_id}`;
+        }
+    };
+
+    const navigationPath = () => {
+        switch (true) {
+            case location.pathname.includes("/company/attachments/edit"):
+                return `company/details/${id}`;
+            case location.pathname.includes("/person/attachments/edit"):
+                return `person/details/${id}`;
+        }
+    };
 
     useEffect(() => {
         if (!attachment_id) return;
-        apiGet(`${process.env.REACT_APP_API_HOST}/customers/attachments/${id}/${attachment_id}`)
+        apiGet(editUrl())
         .then(data => {
           console.log('Attachment data:', data);
           setAttachment(data);
@@ -47,10 +66,10 @@ function AttachmentEdit() {
         const formData = new FormData();
         if (attachment.description !== null) formData.append('description', attachment.description);
 
-        apiPatch(`${process.env.REACT_APP_API_HOST}/customers/attachments/${id}/${attachment_id}`, formData)
+        apiPatch(editUrl(), formData)
         .then(data => {
             console.log('Attachment updated:', data);
-            navigate(`company/details/${id}`);
+            navigate(navigationPath());
         })
         .catch(error => {
             console.error('Error:', error);
@@ -60,12 +79,12 @@ function AttachmentEdit() {
     const handleDelete = (e) => {
         e.stopPropagation();
         if (!window.confirm("Delete? This action cannot be undone.")) return;
-            apiDelete(`${process.env.REACT_APP_API_HOST}/customers/attachments/${id}/${attachment_id}`)
+            apiDelete(editUrl())
             .catch((error) => {
                 console.error('Delete error:', error);
             })
             .finally(() => {
-                navigate(`company/details/${id}`);
+                navigate(navigationPath());
             });
     };
 
@@ -97,7 +116,7 @@ function AttachmentEdit() {
                     aria-label="Delete"
                 >Delete</button>
 
-                <Link to={`/company/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
+                <Link to={navigationPath()} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
     );

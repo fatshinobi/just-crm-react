@@ -7,6 +7,8 @@ import AppointmentNewCard from "../../components/appointments/NewCard";
 import OpportunityElementCard from "../../components/opportunities/ElementCard";
 import OpportunityNewCard from "../../components/opportunities/NewCard";
 import TagsDetails from "../../components/TagsDetails";
+import AttachmentElementCard from "../../components/attachments/ElementCard";
+import NewAttachmentElementCard from "../../components/attachments/NewElementCard";
 import { apiGet } from "../../api/apiFetch";
 
 function PersonDetails() {
@@ -14,6 +16,7 @@ function PersonDetails() {
     const location = useLocation();
     const [appointments, setAppointments] = useState([]);
     const [opportunities, setOpportunities] = useState([]);
+    const [attachments, setAttachments] = useState([]);
     const { id } = useParams();
 
     useEffect(() => {
@@ -21,6 +24,17 @@ function PersonDetails() {
         .then((data) => {
             console.log("Companies data:", data);
             setCompanies(data);
+        })
+        .catch((error) => {
+            console.error("Error:", error);
+        });
+    }, [location.key, location.pathname]);
+
+    useEffect(() => {
+        apiGet(`${process.env.REACT_APP_API_HOST}/clients/attachments/${id}`)
+        .then((data) => {
+            console.log("Attachments data:", data);
+            setAttachments(data);
         })
         .catch((error) => {
             console.error("Error:", error);
@@ -63,6 +77,15 @@ function PersonDetails() {
                     <ElementCard record={record} default_image={"/def_company_logo.png"} link_path={`/person_company/edit/${record.id}/${id}`} key={index} />
                 ))}
                 <NewCard parentId={id} link_path={`/person_company/create/${id}`} />
+            </div>
+
+            <h2 className="text-3xl font-bold m-4">Attachments</h2>
+
+            <div className="gap-4 flex m-5">
+                {attachments.map((record, index) => (
+                <AttachmentElementCard record={record} link_path={`/person/attachments/edit/${id}/${record.id}`} key={index} />
+                ))}
+                <NewAttachmentElementCard parentId={id} link_path={`/person/attachments/create/${id}`}/>
             </div>
 
             <h2 className="text-3xl font-bold m-4">Opportunities</h2>

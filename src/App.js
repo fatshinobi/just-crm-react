@@ -80,6 +80,8 @@ function App() {
             <Route path="opportunity/tags/:id" element={<OpportunityDetails />} />
             <Route path="company/attachments/create/:id" element={<CompanyDetails />} />
             <Route path="company/attachments/edit/:id/:attachment_id" element={<CompanyDetails />} />
+            <Route path="person/attachments/create/:id" element={<PersonDetails />} />
+            <Route path="person/attachments/edit/:id/:attachment_id" element={<PersonDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>

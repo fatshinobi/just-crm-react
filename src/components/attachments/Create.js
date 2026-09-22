@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { useNavigate, useParams, Link } from 'react-router-dom'
+import { useNavigate, useParams, Link, useLocation } from 'react-router-dom'
 import { apiPost } from '../../api/apiFetch'
 
 function AttachmentCreate() {
@@ -11,6 +11,25 @@ function AttachmentCreate() {
     });
     const { id = "" } = useParams();
     const navigate = useNavigate();
+    const location = useLocation();
+
+    const createUrl = () => {
+        switch (true) {
+            case location.pathname.includes("/company/attachments/create"):
+                return `${process.env.REACT_APP_API_HOST}/customers/attachments/${id}`;
+            case location.pathname.includes("/person/attachments/create"):
+                return `${process.env.REACT_APP_API_HOST}/clients/attachments/${id}`;
+        }
+    };
+
+    const navigationPath = () => {
+        switch (true) {
+            case location.pathname.includes("/company/attachments/create"):
+                return `company/details/${id}`;
+            case location.pathname.includes("/person/attachments/create"):
+                return `person/details/${id}`;
+        }
+    };
 
     const fieldValidate = (record, value) => {
         if ((record === "description") && ((value === null) || (value.trim() === ""))) {
@@ -47,10 +66,10 @@ function AttachmentCreate() {
             formData.append('uploaded_file', selectedFile);
         }
 
-        apiPost(`${process.env.REACT_APP_API_HOST}/customers/attachments/${id}`, formData)
+        apiPost(createUrl(), formData)
         .then(data => {
             console.log('Attachment created:', data);
-            navigate(`company/details/${id}`);
+            navigate(navigationPath());
         })
         .catch(error => {
             console.error('Error:', error);
@@ -73,7 +92,7 @@ function AttachmentCreate() {
                     {formErrors["description"] && <p style={{ color: "red" }}>{formErrors["description"]}</p>}
                 </div>
                 <button type="submit" className="bg-green-600 hover:bg-green-700 text-white font-semibold py-3 px-6 rounded">Save</button>
-                <Link to={`/company/details/${id}`} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
+                <Link to={navigationPath()} className="bg-grey-200 hover:bg-gray-400 px-7 py-3 mb-5 ml-5 rounded-md text-md font-medium">Cancel</Link>
             </form>
         </div>
     );
