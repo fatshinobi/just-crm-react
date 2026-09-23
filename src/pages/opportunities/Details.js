@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { useLocation, Link, useParams } from "react-router-dom";
 import AppointmentCard from "../../components/appointments/Card";
 import AppointmentNewCard from "../../components/appointments/NewCard";
+import AttachmentElementCard from "../../components/attachments/ElementCard";
+import NewAttachmentElementCard from "../../components/attachments/NewElementCard";
 import TagsDetails from "../../components/TagsDetails";
 import { apiGet } from "../../api/apiFetch";
 
 function OpportunityDetails() {
     const [appointments, setAppointments] = useState([]);
     const [opportunity, setOpportunity] = useState(null);
+    const [attachments, setAttachments] = useState([]);
     const location = useLocation();
     const { id } = useParams();
 
@@ -35,6 +38,18 @@ function OpportunityDetails() {
         });
     }, [location.key, location.pathname, id]);
 
+    useEffect(() => {
+        if (!id) return;
+        apiGet(`${process.env.REACT_APP_API_HOST}/opportunities/attachments/${id}`)
+        .then(data => {
+            console.log('Opportunity Attachments data:', data);
+            setAttachments(data);
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+    }, [location.key, location.pathname, id]);
+
     return (
         <div>
             {opportunity && (
@@ -43,6 +58,15 @@ function OpportunityDetails() {
 
             <h1 className="text-4xl font-bold m-4">Opportunity details</h1>
             <TagsDetails tagType={2} tagName="Opportunity" />
+
+            <h2 className="text-3xl font-bold m-4">Attachments</h2>
+
+            <div className="gap-4 flex m-5">
+                {attachments.map((record, index) => (
+                    <AttachmentElementCard record={record} link_path={`/opportunity/attachments/edit/${id}/${record.id}`} key={index} />
+                ))}
+                <NewAttachmentElementCard parentId={id} link_path={`/opportunity/attachments/create/${id}`}/>
+            </div>
 
             <h2 className="text-3xl font-bold m-4">Appointments</h2>
 

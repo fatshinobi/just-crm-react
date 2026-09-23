@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 
 function AttachmentElementCard({ record, link_path }) {
-  const defaultImage = (record) => {
+
+    const defaultImage = (record) => {
       //attachment_types: other: 0, image: 1, document: 2, pdf: 3
       switch (record.attachment_type) {
           case 0:

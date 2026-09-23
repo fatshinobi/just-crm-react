@@ -19,6 +19,8 @@ function AttachmentCreate() {
                 return `${process.env.REACT_APP_API_HOST}/customers/attachments/${id}`;
             case location.pathname.includes("/person/attachments/create"):
                 return `${process.env.REACT_APP_API_HOST}/clients/attachments/${id}`;
+            case location.pathname.includes("/opportunity/attachments/create"):
+                return `${process.env.REACT_APP_API_HOST}/opportunities/attachments/${id}`;
         }
     };
 
@@ -28,6 +30,8 @@ function AttachmentCreate() {
                 return `company/details/${id}`;
             case location.pathname.includes("/person/attachments/create"):
                 return `person/details/${id}`;
+            case location.pathname.includes("/opportunity/attachments/create"):
+                return `opportunity/details/${id}`;
         }
     };
 
