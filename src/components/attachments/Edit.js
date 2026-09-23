@@ -16,6 +16,8 @@ function AttachmentEdit() {
                 return `${process.env.REACT_APP_API_HOST}/customers/attachments/${id}/${attachment_id}`;
             case location.pathname.includes("/person/attachments/edit"):
                 return `${process.env.REACT_APP_API_HOST}/clients/attachments/${id}/${attachment_id}`;
+            case location.pathname.includes("/opportunity/attachments/edit"):
+                return `${process.env.REACT_APP_API_HOST}/opportunities/attachments/${id}/${attachment_id}`;
         }
     };
 
@@ -25,6 +27,8 @@ function AttachmentEdit() {
                 return `company/details/${id}`;
             case location.pathname.includes("/person/attachments/edit"):
                 return `person/details/${id}`;
+            case location.pathname.includes("/opportunity/attachments/edit"):
+                return `opportunity/details/${id}`;
         }
     };
 
