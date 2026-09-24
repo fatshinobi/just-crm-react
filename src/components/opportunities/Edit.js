@@ -180,6 +180,7 @@ function OpportunityEdit() {
 
     return (
         <div className="p-4">
+            <Link to={`/opportunity/details/${opportunity.id}`} className="absolute right-2 text-blue-800 font-medium px-7 py-3 mb-5">Details</Link>
             <h1 className="text-3xl font-bold mb-6">Opportunity Edit</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
