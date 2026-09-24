@@ -118,6 +118,8 @@ function SidebarSwitcher() {
           return <div><SearchPanel tagType={"2"} /><Sidebar /><OpportunityTagsSidebar /><SalesFunnelBar /></div>;
         case location.pathname.includes("/person/details"):
           return <PersonShow isDetails={true} />;
+        case location.pathname.includes("/appointment/details"):
+          return <AppointmentShow />;
         default:
           return <Sidebar />;
       }
