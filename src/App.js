@@ -1,6 +1,5 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import logo from './logo.svg';
 import './App.css';
 import Layout from './components/Layout'
 import Login from './components/Login';
@@ -10,10 +9,8 @@ import CompanyDetails from './pages/companies/Details'
 import PersonDetails from './pages/people/Details'
 import Dashboards from "./pages/Dashboards";
 import OpportunitiesIndex from "./pages/opportunities/Index";
-import OpportunityShow from "./components/opportunities/Show";
-import OpportunityCreate from "./components/opportunities/Create";
-import OpportunityEdit from "./components/opportunities/Edit";
 import OpportunityDetails from "./pages/opportunities/Details";
+import AppointmentsDetails from "./pages/appointments/Details";
 
 function App() {
   const [accessToken, setAccessToken] = useState(null);
@@ -84,6 +81,7 @@ function App() {
             <Route path="company/attachments/edit/:id/:attachment_id" element={<CompanyDetails />} />
             <Route path="person/attachments/create/:id" element={<PersonDetails />} />
             <Route path="person/attachments/edit/:id/:attachment_id" element={<PersonDetails />} />
+            <Route path="appointment/details/:appointment_id" element={<AppointmentsDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>
