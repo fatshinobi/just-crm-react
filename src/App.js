@@ -82,6 +82,8 @@ function App() {
             <Route path="person/attachments/create/:id" element={<PersonDetails />} />
             <Route path="person/attachments/edit/:id/:attachment_id" element={<PersonDetails />} />
             <Route path="appointment/details/:appointment_id" element={<AppointmentsDetails />} />
+            <Route path="appointment/attachments/create/:appointment_id" element={<AppointmentsDetails />} />
+            <Route path="appointment/attachments/edit/:appointment_id/:attachment_id" element={<AppointmentsDetails />} />
           </Route>
         </Routes>
       </BrowserRouter>
