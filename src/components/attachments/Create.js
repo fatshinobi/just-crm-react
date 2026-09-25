@@ -10,6 +10,7 @@ function AttachmentCreate() {
         "uploaded_file": "File must be present"
     });
     const { id = "" } = useParams();
+    const { appointment_id = "" } = useParams();
     const navigate = useNavigate();
     const location = useLocation();
 
@@ -21,6 +22,8 @@ function AttachmentCreate() {
                 return `${process.env.REACT_APP_API_HOST}/clients/attachments/${id}`;
             case location.pathname.includes("/opportunity/attachments/create"):
                 return `${process.env.REACT_APP_API_HOST}/opportunities/attachments/${id}`;
+            case location.pathname.includes("/appointment/attachments/create"):
+                return `${process.env.REACT_APP_API_HOST}/appointments/attachments/${appointment_id}`;
         }
     };
 
@@ -32,6 +35,8 @@ function AttachmentCreate() {
                 return `person/details/${id}`;
             case location.pathname.includes("/opportunity/attachments/create"):
                 return `opportunity/details/${id}`;
+            case location.pathname.includes("/appointment/attachments/create"):
+                return `appointment/details/${appointment_id}`;
         }
     };
 
@@ -82,7 +87,7 @@ function AttachmentCreate() {
 
     return (
         <div className="p-4">
-            <h1 className="text-3xl font-bold mb-6">Company Create</h1>
+            <h1 className="text-3xl font-bold mb-6">Create Attachment</h1>
             <form onSubmit={handleSubmit} className="space-y-4">
                 <div>
                     <label className="block text-gray-700 mb-1">File:</label>

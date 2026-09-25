@@ -5,6 +5,7 @@ import { apiGet, apiPatch, apiDelete } from '../../api/apiFetch'
 function AttachmentEdit() {
     const { id } = useParams();
     const { attachment_id } = useParams();
+    const { appointment_id = "" } = useParams();
     const [attachment, setAttachment] = useState({ description: '' });
     const [formErrors, setFormErrors] = useState({});
     const navigate = useNavigate();
@@ -18,6 +19,8 @@ function AttachmentEdit() {
                 return `${process.env.REACT_APP_API_HOST}/clients/attachments/${id}/${attachment_id}`;
             case location.pathname.includes("/opportunity/attachments/edit"):
                 return `${process.env.REACT_APP_API_HOST}/opportunities/attachments/${id}/${attachment_id}`;
+            case location.pathname.includes("/appointment/attachments/edit"):
+                return `${process.env.REACT_APP_API_HOST}/appointments/attachments/${appointment_id}/${attachment_id}`;
         }
     };
 
@@ -29,6 +32,8 @@ function AttachmentEdit() {
                 return `person/details/${id}`;
             case location.pathname.includes("/opportunity/attachments/edit"):
                 return `opportunity/details/${id}`;
+            case location.pathname.includes("/appointment/attachments/edit"):
+                return `appointment/details/${appointment_id}`;
         }
     };
 
