@@ -31,3 +31,14 @@ test("renders record description", () => {
 
     expect(screen.getByText("Some description")).toBeInTheDocument();
 });
+
+test("link has correct path", () => {
+    render(
+        <MemoryRouter>
+            <Card record={mockRecord} defaultImage="/placeholder.png" onDelete={jest.fn()} />
+        </MemoryRouter>
+    );
+
+  const link = screen.getByRole("link", { name: /view/i });
+  expect(link).toHaveAttribute("href", "/cards/1");
+});
