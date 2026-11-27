@@ -132,3 +132,20 @@ test("does nothing when delete_path is null", () => {
     const button = screen.getByRole("button", { name: /delete/i });
     expect(button).toBeDisabled();
 });
+
+test("handles apiDelete error", async () => {
+    const consoleSpy = jest.spyOn(console, "error").mockImplementation(() => {});
+    apiDelete.mockRejectedValue(new Error("fail"));
+    const onDelete = jest.fn();
+    render(
+        <MemoryRouter>
+            <Card record={mockRecordWithDelete} defaultImage="/placeholder.png" onDelete={onDelete} />
+        </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /delete/i }));
+
+    await waitFor(() => expect(consoleSpy).toHaveBeenCalledWith("Delete error:", expect.any(Error)));
+    expect(onDelete).not.toHaveBeenCalled();
+    consoleSpy.mockRestore();
+});
