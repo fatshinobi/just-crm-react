@@ -92,3 +92,17 @@ test("calls apiDelete with delete_path when confirmed", async () => {
 
     await waitFor(() => expect(apiDelete).toHaveBeenCalledWith("/cards/1"));
 });
+
+test("calls onDelete with record.id on success", async () => {
+    apiDelete.mockResolvedValue(null);
+    const onDelete = jest.fn();
+    render(
+        <MemoryRouter>
+            <Card record={mockRecordWithDelete} defaultImage="/placeholder.png" onDelete={onDelete} />
+        </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /delete/i }));
+
+    await waitFor(() => expect(onDelete).toHaveBeenCalledWith(1));
+});
