@@ -106,3 +106,18 @@ test("calls onDelete with record.id on success", async () => {
 
     await waitFor(() => expect(onDelete).toHaveBeenCalledWith(1));
 });
+
+test("does not delete when user cancels confirm", () => {
+    window.confirm = jest.fn(() => false);
+    const onDelete = jest.fn();
+    render(
+        <MemoryRouter>
+            <Card record={mockRecordWithDelete} defaultImage="/placeholder.png" onDelete={onDelete} />
+        </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /delete/i }));
+
+    expect(apiDelete).not.toHaveBeenCalled();
+    expect(onDelete).not.toHaveBeenCalled();
+});
