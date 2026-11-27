@@ -1,6 +1,11 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { MemoryRouter } from "react-router-dom";
 import Card from './Card';
+import { apiDelete } from '../api/apiFetch';
+
+jest.mock('../api/apiFetch', () => ({
+    apiDelete: jest.fn(),
+}));
 
 const mockRecord = {
     id: 1,
@@ -56,4 +61,34 @@ test("img has correct avatar url", () => {
 
   const img = screen.getByRole("img");
   expect(img).toHaveAttribute("src", "http://localhost:4000/avatar/1");
+});
+
+const mockRecordWithDelete = {
+    id: 1,
+    caption: "My Card Title",
+    avatar_url: "/avatar/1",
+    delete_path: "/cards/1",
+    tags: [],
+    description: "Some description",
+    show_path: "/cards/1",
+};
+
+beforeEach(() => {
+    process.env.REACT_APP_API_HOST = "http://localhost:4000";
+    jest.clearAllMocks();
+    window.confirm = jest.fn(() => true);
+});
+
+test("calls apiDelete with delete_path when confirmed", async () => {
+    apiDelete.mockResolvedValue(null);
+    const onDelete = jest.fn();
+    render(
+        <MemoryRouter>
+            <Card record={mockRecordWithDelete} defaultImage="/placeholder.png" onDelete={onDelete} />
+        </MemoryRouter>
+    );
+
+    fireEvent.click(screen.getByRole("button", { name: /delete/i }));
+
+    await waitFor(() => expect(apiDelete).toHaveBeenCalledWith("/cards/1"));
 });
