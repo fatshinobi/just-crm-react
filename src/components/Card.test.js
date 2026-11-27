@@ -121,3 +121,14 @@ test("does not delete when user cancels confirm", () => {
     expect(apiDelete).not.toHaveBeenCalled();
     expect(onDelete).not.toHaveBeenCalled();
 });
+
+test("does nothing when delete_path is null", () => {
+    render(
+        <MemoryRouter>
+            <Card record={mockRecord} defaultImage="/placeholder.png" onDelete={jest.fn()} />
+        </MemoryRouter>
+    );
+
+    const button = screen.getByRole("button", { name: /delete/i });
+    expect(button).toBeDisabled();
+});
